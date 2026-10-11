@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { toPersianDigits } from "@/lib/persian-digits";
 import { AthleteSidebar } from "@/components/athlete/athlete-sidebar";
 import { AthleteTopbar } from "@/components/athlete/athlete-topbar";
 
 interface ExerciseItem {
   id: string;
+  legacyId?: string;
   name: string;
   muscle: string;
   sets: string;
@@ -33,6 +35,7 @@ const PROGRAM_DAYS_DATA: ProgramDayData[] = [
     exercises: [
       {
         id: "d1-ex1",
+        legacyId: "1",
         name: "پرس سینه هالتر",
         muscle: "سینه",
         sets: "۴ ست",
@@ -42,6 +45,7 @@ const PROGRAM_DAYS_DATA: ProgramDayData[] = [
       },
       {
         id: "d1-ex2",
+        legacyId: "2",
         name: "پرس بالاسینه دمبل",
         muscle: "سینه",
         sets: "۳ ست",
@@ -51,6 +55,7 @@ const PROGRAM_DAYS_DATA: ProgramDayData[] = [
       },
       {
         id: "d1-ex3",
+        legacyId: "3",
         name: "قفسه سینه سیم‌کش",
         muscle: "سینه",
         sets: "۳ ست",
@@ -60,6 +65,7 @@ const PROGRAM_DAYS_DATA: ProgramDayData[] = [
       },
       {
         id: "d1-ex4",
+        legacyId: "4",
         name: "پشت‌بازو سیم‌کش",
         muscle: "پشت‌بازو",
         sets: "۴ ست",
@@ -69,6 +75,7 @@ const PROGRAM_DAYS_DATA: ProgramDayData[] = [
       },
       {
         id: "d1-ex5",
+        legacyId: "5",
         name: "نشر از جانب",
         muscle: "سرشانه",
         sets: "۳ ست",
@@ -176,23 +183,55 @@ export default function AthleteProgramPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [completedExercises, setCompletedExercises] = useState<Record<string, boolean>>({});
 
-  // Load completed exercises from localStorage on mount
+  // Load completed exercises from localStorage on mount & listen to sync events
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem("titan_program_completed");
-      if (saved) {
-        setCompletedExercises(JSON.parse(saved));
+    const loadSaved = () => {
+      try {
+        const saved = localStorage.getItem("titan_program_completed");
+        if (saved) {
+          setCompletedExercises(JSON.parse(saved));
+        } else {
+          // Default initial state: first 2 exercises done (as in reference UI)
+          const defaultState: Record<string, boolean> = {
+            "d1-ex1": true,
+            "1": true,
+            "d1-ex2": true,
+            "2": true,
+          };
+          setCompletedExercises(defaultState);
+          localStorage.setItem("titan_program_completed", JSON.stringify(defaultState));
+        }
+      } catch {
+        // Ignore localStorage errors
       }
-    } catch {
-      // Ignore localStorage errors
-    }
+    };
+
+    loadSaved();
+
+    const handleSync = () => loadSaved();
+    window.addEventListener("workout-progress-updated", handleSync);
+    window.addEventListener("storage", handleSync);
+    return () => {
+      window.removeEventListener("workout-progress-updated", handleSync);
+      window.removeEventListener("storage", handleSync);
+    };
   }, []);
 
-  const toggleExerciseDone = (id: string) => {
+  const toggleExerciseDone = (exercise: ExerciseItem) => {
     setCompletedExercises((prev) => {
-      const updated = { ...prev, [id]: !prev[id] };
+      const willBeDone = !prev[exercise.id];
+      const updated = {
+        ...prev,
+        [exercise.id]: willBeDone,
+      };
+
+      if (exercise.legacyId) {
+        updated[exercise.legacyId] = willBeDone;
+      }
+
       try {
         localStorage.setItem("titan_program_completed", JSON.stringify(updated));
+        window.dispatchEvent(new Event("workout-progress-updated"));
       } catch {
         // Ignore localStorage errors
       }
@@ -207,6 +246,15 @@ export default function AthleteProgramPage() {
   };
 
   const q = searchQuery.trim().toLowerCase();
+
+  // Dynamic progress calculation logic
+  const allExercises = PROGRAM_DAYS_DATA.flatMap((d) => d.exercises);
+  const totalExercisesCount = allExercises.length; // 13 exercises
+  const totalCompletedCount = allExercises.filter((ex) => Boolean(completedExercises[ex.id])).length;
+
+  const progressPercent = totalExercisesCount > 0
+    ? Math.round((totalCompletedCount / totalExercisesCount) * 100)
+    : 0;
 
   return (
     <div className="app">
@@ -302,8 +350,15 @@ export default function AthleteProgramPage() {
                     ۳ روز در هفته · هر جلسه حدود ۶۵ دقیقه
                   </div>
                   <div style={{ maxWidth: "380px" }}>
+                    {/* Dynamic Real-time Progress Bar */}
                     <div className="prog-bar">
-                      <div className="prog-fill" style={{ width: "37.5%" }} />
+                      <div
+                        className="prog-fill"
+                        style={{
+                          width: `${progressPercent}%`,
+                          transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+                        }}
+                      />
                     </div>
                     <div
                       style={{
@@ -311,9 +366,17 @@ export default function AthleteProgramPage() {
                         color: "var(--ink-faint)",
                         marginTop: "6px",
                         fontWeight: 600,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
                       }}
                     >
-                      هفته ۳ از ۸ · ٪۳۸ پیشرفت
+                      <span>
+                        هفته ۳ از ۸ · ٪{toPersianDigits(progressPercent)} پیشرفت
+                      </span>
+                      <span>
+                        {toPersianDigits(totalCompletedCount)} از {toPersianDigits(totalExercisesCount)} حرکت
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -360,60 +423,49 @@ export default function AthleteProgramPage() {
               boxSizing: "border-box",
             }}
           >
-            <span
-              className={`tab ${activeTab === "d1" ? "active" : ""}`}
-              onClick={() => setActiveTab("d1")}
-              role="button"
-              tabIndex={0}
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 6v6l4 2" />
-              </svg>
-              روز ۱ — سینه و بازو
-            </span>
-            <span
-              className={`tab ${activeTab === "d2" ? "active" : ""}`}
-              onClick={() => setActiveTab("d2")}
-              role="button"
-              tabIndex={0}
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 6v6l4 2" />
-              </svg>
-              روز ۲ — پا
-            </span>
-            <span
-              className={`tab ${activeTab === "d3" ? "active" : ""}`}
-              onClick={() => setActiveTab("d3")}
-              role="button"
-              tabIndex={0}
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 6v6l4 2" />
-              </svg>
-              روز ۳ — پشت و جلوبازو
-            </span>
+            {PROGRAM_DAYS_DATA.map((day) => {
+              const dayDone = day.exercises.filter((ex) => Boolean(completedExercises[ex.id])).length;
+              const isFullDone = dayDone === day.exercises.length && day.exercises.length > 0;
+              return (
+                <span
+                  key={day.tabKey}
+                  className={`tab ${activeTab === day.tabKey ? "active" : ""}`}
+                  onClick={() => setActiveTab(day.tabKey)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
+                  </svg>
+                  {day.tabKey === "d1" && "روز ۱ — سینه و بازو"}
+                  {day.tabKey === "d2" && "روز ۲ — پا"}
+                  {day.tabKey === "d3" && "روز ۳ — پشت و جلوبازو"}
+                  {dayDone > 0 && (
+                    <span
+                      style={{
+                        marginRight: "6px",
+                        fontSize: "11px",
+                        padding: "1px 7px",
+                        borderRadius: "100px",
+                        background: isFullDone ? "var(--primary-dark)" : "var(--tint)",
+                        color: isFullDone ? "#fff" : "var(--primary-dark)",
+                        fontWeight: 800,
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      {toPersianDigits(dayDone)}/{toPersianDigits(day.exercises.length)}
+                    </span>
+                  )}
+                </span>
+              );
+            })}
           </div>
 
           {/* Day Panels: width of panel.active is 100% equal to card */}
@@ -428,6 +480,10 @@ export default function AthleteProgramPage() {
               );
             });
 
+            const dayCompletedCount = dayData.exercises.filter((ex) => Boolean(completedExercises[ex.id])).length;
+            const dayTotalCount = dayData.exercises.length;
+            const isDayAllDone = dayCompletedCount === dayTotalCount && dayTotalCount > 0;
+
             return (
               <div
                 key={dayData.id}
@@ -441,8 +497,20 @@ export default function AthleteProgramPage() {
                       <h3>{dayData.title}</h3>
                       <div className="hint">{dayData.subtitle}</div>
                     </div>
-                    <span className="pill">
-                      {q ? `${filteredExercises.length} حرکت یافت شد` : dayData.exercisesCountText}
+                    <span
+                      className="pill"
+                      style={{
+                        background: isDayAllDone ? "var(--tint)" : undefined,
+                        color: isDayAllDone ? "var(--primary-dark)" : undefined,
+                        fontWeight: 700,
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      {q
+                        ? `${toPersianDigits(filteredExercises.length)} حرکت یافت شد`
+                        : isDayAllDone
+                        ? `✓ تمام حرکات انجام شد (${toPersianDigits(dayCompletedCount)} از ${toPersianDigits(dayTotalCount)})`
+                        : `${toPersianDigits(dayCompletedCount)} از ${toPersianDigits(dayTotalCount)} انجام شد`}
                     </span>
                   </div>
                   <div className="card-body" style={{ paddingTop: "8px" }}>
@@ -465,10 +533,11 @@ export default function AthleteProgramPage() {
                           <div
                             key={exercise.id}
                             className={`wk-row ${isDone ? "done" : ""}`}
-                            onClick={() => toggleExerciseDone(exercise.id)}
+                            onClick={() => toggleExerciseDone(exercise)}
                             role="button"
                             tabIndex={0}
-                            title="برای تغییر وضعیت انجام شده/نشده کلیک کنید"
+                            title={isDone ? "برای لغو انجام حرکت کلیک کنید" : "برای علامت‌گذاری انجام حرکت کلیک کنید"}
+                            style={{ cursor: "pointer", userSelect: "none" }}
                           >
                             <span className="wk-check">
                               <svg
