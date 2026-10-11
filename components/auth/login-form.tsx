@@ -111,10 +111,12 @@ export function LoginForm({ onSubmit, onSuccess }: LoginFormProps) {
         const role = res?.user?.role;
         if (role === "COACH") {
           router.push("/coach");
+        } else if (role === "MEMBER") {
+          router.push("/athlete");
         } else if (role === "OWNER") {
           router.push("/admin");
         } else {
-          router.push("/admin"); // fallback to dashboard
+          router.push("/athlete"); // fallback for athlete/members
         }
       }
     } catch (err) {

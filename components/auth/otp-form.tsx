@@ -128,6 +128,8 @@ export function OtpForm({ onVerify, onSuccess }: OtpFormProps) {
         if (user || tokenStorage.hasValidSession()) {
           if (user?.role === "COACH") {
             router.push("/coach");
+          } else if (user?.role === "MEMBER") {
+            router.push("/athlete");
           } else {
             router.push("/admin");
           }
