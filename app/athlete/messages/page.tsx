@@ -82,38 +82,86 @@ export default function AthleteMessagesPage() {
             </div>
           </div>
 
-          <div className="card flex flex-col h-[650px] max-h-[75vh]">
+          <div
+            className="card"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              height: "650px",
+              maxHeight: "75vh",
+              overflow: "hidden",
+            }}
+          >
             {/* Chat Header */}
-            <div className="card-head py-3.5">
-              <div className="flex items-center gap-3">
+            <div
+              className="card-head"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "16px 20px",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                 <span className="avatar">آر</span>
                 <div>
-                  <h3 className="text-[15px] font-bold text-ink">آرش رستمی</h3>
-                  <div className="text-[12px] text-primary-dark font-medium">آنلاین · پاسخگویی سریع</div>
+                  <h3 style={{ fontSize: "15px", fontWeight: 800, color: "var(--ink)", margin: 0 }}>
+                    آرش رستمی
+                  </h3>
+                  <div style={{ fontSize: "12px", color: "var(--primary-dark)", fontWeight: 600, marginTop: "2px" }}>
+                    آنلاین · پاسخگویی سریع
+                  </div>
                 </div>
               </div>
-              <span className="pill text-[11px]">مربی ارشد تیتان</span>
+              <span className="pill">مربی ارشد تیتان</span>
             </div>
 
             {/* Chat Stream */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-4">
+            <div
+              style={{
+                flex: 1,
+                overflowY: "auto",
+                padding: "20px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+              }}
+            >
               {messages.map((msg) => {
                 const isMe = msg.sender === "me";
                 return (
                   <div
                     key={msg.id}
-                    className={`flex flex-col ${isMe ? "items-start" : "items-end"}`}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: isMe ? "flex-start" : "flex-end",
+                    }}
                   >
                     <div
-                      className={`max-w-[80%] rounded-[16px] p-3.5 text-[14px] leading-relaxed shadow-sm ${
-                        isMe
-                          ? "bg-primary text-slate-900 rounded-br-xs font-medium"
-                          : "bg-bg text-ink border border-border rounded-bl-xs"
-                      }`}
+                      style={{
+                        maxWidth: "80%",
+                        borderRadius: "16px",
+                        padding: "12px 16px",
+                        fontSize: "14px",
+                        lineHeight: 1.6,
+                        boxShadow: "var(--shadow-sm)",
+                        background: isMe ? "var(--primary)" : "var(--bg)",
+                        color: isMe ? "#0F172A" : "var(--ink)",
+                        border: isMe ? "none" : "1px solid var(--border)",
+                        fontWeight: isMe ? 600 : 500,
+                      }}
                     >
                       {toPersianDigits(msg.text)}
                     </div>
-                    <span className="text-[11px] text-ink-faint mt-1 px-1">
+                    <span
+                      style={{
+                        fontSize: "11px",
+                        color: "var(--ink-faint)",
+                        marginTop: "4px",
+                        padding: "0 4px",
+                      }}
+                    >
                       {toPersianDigits(msg.time)}
                     </span>
                   </div>
@@ -122,15 +170,38 @@ export default function AthleteMessagesPage() {
             </div>
 
             {/* Chat Input */}
-            <form onSubmit={handleSend} className="p-3.5 border-t border-border flex items-center gap-2 bg-surface">
+            <form
+              onSubmit={handleSend}
+              style={{
+                padding: "14px 18px",
+                borderTop: "1px solid var(--border)",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                background: "var(--surface)",
+              }}
+            >
               <input
                 type="text"
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 placeholder="پیام خود را برای مربی بنویسید…"
-                className="flex-1 bg-bg border border-border rounded-[12px] px-4 py-2.5 text-[14px] text-ink placeholder:text-ink-faint focus:outline-none focus:border-primary"
+                style={{
+                  flex: 1,
+                  background: "var(--bg)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "12px",
+                  padding: "10px 16px",
+                  fontSize: "14px",
+                  color: "var(--ink)",
+                  outline: "none",
+                }}
               />
-              <button type="submit" className="btn btn-primary btn-sm px-5">
+              <button
+                type="submit"
+                className="btn btn-primary btn-sm"
+                style={{ padding: "10px 20px" }}
+              >
                 ارسال
               </button>
             </form>

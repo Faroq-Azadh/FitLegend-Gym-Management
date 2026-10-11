@@ -803,6 +803,13 @@
   margin-bottom: 14px !important;
 }
 
+.app .coach-card.no-border {
+  border: none !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .app .coach-card .av {
   width: 48px !important;
   height: 48px !important;
@@ -821,6 +828,9 @@
   font-size: 14.5px !important;
   font-weight: 800 !important;
   color: var(--ink) !important;
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: none !important;
 }
 
 .app .coach-card .rl {
@@ -913,6 +923,262 @@
   font-size: 11px !important;
   color: var(--ink-faint) !important;
   margin-top: 2px !important;
+}
+
+/* Tag chips */
+.app .tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: var(--primary-dark) !important;
+  background: var(--tint) !important;
+  padding: 4px 11px !important;
+  border-radius: 100px !important;
+}
+
+.app .tag.cyan {
+  color: #0891B2 !important;
+  background: rgba(34, 211, 238, 0.12) !important;
+}
+
+.app .tag.amber {
+  color: #B45309 !important;
+  background: #FFFBEB !important;
+}
+
+/* Workout details */
+.app .wk-info .det {
+  font-size: 12px !important;
+  color: var(--ink-faint) !important;
+  margin-top: 3px !important;
+}
+
+.app .wk-info .det b {
+  color: var(--ink-soft) !important;
+  font-weight: 700 !important;
+}
+
+/* Progress bar */
+.app .prog-bar {
+  height: 8px !important;
+  border-radius: 100px !important;
+  background: var(--bg) !important;
+  overflow: hidden !important;
+  margin-top: 8px !important;
+}
+
+.app .prog-fill {
+  height: 100% !important;
+  border-radius: 100px !important;
+  background: linear-gradient(90deg, var(--primary), var(--cyan)) !important;
+  transition: width 0.3s ease !important;
+}
+
+/* Coach card */
+.app .coach-card {
+  display: flex !important;
+  align-items: center !important;
+  gap: 13px !important;
+  padding: 4px 0 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+  margin-bottom: 14px !important;
+}
+
+.app .coach-card.no-border {
+  border: none !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.app .coach-card .av {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 14px !important;
+  flex-shrink: 0 !important;
+  background: linear-gradient(135deg, var(--primary), var(--cyan)) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+  font-size: 15px !important;
+  color: var(--ink) !important;
+}
+
+.app .coach-card .nm {
+  font-size: 14.5px !important;
+  font-weight: 800 !important;
+  color: var(--ink) !important;
+  text-decoration: none !important;
+  border: none !important;
+  border-bottom: none !important;
+}
+
+.app .coach-card .rl {
+  font-size: 12px !important;
+  color: var(--ink-faint) !important;
+  margin-top: 2px !important;
+}
+
+/* Day tabs */
+.app #dayTabs,
+.app .tabs-bar {
+  display: flex !important;
+  gap: 4px !important;
+  background: var(--bg) !important;
+  padding: 5px !important;
+  border-radius: 12px !important;
+  margin: 0 0 18px 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  flex-wrap: wrap !important;
+}
+
+.app .tab {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: var(--ink-faint) !important;
+  padding: 9px 15px !important;
+  border-radius: 9px !important;
+  transition: all 0.18s ease !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  background: transparent !important;
+  border: none !important;
+  font-family: inherit !important;
+}
+
+.app .tab svg {
+  width: 15px !important;
+  height: 15px !important;
+  stroke-width: 2 !important;
+}
+
+.app .tab:hover {
+  color: var(--ink) !important;
+}
+
+.app .tab.active {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+.app .panel {
+  display: none !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.app .panel.active {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Print Styles for PDF Export - ONLY moves/exercises are printed */
+@media print {
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+  }
+  .app {
+    background: #ffffff !important;
+    display: block !important;
+    min-height: auto !important;
+  }
+  .app .sidebar,
+  .app .topbar,
+  .app .scrim,
+  .app .tabs-bar,
+  .app .page-head,
+  .app .page-head-actions,
+  .app .program-info-card,
+  .program-info-card,
+  .start-workout-toast,
+  .print-hidden {
+    display: none !important;
+  }
+  .app .main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    display: block !important;
+  }
+  .app .content {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+  .print-header {
+    display: block !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 2px solid #0f172a !important;
+  }
+  .print-header h1 {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin-bottom: 4px !important;
+  }
+  .print-header p {
+    font-size: 13px !important;
+    color: #475569 !important;
+  }
+  .app .panel {
+    display: block !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin-bottom: 24px !important;
+    break-inside: avoid !important;
+  }
+  .app .card {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    break-inside: avoid !important;
+    margin-bottom: 24px !important;
+    width: 100% !important;
+  }
+  .app .card-head {
+    padding: 14px 18px !important;
+    background: #f8fafc !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+  }
+  .app .card-body {
+    padding: 12px 18px !important;
+  }
+  .app .wk-check {
+    display: none !important;
+  }
+  .app .wk-row {
+    padding: 10px 0 !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+  .app .wk-row:last-child {
+    border-bottom: none !important;
+  }
+  .app .wk-row.done .wk-info .nm {
+    text-decoration: none !important;
+    color: #0f172a !important;
+  }
+  .app .wk-meta .s {
+    font-size: 14px !important;
+    color: #0f172a !important;
+  }
 }
 
 /* Tables */
