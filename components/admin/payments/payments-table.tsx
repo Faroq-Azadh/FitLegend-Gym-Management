@@ -231,16 +231,16 @@ export function PaymentsTable({
       {/* Table Content */}
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-right">
-          <thead>
-            <tr className="border-b border-border bg-surface text-[12px] font-bold text-ink-faint">
-              <th className="whitespace-nowrap p-[16px_20px]">شناسه تراکنش</th>
-              <th className="whitespace-nowrap p-[16px_20px]">عضو</th>
-              <th className="whitespace-nowrap p-[16px_20px]">مبلغ</th>
-              <th className="whitespace-nowrap p-[16px_20px]">روش پرداخت</th>
-              <th className="whitespace-nowrap p-[16px_20px]">بابت</th>
-              <th className="whitespace-nowrap p-[16px_20px]">تاریخ</th>
-              <th className="whitespace-nowrap p-[16px_20px]">وضعیت</th>
-              <th className="w-[48px] p-[16px_20px]"></th>
+          <thead className="font-bold">
+            <tr className="border-b border-border bg-surface text-[13.5px] font-bold text-ink-faint">
+              <th className="whitespace-nowrap p-[16px_20px] font-bold">شناسه تراکنش</th>
+              <th className="whitespace-nowrap p-[16px_20px] font-bold">عضو</th>
+              <th className="whitespace-nowrap p-[16px_20px] font-bold">مبلغ</th>
+              <th className="whitespace-nowrap p-[16px_20px] font-bold">روش پرداخت</th>
+              <th className="whitespace-nowrap p-[16px_20px] font-bold">بابت</th>
+              <th className="whitespace-nowrap p-[16px_20px] font-bold">تاریخ</th>
+              <th className="whitespace-nowrap p-[16px_20px] font-bold">وضعیت</th>
+              <th className="w-[48px] p-[16px_20px] font-bold"></th>
             </tr>
           </thead>
           <tbody>

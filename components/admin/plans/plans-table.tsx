@@ -103,14 +103,14 @@ export function PlansTable({
       {activeTab === "member_plans" && (
         <div className="overflow-x-auto">
           <table className="w-full text-right text-[13px]">
-            <thead>
-              <tr className="border-b border-border bg-bg/50 text-[12px] font-bold text-ink-faint">
-                <th className="p-[14px_20px]">پلن</th>
-                <th className="p-[14px_20px]">قیمت</th>
-                <th className="p-[14px_20px]">مدت</th>
-                <th className="p-[14px_20px]">اعضای فعال</th>
-                <th className="p-[14px_20px]">وضعیت</th>
-                <th className="p-[14px_20px] text-left">عملیات</th>
+            <thead className="font-bold">
+              <tr className="border-b border-border bg-bg/50 text-[13.5px] font-bold text-ink-faint">
+                <th className="p-[14px_20px] font-bold">پلن</th>
+                <th className="p-[14px_20px] font-bold">قیمت</th>
+                <th className="p-[14px_20px] font-bold">مدت</th>
+                <th className="p-[14px_20px] font-bold">اعضای فعال</th>
+                <th className="p-[14px_20px] font-bold">وضعیت</th>
+                <th className="p-[14px_20px] font-bold text-left">عملیات</th>
               </tr>
             </thead>
             <tbody>
@@ -244,16 +244,16 @@ export function PlansTable({
       {activeTab === "system_plans" && (
         <div className="overflow-x-auto">
           <table className="w-full text-right text-[13px]">
-            <thead>
-              <tr className="border-b border-border bg-bg/50 text-[12px] font-bold text-ink-faint">
-                <th className="p-[14px_20px]">تعرفه</th>
-                <th className="p-[14px_20px]">کد پلتفرم</th>
-                <th className="p-[14px_20px]">هزینه اشتراک</th>
-                <th className="p-[14px_20px]">سقف اعضا</th>
-                <th className="p-[14px_20px]">سقف مربیان</th>
-                <th className="p-[14px_20px]">تست رایگان</th>
-                <th className="p-[14px_20px] text-center">وضعیت شما</th>
-                <th className="p-[14px_20px] text-left">عملیات</th>
+            <thead className="font-bold">
+              <tr className="border-b border-border bg-bg/50 text-[13.5px] font-bold text-ink-faint">
+                <th className="p-[14px_20px] font-bold">تعرفه</th>
+                <th className="p-[14px_20px] font-bold">کد پلتفرم</th>
+                <th className="p-[14px_20px] font-bold">هزینه اشتراک</th>
+                <th className="p-[14px_20px] font-bold">سقف اعضا</th>
+                <th className="p-[14px_20px] font-bold">سقف مربیان</th>
+                <th className="p-[14px_20px] font-bold">تست رایگان</th>
+                <th className="p-[14px_20px] font-bold text-center">وضعیت شما</th>
+                <th className="p-[14px_20px] font-bold text-left">عملیات</th>
               </tr>
             </thead>
             <tbody>

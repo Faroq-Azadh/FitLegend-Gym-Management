@@ -1018,24 +1018,24 @@ export function CoachesTable({
         {/* Table Content */}
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
-            <thead>
+            <thead className="font-bold">
               <tr>
-                <th className="border-b border-border px-[22px] pb-[14px] text-right text-[12px] font-bold whitespace-nowrap text-ink-faint">
+                <th className="border-b border-border px-[22px] pt-[14px] pb-[14px] text-right text-[13.5px] font-bold whitespace-nowrap text-ink-faint">
                   عضو تیم
                 </th>
-                <th className="border-b border-border px-[22px] pb-[14px] text-right text-[12px] font-bold whitespace-nowrap text-ink-faint">
+                <th className="border-b border-border px-[22px] pt-[14px] pb-[14px] text-right text-[13.5px] font-bold whitespace-nowrap text-ink-faint">
                   نقش / تخصص
                 </th>
-                <th className="border-b border-border px-[22px] pb-[14px] text-right text-[12px] font-bold whitespace-nowrap text-ink-faint">
+                <th className="border-b border-border px-[22px] pt-[14px] pb-[14px] text-right text-[13.5px] font-bold whitespace-nowrap text-ink-faint">
                   شاگردان
                 </th>
-                <th className="border-b border-border px-[22px] pb-[14px] text-right text-[12px] font-bold whitespace-nowrap text-ink-faint">
+                <th className="border-b border-border px-[22px] pt-[14px] pb-[14px] text-right text-[13.5px] font-bold whitespace-nowrap text-ink-faint">
                   امتیاز
                 </th>
-                <th className="border-b border-border px-[22px] pb-[14px] text-right text-[12px] font-bold whitespace-nowrap text-ink-faint">
+                <th className="border-b border-border px-[22px] pt-[14px] pb-[14px] text-right text-[13.5px] font-bold whitespace-nowrap text-ink-faint">
                   وضعیت
                 </th>
-                <th className="border-b border-border px-[22px] pb-[14px] text-right text-[12px] font-bold whitespace-nowrap text-ink-faint" />
+                <th className="border-b border-border px-[22px] pt-[14px] pb-[14px] text-right text-[13.5px] font-bold whitespace-nowrap text-ink-faint" />
               </tr>
             </thead>
             <tbody id="coBody">

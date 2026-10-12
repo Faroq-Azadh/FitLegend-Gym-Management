@@ -96,14 +96,14 @@ export function ClassesListView({
       {/* Table view */}
       <div className="overflow-x-auto">
         <table className="w-full text-right">
-          <thead>
-            <tr className="border-b border-border text-[12px] font-extrabold text-ink-faint">
-              <th className="p-[14px_22px]">نام کلاس</th>
-              <th className="p-[14px_16px]">روز و ساعت</th>
-              <th className="p-[14px_16px]">مربی</th>
-              <th className="p-[14px_16px]">سالن برگزاری</th>
-              <th className="p-[14px_16px]">ظرفیت و پر بودن</th>
-              <th className="p-[14px_22px] text-left">عملیات</th>
+          <thead className="font-bold">
+            <tr className="border-b border-border text-[13.5px] font-bold text-ink-faint">
+              <th className="p-[14px_22px] font-bold">نام کلاس</th>
+              <th className="p-[14px_16px] font-bold">روز و ساعت</th>
+              <th className="p-[14px_16px] font-bold">مربی</th>
+              <th className="p-[14px_16px] font-bold">سالن برگزاری</th>
+              <th className="p-[14px_16px] font-bold">ظرفیت و پر بودن</th>
+              <th className="p-[14px_22px] font-bold text-left">عملیات</th>
             </tr>
           </thead>
           <tbody>
