@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, Suspense } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
@@ -8,440 +8,856 @@ import { CoachTopbar } from "@/components/coach/coach-topbar";
 import { toPersianDigits } from "@/lib/persian-digits";
 import { cn } from "@/lib/utils";
 import {
-  CheckCircle2,
-  Clock,
-  UserCheck,
-  UserX,
-  AlertCircle,
+  Check,
   Search,
-  Plus,
-  ArrowRight,
-  Filter,
-  X,
+  CheckCircle2,
+  AlertCircle,
+  MessageSquare,
+  Calendar,
 } from "lucide-react";
 
-interface CheckinItem {
-  id: string;
+interface AttendanceClass {
+  id: number;
   name: string;
-  classId?: number;
-  className: string;
+  days: number[]; // 0=Sat, 1=Sun, 2=Mon, 3=Tue, 4=Wed, 5=Thu
   time: string;
-  status: "attended" | "pending" | "absent";
-  type: string;
+  dur: number;
+  cap: number;
+  enrolled: number;
+  off: number;
 }
 
-const INITIAL_CHECKINS: CheckinItem[] = [
-  { id: "1", name: "سارا محمدی", classId: 1, className: "بدنسازی صبحگاهی", time: "۰۸:۱۵", status: "attended", type: "کلاس گروهی" },
-  { id: "2", name: "امیر صادقی", classId: 1, className: "بدنسازی صبحگاهی", time: "۰۸:۲۰", status: "attended", type: "کلاس گروهی" },
-  { id: "3", name: "کیان راد", classId: 1, className: "بدنسازی صبحگاهی", time: "۰۸:۴۵", status: "pending", type: "کلاس گروهی" },
-  { id: "4", name: "رضا کاظمی", classId: 2, className: "قدرتی پیشرفته", time: "۱۰:۰۵", status: "attended", type: "نیمه‌خصوصی" },
-  { id: "5", name: "مینا تهرانی", classId: 2, className: "قدرتی پیشرفته", time: "۱۰:۱۰", status: "attended", type: "نیمه‌خصوصی" },
-  { id: "6", name: "الهام ف.", classId: 2, className: "قدرتی پیشرفته", time: "۱۰:۳۰", status: "absent", type: "نیمه‌خصوصی" },
-  { id: "7", name: "نیلوفر ع.", classId: 3, className: "TRX", time: "۱۷:۰۵", status: "attended", type: "کلاس گروهی" },
-  { id: "8", name: "دانیال ک.", classId: 3, className: "TRX", time: "۱۷:۱۵", status: "pending", type: "کلاس گروهی" },
-  { id: "9", name: "پارسا ن.", classId: 4, className: "بدنسازی شبانه", time: "۱۹:۳۵", status: "attended", type: "کلاس گروهی" },
-  { id: "10", name: "علی ز.", classId: 4, className: "بدنسازی شبانه", time: "۱۹:۴۰", status: "attended", type: "کلاس گروهی" },
-  { id: "11", name: "بهار ح.", classId: 5, className: "کراس‌فیت مبتدی", time: "۰۹:۱۰", status: "attended", type: "کلاس گروهی" },
-  { id: "12", name: "سحر م.", classId: 5, className: "کراس‌فیت مبتدی", time: "۰۹:۳۰", status: "absent", type: "کلاس گروهی" },
+interface Member {
+  id: number;
+  name: string;
+  flag: "warn" | "bad" | "";
+}
+
+interface SessionAttendanceState {
+  marks: Record<number, "p" | "l" | "a">;
+  note: string;
+  saved: boolean;
+}
+
+const DAYS = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه"];
+const COL = ["#0F172A", "#0FBF87", "#0891B2", "#D97706", "#E11D48", "#6366F1"];
+const NAMES = [
+  "سارا محمدی", "امیر صادقی", "رضا کاظمی", "مینا تهرانی", "کیان راد", "نیلوفر عباسی",
+  "پارسا نوری", "الهام فرهادی", "دانیال کریمی", "سحر مرادی", "بهار حسینی", "علی زارعی",
+  "هانیه صالحی", "محمدرضا ایزدی", "ملیکا رحیمی", "آریا طاهری", "یگانه سعیدی", "ماهان قاسمی",
+  "نگار شفیعی", "سینا بهرامی", "ترانه کیانی", "احسان فتحی", "پریسا جعفری", "وحید منصوری"
 ];
 
-const CLASS_NAMES: Record<number, string> = {
-  1: "بدنسازی صبحگاهی",
-  2: "قدرتی پیشرفته",
-  3: "TRX",
-  4: "بدنسازی شبانه",
-  5: "کراس‌فیت مبتدی",
-  6: "تمرین خصوصی گروه کوچک",
+const INITIAL_CLASSES: AttendanceClass[] = [
+  { id: 1, name: "بدنسازی صبحگاهی", days: [0, 2, 4], time: "08:00", dur: 60, cap: 20, enrolled: 12, off: 0 },
+  { id: 2, name: "قدرتی پیشرفته", days: [0, 3], time: "10:00", dur: 45, cap: 10, enrolled: 10, off: 5 },
+  { id: 3, name: "TRX", days: [2, 5], time: "17:00", dur: 50, cap: 12, enrolled: 8, off: 9 },
+  { id: 4, name: "بدنسازی شبانه", days: [1, 3], time: "19:30", dur: 75, cap: 20, enrolled: 14, off: 2 },
+  { id: 5, name: "کراس‌فیت مبتدی", days: [5], time: "09:00", dur: 60, cap: 16, enrolled: 11, off: 13 },
+];
+
+const getRoster = (c: AttendanceClass): Member[] => {
+  return Array.from({ length: c.enrolled }, (_, i) => {
+    const idx = (c.off + i) % NAMES.length;
+    return {
+      id: idx,
+      name: NAMES[idx],
+      flag: idx % 11 === 4 ? "warn" : idx % 17 === 7 ? "bad" : "",
+    };
+  });
 };
 
-function AttendanceContent() {
+const seed = (m: number, d: number, c: number): "p" | "l" | "a" => {
+  const r = (m * 7 + d * 3 + c * 5) % 10;
+  return r < 7 ? "p" : r < 8 ? "l" : "a";
+};
+
+const endTime = (t: string, d: number) => {
+  const [h, m] = t.split(":").map(Number);
+  const e = h * 60 + m + d;
+  return String(Math.floor(e / 60) % 24).padStart(2, "0") + ":" + String(e % 60).padStart(2, "0");
+};
+
+function AttendanceInner() {
   const searchParams = useSearchParams();
-  const classParam = searchParams.get("class");
-  const selectedClassId = classParam ? parseInt(classParam, 10) : null;
 
-  const [checkins, setCheckins] = useState<CheckinItem[]>(INITIAL_CHECKINS);
-  const [statusFilter, setStatusFilter] = useState<"all" | "attended" | "pending" | "absent">("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  // Current day index in Saturday=0 system
+  const todayIdx = useMemo(() => {
+    return Math.min((new Date().getDay() + 1) % 7, 5);
+  }, []);
+  const isFriday = useMemo(() => new Date().getDay() === 5, []);
 
-  // New quick check-in modal
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [newType, setNewType] = useState("کلاس گروهی");
-  const [newStatus, setNewStatus] = useState<"attended" | "pending">("attended");
+  const [selectedDay, setSelectedDay] = useState<number>(todayIdx);
+  const [selectedClassId, setSelectedClassId] = useState<number | null>(null);
+  const [filterQuery, setFilterQuery] = useState("");
+  const [toastMessage, setToastMessage] = useState<{ msg: string; type: "ok" | "err" } | null>(null);
 
-  const showToast = (msg: string) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
-  };
-
-  const toggleCheckinStatus = (id: string) => {
-    setCheckins((prev) =>
-      prev.map((c) => {
-        if (c.id === id) {
-          const nextStatus: "attended" | "pending" | "absent" =
-            c.status === "attended" ? "absent" : c.status === "absent" ? "pending" : "attended";
-          const statusText =
-            nextStatus === "attended" ? "حاضر" : nextStatus === "absent" ? "غایب" : "در انتظار";
-          showToast(`وضعیت ${c.name} به «${statusText}» تغییر کرد`);
-          return { ...c, status: nextStatus };
+  // Attendance state map: `${dayIndex}|${classId}` -> SessionAttendanceState
+  const [attendanceState, setAttendanceState] = useState<Record<string, SessionAttendanceState>>(() => {
+    const initialMap: Record<string, SessionAttendanceState> = {};
+    // Pre-populate past days with realistic deterministic seeds
+    for (let d = 0; d < 6; d++) {
+      INITIAL_CLASSES.forEach((cls) => {
+        if (cls.days.includes(d)) {
+          const k = `${d}|${cls.id}`;
+          const marks: Record<number, "p" | "l" | "a"> = {};
+          if (d < todayIdx) {
+            getRoster(cls).forEach((m) => {
+              marks[m.id] = seed(m.id, d, cls.id);
+            });
+          }
+          initialMap[k] = {
+            marks,
+            note: "",
+            saved: d < todayIdx,
+          };
         }
-        return c;
-      })
+      });
+    }
+    return initialMap;
+  });
+
+  // Calculate day date string and day long string
+  const weekStart = useMemo(() => {
+    const ws = new Date();
+    ws.setDate(ws.getDate() - ((new Date().getDay() + 1) % 7));
+    return ws;
+  }, []);
+
+  const getDayNum = (dayIdx: number) => {
+    const d = new Date(weekStart);
+    d.setDate(d.getDate() + dayIdx);
+    try {
+      return new Intl.DateTimeFormat("fa-IR", { day: "numeric" }).format(d);
+    } catch {
+      return toPersianDigits(d.getDate());
+    }
+  };
+
+  const getDayLong = (dayIdx: number) => {
+    const d = new Date(weekStart);
+    d.setDate(d.getDate() + dayIdx);
+    try {
+      return new Intl.DateTimeFormat("fa-IR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      }).format(d);
+    } catch {
+      return DAYS[dayIdx];
+    }
+  };
+
+  const showToast = (msg: string, type: "ok" | "err" = "ok") => {
+    setToastMessage({ msg, type });
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3200);
+  };
+
+  // Sessions for currently selected day
+  const sessionsOfSelectedDay = useMemo(() => {
+    return INITIAL_CLASSES.filter((c) => c.days.includes(selectedDay)).sort((a, b) =>
+      a.time.localeCompare(b.time)
     );
-  };
+  }, [selectedDay]);
 
-  const handleAddCheckin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newName.trim()) return;
+  // Handle deep-linking via ?class=ID
+  useEffect(() => {
+    try {
+      const classParam = searchParams.get("class");
+      if (classParam) {
+        const id = parseInt(classParam, 10);
+        const targetClass = INITIAL_CLASSES.find((c) => c.id === id);
+        if (targetClass) {
+          if (!targetClass.days.includes(selectedDay)) {
+            const bestDay = targetClass.days.filter((d) => d <= todayIdx).pop() ?? targetClass.days[0];
+            setSelectedDay(bestDay);
+          }
+          setSelectedClassId(targetClass.id);
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }, [searchParams, todayIdx, selectedDay]);
 
-    const now = new Date();
-    const timeStr = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  // Ensure an active class is selected when day changes
+  useEffect(() => {
+    if (sessionsOfSelectedDay.length > 0) {
+      if (!selectedClassId || !sessionsOfSelectedDay.some((c) => c.id === selectedClassId)) {
+        setSelectedClassId(sessionsOfSelectedDay[0].id);
+      }
+    } else {
+      setSelectedClassId(null);
+    }
+  }, [selectedDay, sessionsOfSelectedDay, selectedClassId]);
 
-    const item: CheckinItem = {
-      id: String(Date.now()),
-      name: newName.trim(),
-      className: selectedClassId ? (CLASS_NAMES[selectedClassId] || "کلاس عمومی") : "تمرین آزاد",
-      classId: selectedClassId || undefined,
-      time: toPersianDigits(timeStr),
-      status: newStatus,
-      type: newType,
-    };
+  const activeClass = useMemo(() => {
+    return INITIAL_CLASSES.find((c) => c.id === selectedClassId) || null;
+  }, [selectedClassId]);
 
-    setCheckins((prev) => [item, ...prev]);
-    setIsModalOpen(false);
-    setNewName("");
-    showToast(`ورود «${item.name}» ثبت شد`);
-  };
+  const currentSessionStateKey = activeClass ? `${selectedDay}|${activeClass.id}` : "";
+  const currentSessionState: SessionAttendanceState = useMemo(() => {
+    if (!currentSessionStateKey) return { marks: {}, note: "", saved: false };
+    return (
+      attendanceState[currentSessionStateKey] || {
+        marks: {},
+        note: "",
+        saved: selectedDay < todayIdx,
+      }
+    );
+  }, [attendanceState, currentSessionStateKey, selectedDay, todayIdx]);
 
-  const filteredCheckins = useMemo(() => {
-    return checkins.filter((item) => {
-      const matchClass = selectedClassId ? item.classId === selectedClassId : true;
-      const matchStatus = statusFilter === "all" || item.status === statusFilter;
-      const matchQuery =
-        !searchQuery.trim() ||
-        item.name.includes(searchQuery.trim()) ||
-        item.className.includes(searchQuery.trim());
-      return matchClass && matchStatus && matchQuery;
+  const dayStatus = selectedDay < todayIdx ? "past" : selectedDay === todayIdx ? "today" : "future";
+  const isLocked = dayStatus === "future";
+
+  // Counts for current session
+  const activeRoster = useMemo(() => {
+    if (!activeClass) return [];
+    return getRoster(activeClass);
+  }, [activeClass]);
+
+  const counts = useMemo(() => {
+    const marks = currentSessionState.marks;
+    let p = 0;
+    let l = 0;
+    let a = 0;
+    activeRoster.forEach((m) => {
+      const v = marks[m.id];
+      if (v === "p") p++;
+      else if (v === "l") l++;
+      else if (v === "a") a++;
     });
-  }, [checkins, selectedClassId, statusFilter, searchQuery]);
+    const u = activeRoster.length - p - l - a;
+    return { p, l, a, u, total: activeRoster.length };
+  }, [activeRoster, currentSessionState.marks]);
 
-  const stats = useMemo(() => {
-    const list = selectedClassId ? checkins.filter((c) => c.classId === selectedClassId) : checkins;
-    const attended = list.filter((c) => c.status === "attended").length;
-    const pending = list.filter((c) => c.status === "pending").length;
-    const absent = list.filter((c) => c.status === "absent").length;
-    const rate = list.length ? Math.round((attended / list.length) * 100) : 0;
-    return { attended, pending, absent, rate, total: list.length };
-  }, [checkins, selectedClassId]);
+  const attendanceRate = counts.total
+    ? Math.round(((counts.p + counts.l) / counts.total) * 100)
+    : 0;
+
+  // Toggle or select mark
+  const handleToggleMark = (memberId: number, val: "p" | "l" | "a") => {
+    if (isLocked || !currentSessionStateKey) return;
+    setAttendanceState((prev) => {
+      const cur = prev[currentSessionStateKey] || { marks: {}, note: "", saved: false };
+      const currentVal = cur.marks[memberId];
+      const nextMarks = { ...cur.marks };
+      if (currentVal === val) {
+        delete nextMarks[memberId];
+      } else {
+        nextMarks[memberId] = val;
+      }
+      return {
+        ...prev,
+        [currentSessionStateKey]: {
+          ...cur,
+          marks: nextMarks,
+          saved: false,
+        },
+      };
+    });
+  };
+
+  // Mark all present (except bad flags)
+  const handleMarkAllPresent = () => {
+    if (isLocked || !currentSessionStateKey || !activeClass) return;
+    setAttendanceState((prev) => {
+      const cur = prev[currentSessionStateKey] || { marks: {}, note: "", saved: false };
+      const nextMarks = { ...cur.marks };
+      activeRoster.forEach((m) => {
+        if (m.flag !== "bad") {
+          nextMarks[m.id] = "p";
+        }
+      });
+      return {
+        ...prev,
+        [currentSessionStateKey]: {
+          ...cur,
+          marks: nextMarks,
+          saved: false,
+        },
+      };
+    });
+    showToast("همه (به‌جز عضویت‌های منقضی) حاضر ثبت شدند");
+  };
+
+  // Clear all marks
+  const handleClearAll = () => {
+    if (isLocked || !currentSessionStateKey) return;
+    setAttendanceState((prev) => {
+      const cur = prev[currentSessionStateKey] || { marks: {}, note: "", saved: false };
+      return {
+        ...prev,
+        [currentSessionStateKey]: {
+          ...cur,
+          marks: {},
+          saved: false,
+        },
+      };
+    });
+  };
+
+  // Update note
+  const handleUpdateNote = (val: string) => {
+    if (isLocked || !currentSessionStateKey) return;
+    setAttendanceState((prev) => {
+      const cur = prev[currentSessionStateKey] || { marks: {}, note: "", saved: false };
+      return {
+        ...prev,
+        [currentSessionStateKey]: {
+          ...cur,
+          note: val,
+          saved: false,
+        },
+      };
+    });
+  };
+
+  // Save session attendance
+  const handleSaveAttendance = () => {
+    if (!activeClass || !currentSessionStateKey) return;
+    if (counts.u > 0) {
+      showToast(`هنوز ${toPersianDigits(counts.u)} نفر را مشخص نکرده‌ای`, "err");
+      return;
+    }
+    setAttendanceState((prev) => {
+      const cur = prev[currentSessionStateKey] || { marks: {}, note: "", saved: false };
+      return {
+        ...prev,
+        [currentSessionStateKey]: {
+          ...cur,
+          saved: true,
+        },
+      };
+    });
+    showToast(`حضور و غیاب «${activeClass.name}» ثبت شد`);
+  };
+
+  // Filtered members list
+  const filteredRoster = useMemo(() => {
+    if (!filterQuery.trim()) return activeRoster;
+    return activeRoster.filter((m) => m.name.includes(filterQuery.trim()));
+  }, [activeRoster, filterQuery]);
+
+  // History bars for active class (seeded deterministic % of last 6 sessions)
+  const historyBars = useMemo(() => {
+    if (!activeClass) return [];
+    return Array.from({ length: 6 }, (_, i) => {
+      const n = activeRoster.filter((m) => seed(m.id, i + 11, activeClass.id) !== "a").length;
+      return activeRoster.length ? Math.round((n / activeRoster.length) * 100) : 0;
+    });
+  }, [activeClass, activeRoster]);
+
+  // Absentees across this week's recorded days for this class
+  const recentAbsentees = useMemo(() => {
+    if (!activeClass) return [];
+    const absMap: Record<number, number> = {};
+    activeRoster.forEach((m) => {
+      DAYS.forEach((_, d) => {
+        if (INITIAL_CLASSES.filter((c) => c.days.includes(d)).some((c) => c.id === activeClass.id) && d <= todayIdx) {
+          const s = attendanceState[`${d}|${activeClass.id}`];
+          if (s && s.marks[m.id] === "a") {
+            absMap[m.id] = (absMap[m.id] || 0) + 1;
+          }
+        }
+      });
+    });
+    return activeRoster
+      .filter((m) => absMap[m.id])
+      .sort((a, b) => (absMap[b.id] || 0) - (absMap[a.id] || 0))
+      .slice(0, 4)
+      .map((m) => ({
+        ...m,
+        absCount: absMap[m.id] || 0,
+      }));
+  }, [activeClass, activeRoster, attendanceState, todayIdx]);
 
   return (
     <>
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 left-6 z-80 bg-ink text-white px-4 py-2.5 rounded-[12px] shadow-lg text-[13.5px] font-bold flex items-center gap-2 animate-in fade-in slide-in-from-bottom-2">
-          <CheckCircle2 className="h-4 w-4 text-primary" />
-          <span>{toastMessage}</span>
+        <div className="toast-wrap" aria-live="polite">
+          <div className={cn("toast", toastMessage.type === "err" && "err")}>
+            {toastMessage.type === "err" ? (
+              <AlertCircle className="h-[18px] w-[18px] text-[#FB7185] shrink-0" />
+            ) : (
+              <Check className="h-[18px] w-[18px] text-primary shrink-0 stroke-[2.2]" />
+            )}
+            <span>{toastMessage.msg}</span>
+          </div>
         </div>
       )}
 
-      {/* Page Header */}
+      {/* Page Head */}
       <div className="page-head flex flex-wrap items-end justify-between gap-[16px] mb-[24px]">
         <div>
-          <div className="flex items-center gap-2.5">
-            <h1 className="text-[22px] min-[640px]:text-[26px] font-extrabold text-ink tracking-tight">
-              حضور و غیاب
-            </h1>
-            {selectedClassId && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-tint text-primary-dark rounded-full text-[12px] font-bold border border-primary/20">
-                <span>کلاس: {CLASS_NAMES[selectedClassId] || `کد ${selectedClassId}`}</span>
-                <Link href="/coach/attendance" title="نمایش همه کلاس‌ها" className="hover:opacity-75">
-                  <X className="h-3.5 w-3.5" />
-                </Link>
-              </span>
-            )}
-          </div>
+          <h1 className="text-[22px] min-[640px]:text-[26px] font-extrabold text-ink tracking-tight">
+            حضور و غیاب
+          </h1>
           <div className="sub text-[14px] text-ink-faint mt-[5px]">
-            ثبت و پیگیری ورود و خروج شاگردان به تفکیک کلاس‌ها و جلسات
+            ثبت حضور شاگردان · {getDayLong(todayIdx)}
           </div>
         </div>
 
+        {/* Action Button: renamed to "برگشت به کلاسها" as requested */}
         <div className="page-head-actions flex items-center gap-[10px]">
           <Link href="/coach/classes" className="btn btn-outline btn-sm">
-            <ArrowRight className="h-4 w-4" />
-            <span>برگشت به کلاس‌ها</span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-[17px] w-[17px]"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <path d="M16 2v4M8 2v4M3 10h18" />
+            </svg>
+            <span>برگشت به کلاسها</span>
           </Link>
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(true)}
-            className="btn btn-primary btn-sm cursor-pointer"
-          >
-            <Plus className="h-4 w-4" />
-            <span>ثبت حضور جدید</span>
-          </button>
         </div>
       </div>
 
-      {/* KPI Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-[16px] mb-[24px]">
-        <div className="card bg-surface border border-border rounded-[16px] p-4.5 shadow-sm">
-          <div className="flex items-center justify-between text-ink-faint mb-2">
-            <span className="text-[12.5px] font-bold">حاضرین امروز</span>
-            <span className="w-8 h-8 rounded-[10px] bg-emerald-50 text-emerald-600 flex items-center justify-center">
-              <UserCheck className="h-4 w-4" />
-            </span>
-          </div>
-          <div className="text-[22px] font-extrabold text-ink">{toPersianDigits(stats.attended)} نفر</div>
-        </div>
-
-        <div className="card bg-surface border border-border rounded-[16px] p-4.5 shadow-sm">
-          <div className="flex items-center justify-between text-ink-faint mb-2">
-            <span className="text-[12.5px] font-bold">در انتظار ثبت</span>
-            <span className="w-8 h-8 rounded-[10px] bg-amber-50 text-amber-600 flex items-center justify-center">
-              <Clock className="h-4 w-4" />
-            </span>
-          </div>
-          <div className="text-[22px] font-extrabold text-ink">{toPersianDigits(stats.pending)} نفر</div>
-        </div>
-
-        <div className="card bg-surface border border-border rounded-[16px] p-4.5 shadow-sm">
-          <div className="flex items-center justify-between text-ink-faint mb-2">
-            <span className="text-[12.5px] font-bold">غایبین</span>
-            <span className="w-8 h-8 rounded-[10px] bg-rose-50 text-rose-600 flex items-center justify-center">
-              <UserX className="h-4 w-4" />
-            </span>
-          </div>
-          <div className="text-[22px] font-extrabold text-ink">{toPersianDigits(stats.absent)} نفر</div>
-        </div>
-
-        <div className="card bg-surface border border-border rounded-[16px] p-4.5 shadow-sm">
-          <div className="flex items-center justify-between text-ink-faint mb-2">
-            <span className="text-[12.5px] font-bold">درصد حضور</span>
-            <span className="w-8 h-8 rounded-[10px] bg-cyan-50 text-cyan-600 flex items-center justify-center">
-              <CheckCircle2 className="h-4 w-4" />
-            </span>
-          </div>
-          <div className="text-[22px] font-extrabold text-ink">٪{toPersianDigits(stats.rate)}</div>
-        </div>
+      {/* Day Strip (Saturday to Thursday) */}
+      <div className="day-strip" role="tablist" aria-label="روزهای هفته">
+        {DAYS.map((dName, dIdx) => {
+          const sessionsCount = INITIAL_CLASSES.filter((c) => c.days.includes(dIdx)).length;
+          const isSelected = dIdx === selectedDay;
+          const isToday = dIdx === todayIdx && !isFriday;
+          return (
+            <button
+              key={dName}
+              type="button"
+              role="tab"
+              aria-selected={isSelected}
+              onClick={() => {
+                setSelectedDay(dIdx);
+              }}
+              className={cn(
+                "day-btn",
+                isSelected && "active",
+                isToday && "today"
+              )}
+            >
+              <div className="dn">{dName}</div>
+              <div className="dd">{getDayNum(dIdx)}</div>
+              <div className="dc">
+                {sessionsCount > 0
+                  ? `${toPersianDigits(sessionsCount)} جلسه`
+                  : "بدون کلاس"}
+              </div>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Main Attendance Table Card */}
-      <div className="card bg-surface border border-border rounded-[18px] p-5 shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
-        {/* Controls: Search and Tabs */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-border mb-4">
-          {/* Status Tabs */}
-          <div className="flex items-center gap-1.5 bg-bg p-1 rounded-[10px]">
-            <button
-              type="button"
-              onClick={() => setStatusFilter("all")}
-              className={cn(
-                "px-3 py-1.5 text-[12.5px] font-bold rounded-[8px] transition-all cursor-pointer",
-                statusFilter === "all" ? "bg-surface text-ink shadow-sm" : "text-ink-faint hover:text-ink"
-              )}
-            >
-              همه ({toPersianDigits(stats.total)})
-            </button>
-            <button
-              type="button"
-              onClick={() => setStatusFilter("attended")}
-              className={cn(
-                "px-3 py-1.5 text-[12.5px] font-bold rounded-[8px] transition-all cursor-pointer",
-                statusFilter === "attended" ? "bg-surface text-emerald-700 shadow-sm" : "text-ink-faint hover:text-ink"
-              )}
-            >
-              حاضر ({toPersianDigits(stats.attended)})
-            </button>
-            <button
-              type="button"
-              onClick={() => setStatusFilter("pending")}
-              className={cn(
-                "px-3 py-1.5 text-[12.5px] font-bold rounded-[8px] transition-all cursor-pointer",
-                statusFilter === "pending" ? "bg-surface text-amber-700 shadow-sm" : "text-ink-faint hover:text-ink"
-              )}
-            >
-              در انتظار ({toPersianDigits(stats.pending)})
-            </button>
-            <button
-              type="button"
-              onClick={() => setStatusFilter("absent")}
-              className={cn(
-                "px-3 py-1.5 text-[12.5px] font-bold rounded-[8px] transition-all cursor-pointer",
-                statusFilter === "absent" ? "bg-surface text-rose-700 shadow-sm" : "text-ink-faint hover:text-ink"
-              )}
-            >
-              غایب ({toPersianDigits(stats.absent)})
-            </button>
+      {/* Main Attendance Layout: Left sessions sidebar + Right roster card & side stats */}
+      <div className="att-layout">
+        {/* Left Card: Sessions of this day */}
+        <aside className="card bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
+          <div className="card-head flex items-center justify-between p-[20px_22px] border-b border-border">
+            <div>
+              <h3 className="text-[16px] font-extrabold text-ink">جلسات این روز</h3>
+              <div className="hint text-[12.5px] text-ink-faint mt-[3px]">
+                {getDayLong(selectedDay)}
+              </div>
+            </div>
           </div>
 
-          {/* Search Bar */}
-          <div className="relative min-w-[220px]">
-            <Search className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-faint pointer-events-none" />
-            <input
-              type="text"
-              placeholder="جستجوی شاگرد یا کلاس..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-bg border border-border rounded-[10px] pr-9 pl-3 py-2 text-[12.5px] outline-none focus:border-primary transition-all"
-            />
-          </div>
-        </div>
+          <div className="sess-list">
+            {sessionsOfSelectedDay.length > 0 ? (
+              sessionsOfSelectedDay.map((cls) => {
+                const s = attendanceState[`${selectedDay}|${cls.id}`] || {
+                  marks: {},
+                  note: "",
+                  saved: selectedDay < todayIdx,
+                };
+                const doneCount = Object.keys(s.marks).length;
+                const isSelected = activeClass?.id === cls.id;
 
-        {/* Checkins List */}
-        {filteredCheckins.length > 0 ? (
-          <div className="flex flex-col divide-y divide-border">
-            {filteredCheckins.map((item) => {
-              const isAttended = item.status === "attended";
-              const isPending = item.status === "pending";
-              return (
-                <div key={item.id} className="flex items-center justify-between py-3.5 hover:bg-bg/40 px-2 rounded-[10px] transition-colors">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-tint text-primary-dark font-extrabold text-[13.5px]">
-                      {item.name.slice(0, 2)}
-                    </span>
-                    <div>
-                      <div className="text-[14px] font-bold text-ink">{item.name}</div>
-                      <div className="text-[12px] text-ink-faint mt-0.5">
-                        {item.className} · {item.type}
+                let tagNode = null;
+                if (dayStatus === "future") {
+                  tagNode = <span className="tag gray">برنامه‌ریزی‌شده</span>;
+                } else if (s.saved) {
+                  tagNode = <span className="tag">ثبت‌شده</span>;
+                } else if (doneCount > 0) {
+                  tagNode = <span className="tag amber">ثبت‌نشده</span>;
+                } else {
+                  tagNode = <span className="tag amber">در انتظار ثبت</span>;
+                }
+
+                return (
+                  <button
+                    key={cls.id}
+                    type="button"
+                    onClick={() => setSelectedClassId(cls.id)}
+                    className={cn("sess", isSelected && "active")}
+                  >
+                    <div className="t">
+                      <div className="h">{toPersianDigits(cls.time)}</div>
+                      <div className="m">{toPersianDigits(cls.dur)} د</div>
+                    </div>
+                    <div className="i">
+                      <div className="nm">{cls.name}</div>
+                      <div className="sb">
+                        {toPersianDigits(cls.enrolled)} ثبت‌نام‌شده
                       </div>
                     </div>
-                  </div>
+                    {tagNode}
+                  </button>
+                );
+              })
+            ) : (
+              <div className="empty">
+                <div className="eico">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    className="h-6 w-6"
+                  >
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <path d="M16 2v4M8 2v4M3 10h18" />
+                  </svg>
+                </div>
+                <b>کلاسی نداری</b>
+                <span>برای این روز جلسه‌ای برنامه‌ریزی نشده است.</span>
+              </div>
+            )}
+          </div>
+        </aside>
 
-                  <div className="flex items-center gap-4">
-                    <span className="text-[13px] font-semibold text-ink-soft inline-flex items-center gap-1.5">
-                      <Clock className="h-3.5 w-3.5 text-ink-faint" />
-                      <span>{toPersianDigits(item.time)}</span>
-                    </span>
-
-                    {/* Interactive Status Badge: Click to toggle */}
-                    <button
-                      type="button"
-                      onClick={() => toggleCheckinStatus(item.id)}
-                      title="کلیک برای تغییر وضعیت (حاضر / غایب / در انتظار)"
-                      className={cn(
-                        "status-badge px-3 py-1 rounded-full text-[12px] font-bold inline-flex items-center gap-1.5 transition-all cursor-pointer hover:scale-105 select-none",
-                        isAttended
-                          ? "bg-tint text-primary-dark hover:bg-emerald-100"
-                          : isPending
-                          ? "bg-[#FFFBEB] text-[#B45309] hover:bg-amber-100"
-                          : "bg-[#FFF1F2] text-[#E11D48] hover:bg-rose-100"
-                      )}
-                    >
-                      <span
-                        className={cn(
-                          "h-1.5 w-1.5 rounded-full",
-                          isAttended ? "bg-primary" : isPending ? "bg-[#F59E0B]" : "bg-[#E11D48]"
-                        )}
-                      />
-                      <span>{isAttended ? "حاضر" : isPending ? "در انتظار" : "غایب"}</span>
-                    </button>
+        {/* Right Section: Roster Card + Bottom Statistics */}
+        {activeClass ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: "18px", minWidth: 0 }}>
+            {/* Roster Card */}
+            <div
+              className="card bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)]"
+              id="rosterCard"
+            >
+              {/* Card Header */}
+              <div className="card-head flex items-center justify-between p-[20px_22px] border-b border-border">
+                <div>
+                  <h3 className="text-[16px] font-extrabold text-ink">{activeClass.name}</h3>
+                  <div className="hint text-[12.5px] text-ink-faint mt-[3px]">
+                    {getDayLong(selectedDay)} · {toPersianDigits(activeClass.time)} تا{" "}
+                    {toPersianDigits(endTime(activeClass.time, activeClass.dur))}
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <div className="w-12 h-12 rounded-[14px] bg-bg flex items-center justify-center text-ink-faint mx-auto mb-3">
-              <Filter className="h-6 w-6" />
-            </div>
-            <div className="text-[14.5px] font-bold text-ink">موردی برای نمایش یافت نشد</div>
-            <div className="text-[12.5px] text-ink-faint mt-1">
-              فیلتر یا عبارت جستجو را تغییر دهید یا حضور جدیدی ثبت کنید.
-            </div>
-          </div>
-        )}
-      </div>
+                <div>
+                  {isLocked ? (
+                    <span className="tag gray">هنوز برگزار نشده</span>
+                  ) : currentSessionState.saved ? (
+                    <span className="tag">ثبت‌شده</span>
+                  ) : (
+                    <span className="tag amber">ثبت‌نشده</span>
+                  )}
+                </div>
+              </div>
 
-      {/* Modal: ثبت حضور جدید */}
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-70 flex items-center justify-center p-4 bg-ink/50 backdrop-blur-[3px] animate-in fade-in duration-200"
-          onClick={() => setIsModalOpen(false)}
-        >
-          <div
-            className="w-full max-w-[440px] bg-surface rounded-[20px] border border-border shadow-2xl p-6 animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-4 border-b border-border pb-3">
-              <h3 className="text-[16px] font-extrabold text-ink">ثبت حضور جدید شاگرد</h3>
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="text-ink-faint hover:text-ink p-1 rounded-[8px]"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+              {/* 4-Box Attendance Summary */}
+              <div className="att-sum">
+                <div className="s">
+                  <div className="v">{toPersianDigits(counts.p)}</div>
+                  <div className="l">
+                    <span className="dot" style={{ background: "var(--primary)" }} />
+                    حاضر
+                  </div>
+                </div>
+                <div className="s">
+                  <div className="v">{toPersianDigits(counts.l)}</div>
+                  <div className="l">
+                    <span className="dot" style={{ background: "#F59E0B" }} />
+                    تأخیر
+                  </div>
+                </div>
+                <div className="s">
+                  <div className="v">{toPersianDigits(counts.a)}</div>
+                  <div className="l">
+                    <span className="dot" style={{ background: "#F43F5E" }} />
+                    غایب
+                  </div>
+                </div>
+                <div className="s">
+                  <div className="v">{toPersianDigits(counts.u)}</div>
+                  <div className="l">
+                    <span className="dot" style={{ background: "#CBD5E1" }} />
+                    ثبت‌نشده
+                  </div>
+                </div>
+              </div>
 
-            <form onSubmit={handleAddCheckin} className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[12.5px] font-bold text-ink">نام و نام خانوادگی شاگرد</label>
-                <input
-                  type="text"
-                  required
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  placeholder="مثلاً علی رضایی"
-                  className="input p-[9px_12px] text-[13px] border border-border rounded-[10px] bg-bg outline-none focus:border-primary"
+              {/* Stack Progress Bar */}
+              <div className="stack" aria-hidden="true">
+                <i
+                  style={{
+                    width: `${counts.total ? (counts.p / counts.total) * 100 : 0}%`,
+                    background: "var(--primary)",
+                  }}
+                />
+                <i
+                  style={{
+                    width: `${counts.total ? (counts.l / counts.total) * 100 : 0}%`,
+                    background: "#F59E0B",
+                  }}
+                />
+                <i
+                  style={{
+                    width: `${counts.total ? (counts.a / counts.total) * 100 : 0}%`,
+                    background: "#F43F5E",
+                  }}
                 />
               </div>
 
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[12.5px] font-bold text-ink">نوع جلسه</label>
-                <select
-                  value={newType}
-                  onChange={(e) => setNewType(e.target.value)}
-                  className="input p-[9px_12px] text-[13px] border border-border rounded-[10px] bg-bg outline-none focus:border-primary"
-                >
-                  <option value="کلاس گروهی">کلاس گروهی</option>
-                  <option value="نیمه‌خصوصی">نیمه‌خصوصی</option>
-                  <option value="جلسه خصوصی">جلسه خصوصی</option>
-                  <option value="تمرین آزاد">تمرین آزاد</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[12.5px] font-bold text-ink">وضعیت اولیه</label>
-                <div className="flex items-center gap-4 pt-1">
-                  <label className="flex items-center gap-1.5 text-[12.5px] text-ink font-bold cursor-pointer">
-                    <input
-                      type="radio"
-                      name="initStatus"
-                      checked={newStatus === "attended"}
-                      onChange={() => setNewStatus("attended")}
-                      className="accent-primary"
-                    />
-                    <span>حاضر در باشگاه</span>
-                  </label>
-                  <label className="flex items-center gap-1.5 text-[12.5px] text-ink-soft cursor-pointer">
-                    <input
-                      type="radio"
-                      name="initStatus"
-                      checked={newStatus === "pending"}
-                      onChange={() => setNewStatus("pending")}
-                      className="accent-primary"
-                    />
-                    <span>در انتظار ورود</span>
-                  </label>
+              {/* Roster Tools: Filter search + Quick Buttons */}
+              <div className="roster-tools">
+                <label className="filter-search flex items-center gap-2">
+                  <Search className="h-4 w-4 text-ink-faint shrink-0" />
+                  <input
+                    type="text"
+                    value={filterQuery}
+                    onChange={(e) => setFilterQuery(e.target.value)}
+                    placeholder="جستجوی شاگرد…"
+                    aria-label="جستجوی شاگرد"
+                    className="outline-none text-[13px] text-ink bg-transparent w-full"
+                  />
+                </label>
+                <div className="sp">
+                  <button
+                    type="button"
+                    onClick={handleMarkAllPresent}
+                    disabled={isLocked}
+                    className="btn btn-outline btn-sm cursor-pointer disabled:opacity-50"
+                  >
+                    <Check className="h-4 w-4 stroke-[2.2]" />
+                    <span>همه حاضر</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleClearAll}
+                    disabled={isLocked}
+                    className="btn btn-outline btn-sm cursor-pointer disabled:opacity-50"
+                  >
+                    پاک‌کردن
+                  </button>
                 </div>
               </div>
 
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-border mt-2">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="btn btn-outline btn-sm cursor-pointer"
-                >
-                  انصراف
-                </button>
-                <button type="submit" className="btn btn-primary btn-sm cursor-pointer">
-                  ثبت ورود
-                </button>
+              {/* Roster Members List */}
+              <div id="roster">
+                {filteredRoster.length > 0 ? (
+                  filteredRoster.map((m) => {
+                    const currentMark = currentSessionState.marks[m.id];
+                    return (
+                      <div key={m.id} className="roster-row">
+                        <div className="who">
+                          <span
+                            className="av"
+                            style={{ background: COL[m.id % COL.length] }}
+                          >
+                            {m.name[0]}
+                          </span>
+                          <div>
+                            <div className="nm">
+                              <span>{m.name}</span>
+                              {m.flag === "warn" && (
+                                <span className="mini warn">عضویت رو به پایان</span>
+                              )}
+                              {m.flag === "bad" && (
+                                <span className="mini bad">عضویت منقضی</span>
+                              )}
+                            </div>
+                            <div className="sb">
+                              {m.flag === "bad"
+                                ? "برای حضور، عضویت باید تمدید شود"
+                                : "عضو فعال باشگاه"}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Segment Buttons (حاضر، تأخیر، غایب) */}
+                        <div
+                          className="att-seg"
+                          role="group"
+                          aria-label={`وضعیت ${m.name}`}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => handleToggleMark(m.id, "p")}
+                            aria-pressed={currentMark === "p"}
+                            disabled={isLocked}
+                            className="p"
+                          >
+                            حاضر
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleMark(m.id, "l")}
+                            aria-pressed={currentMark === "l"}
+                            disabled={isLocked}
+                            className="l"
+                          >
+                            تأخیر
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleToggleMark(m.id, "a")}
+                            aria-pressed={currentMark === "a"}
+                            disabled={isLocked}
+                            className="a"
+                          >
+                            غایب
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="empty">
+                    <b>شاگردی پیدا نشد</b>
+                    <span>عبارت جستجو را تغییر بده.</span>
+                  </div>
+                )}
               </div>
-            </form>
+
+              {/* Note Area */}
+              <div className="note-area">
+                <div className="field">
+                  <label htmlFor="note">
+                    یادداشت جلسه{" "}
+                    <span style={{ color: "var(--ink-faint)", fontWeight: 500 }}>
+                      (اختیاری)
+                    </span>
+                  </label>
+                  <textarea
+                    id="note"
+                    name="note"
+                    value={currentSessionState.note}
+                    onChange={(e) => handleUpdateNote(e.target.value)}
+                    disabled={isLocked}
+                    placeholder="مثلاً: دستگاه پرس پا خراب بود، جلسه ۱۰ دقیقه کوتاه‌تر شد"
+                    className="input"
+                  />
+                </div>
+              </div>
+
+              {/* Save Bar */}
+              <div
+                className="save-bar"
+                style={{ padding: "14px 22px", margin: 0 }}
+              >
+                <div
+                  className="hint"
+                  id="saveHint"
+                  style={{ fontSize: "13px", color: "var(--ink-faint)" }}
+                >
+                  {isLocked
+                    ? "ثبت حضور برای جلسه‌های آینده ممکن نیست"
+                    : counts.u > 0
+                    ? `${toPersianDigits(counts.u)} نفر هنوز مشخص نشده‌اند`
+                    : currentSessionState.saved
+                    ? `ثبت شد · نرخ حضور ٪${toPersianDigits(attendanceRate)}`
+                    : `همه مشخص شدند · نرخ حضور ٪${toPersianDigits(attendanceRate)} — آماده‌ی ثبت`}
+                </div>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button
+                    type="button"
+                    onClick={handleSaveAttendance}
+                    disabled={isLocked}
+                    className="btn btn-primary btn-sm cursor-pointer disabled:opacity-50"
+                  >
+                    <Check className="h-4 w-4 stroke-[2.2]" />
+                    <span>ثبت حضور و غیاب</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom 2 Cards Grid: Attendance Trend + Recent Absentees */}
+            <div className="grid-2b" style={{ marginBottom: 0 }}>
+              {/* Card 1: 6 Sessions Attendance Trend Bar Chart */}
+              <div className="card bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
+                <div className="card-head flex items-center justify-between p-[20px_22px] border-b border-border">
+                  <div>
+                    <h3 className="text-[16px] font-extrabold text-ink">
+                      روند حضور این کلاس
+                    </h3>
+                    <div className="hint text-[12.5px] text-ink-faint mt-[3px]">
+                      ۶ جلسه‌ی اخیر
+                    </div>
+                  </div>
+                </div>
+                <div className="card-body p-[22px]">
+                  <div className="hist">
+                    {historyBars.map((val, i) => (
+                      <div key={i} className="c">
+                        <div
+                          className="b"
+                          style={{ height: `${Math.max(val, 8)}%` }}
+                          title={`٪${toPersianDigits(val)}`}
+                        />
+                        <div className="lb">{toPersianDigits(i + 1)}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2: Recent Absentees this week */}
+              <div className="card bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
+                <div className="card-head flex items-center justify-between p-[20px_22px] border-b border-border">
+                  <div>
+                    <h3 className="text-[16px] font-extrabold text-ink">
+                      غیبت‌های اخیر
+                    </h3>
+                    <div className="hint text-[12.5px] text-ink-faint mt-[3px]">
+                      شاگردانی که این هفته غایب بوده‌اند
+                    </div>
+                  </div>
+                </div>
+                <div className="card-body p-[22px]">
+                  <div id="absList">
+                    {recentAbsentees.length > 0 ? (
+                      recentAbsentees.map((m) => (
+                        <div key={m.id} className="abs-row">
+                          <span
+                            className="av"
+                            style={{ background: COL[m.id % COL.length] }}
+                          >
+                            {m.name[0]}
+                          </span>
+                          <div>
+                            <div className="nm">{m.name}</div>
+                            <div className="sb">
+                              {toPersianDigits(m.absCount)} غیبت این هفته
+                            </div>
+                          </div>
+                          <Link
+                            href="/coach/messages"
+                            className="btn btn-outline btn-sm cursor-pointer"
+                          >
+                            پیام
+                          </Link>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="empty" style={{ padding: "22px 10px" }}>
+                        <b>غیبتی ثبت نشده</b>
+                        <span>این هفته همه حاضر بوده‌اند.</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        ) : null}
+      </div>
     </>
   );
 }
@@ -455,8 +871,14 @@ export default function CoachAttendancePage() {
       <div className="main flex flex-1 flex-col min-w-0">
         <CoachTopbar onToggleSidebar={() => setSidebarOpen((p) => !p)} />
         <main className="content flex-1 p-[18px] min-[640px]:p-[28px]">
-          <Suspense fallback={<div className="p-8 text-center text-ink-faint">در حال بارگذاری اطلاعات حضور و غیاب...</div>}>
-            <AttendanceContent />
+          <Suspense
+            fallback={
+              <div className="p-8 text-center text-ink-faint">
+                در حال بارگذاری اطلاعات حضور و غیاب...
+              </div>
+            }
+          >
+            <AttendanceInner />
           </Suspense>
         </main>
       </div>
