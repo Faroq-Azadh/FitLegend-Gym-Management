@@ -9,11 +9,23 @@ interface CoachQuickSessionModalProps {
   onSessionAdded?: (session: {
     studentName: string;
     workoutTitle: string;
+    day: string;
+    date: string;
     time: string;
     duration: number;
     notes?: string;
   }) => void;
 }
+
+const WEEKDAYS = [
+  "شنبه",
+  "یکشنبه",
+  "دوشنبه",
+  "سه‌شنبه",
+  "چهارشنبه",
+  "پنجشنبه",
+  "جمعه",
+];
 
 export function CoachQuickSessionModal({
   isOpen,
@@ -22,6 +34,8 @@ export function CoachQuickSessionModal({
 }: CoachQuickSessionModalProps) {
   const [studentName, setStudentName] = useState("");
   const [workoutTitle, setWorkoutTitle] = useState("");
+  const [day, setDay] = useState(WEEKDAYS[0]);
+  const [date, setDate] = useState("");
   const [time, setTime] = useState("۱۸:۰۰");
   const [duration, setDuration] = useState("۶۰");
   const [notes, setNotes] = useState("");
@@ -36,6 +50,8 @@ export function CoachQuickSessionModal({
     onSessionAdded?.({
       studentName: studentName.trim(),
       workoutTitle: workoutTitle.trim(),
+      day,
+      date,
       time,
       duration: parseInt(duration, 10) || 60,
       notes: notes.trim(),
@@ -47,6 +63,8 @@ export function CoachQuickSessionModal({
       onClose();
       setStudentName("");
       setWorkoutTitle("");
+      setDay(WEEKDAYS[0]);
+      setDate("");
       setNotes("");
     }, 1200);
   };
@@ -127,6 +145,37 @@ export function CoachQuickSessionModal({
                 placeholder="مثال: سینه و زیربغل — هفته‌ی سوم"
                 className="w-full rounded-[12px] border border-border bg-surface px-3.5 py-2.5 text-[13.5px] text-ink transition-colors focus:border-primary focus:bg-tint focus:outline-none"
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="mb-1.5 block text-[13px] font-bold text-ink">
+                  روز جلسه <span className="text-[#F43F5E]">*</span>
+                </label>
+                <select
+                  value={day}
+                  onChange={(e) => setDay(e.target.value)}
+                  className="w-full rounded-[12px] border border-border bg-surface px-3.5 py-2.5 text-[13.5px] text-ink transition-colors focus:border-primary focus:bg-tint focus:outline-none"
+                >
+                  {WEEKDAYS.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-[13px] font-bold text-ink">
+                  تاریخ <span className="text-[#F43F5E]">*</span>
+                </label>
+                <input
+                  type="date"
+                  required
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="w-full rounded-[12px] border border-border bg-surface px-3.5 py-2.5 text-[13.5px] text-ink transition-colors focus:border-primary focus:bg-tint focus:outline-none"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">

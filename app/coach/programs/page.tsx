@@ -577,11 +577,11 @@ export default function CoachProgramsPage() {
       prev.map((d, idx) =>
         idx === currentDayIndex
           ? {
-              ...d,
-              exercises: d.exercises.map((e) =>
-                e.id === exId ? { ...e, [field]: value } : e
-              ),
-            }
+            ...d,
+            exercises: d.exercises.map((e) =>
+              e.id === exId ? { ...e, [field]: value } : e
+            ),
+          }
           : d
       )
     );
@@ -1307,11 +1307,11 @@ export default function CoachProgramsPage() {
                     {d.exercises.length > 0 ? (
                       <table className="w-full text-[13px] text-ink-soft border-collapse">
                         <thead>
-                          <tr className="border-b border-border text-[11.5px] font-bold text-ink-faint">
-                            <th className="text-right p-3">حرکت</th>
-                            <th className="text-center p-3">ست</th>
-                            <th className="text-center p-3">تکرار</th>
-                            <th className="text-center p-3">استراحت</th>
+                          <tr className="border-b border-border text-[13px] font-extrabold text-ink-faint">
+                            <th className="text-right pt-4 pb-3 px-3">حرکت</th>
+                            <th className="text-center pt-4 pb-3 px-3">ست</th>
+                            <th className="text-center pt-4 pb-3 px-3">تکرار</th>
+                            <th className="text-center pt-4 pb-3 px-3">استراحت</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -1509,11 +1509,11 @@ export default function CoachProgramsPage() {
                                 className={cn(
                                   "status text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5",
                                   record.status === "active" &&
-                                    "bg-tint text-primary-dark",
+                                  "bg-tint text-primary-dark",
                                   record.status === "in_progress" &&
-                                    "bg-[#FFFBEB] text-[#B45309]",
+                                  "bg-[#FFFBEB] text-[#B45309]",
                                   record.status === "expired" &&
-                                    "bg-[#FFF1F2] text-[#E11D48]"
+                                  "bg-[#FFF1F2] text-[#E11D48]"
                                 )}
                               >
                                 <span

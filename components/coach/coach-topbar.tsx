@@ -6,6 +6,7 @@ import {
   INITIAL_NOTIFICATIONS,
   NotificationItem,
 } from "@/components/coach/coach-notifications-modal";
+import { CoachMessagesModal } from "@/components/coach/coach-messages-modal";
 
 interface CoachTopbarProps {
   onToggleSidebar: () => void;
@@ -23,6 +24,7 @@ export function CoachTopbar({
   onSearchChange,
 }: CoachTopbarProps) {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
+  const [isMsgOpen, setIsMsgOpen] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
 
   const hasUnread = notifications.some((n) => !n.read);
@@ -85,9 +87,10 @@ export function CoachTopbar({
           {customAction ? (
             customAction
           ) : (
-            <Link
-              href="/coach/messages"
-              className="flex h-[42px] w-[42px] items-center justify-center rounded-[12px] border border-border bg-surface text-ink-soft transition-all duration-180 hover:border-primary hover:bg-tint hover:text-ink"
+            <button
+              type="button"
+              onClick={() => setIsMsgOpen(true)}
+              className="flex h-[42px] w-[42px] items-center justify-center rounded-[12px] border border-border bg-surface text-ink-soft transition-all duration-180 hover:border-primary hover:bg-tint hover:text-ink cursor-pointer"
               aria-label="پیام‌ها"
             >
               <svg
@@ -101,7 +104,7 @@ export function CoachTopbar({
               >
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
-            </Link>
+            </button>
           )}
         </div>
       </header>
@@ -113,6 +116,13 @@ export function CoachTopbar({
         notifications={notifications}
         onNotificationsChange={setNotifications}
       />
+
+      {/* Messages Modal Window */}
+      <CoachMessagesModal
+        isOpen={isMsgOpen}
+        onClose={() => setIsMsgOpen(false)}
+      />
     </>
   );
 }
+

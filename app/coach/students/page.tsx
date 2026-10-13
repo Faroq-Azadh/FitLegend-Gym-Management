@@ -868,25 +868,25 @@ export default function CoachStudentsPage() {
               <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className="text-right text-[12px] font-bold text-ink-faint p-[0_22px_14px] border-b border-border whitespace-nowrap">
+                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap">
                       شاگرد
                     </th>
-                    <th className="text-right text-[12px] font-bold text-ink-faint p-[0_22px_14px] border-b border-border whitespace-nowrap">
+                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap">
                       برنامه
                     </th>
-                    <th className="text-right text-[12px] font-bold text-ink-faint p-[0_22px_14px] border-b border-border whitespace-nowrap">
+                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap">
                       وضعیت
                     </th>
-                    <th className="text-right text-[12px] font-bold text-ink-faint p-[0_22px_14px] border-b border-border whitespace-nowrap">
+                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap">
                       نرخ حضور
                     </th>
-                    <th className="text-right text-[12px] font-bold text-ink-faint p-[0_22px_14px] border-b border-border whitespace-nowrap">
+                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap">
                       آخرین جلسه
                     </th>
-                    <th className="text-right text-[12px] font-bold text-ink-faint p-[0_22px_14px] border-b border-border whitespace-nowrap">
+                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap">
                       سررسید عضویت
                     </th>
-                    <th className="text-right text-[12px] font-bold text-ink-faint p-[0_22px_14px] border-b border-border whitespace-nowrap"></th>
+                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap"></th>
                   </tr>
                 </thead>
                 <tbody id="stuBody">
