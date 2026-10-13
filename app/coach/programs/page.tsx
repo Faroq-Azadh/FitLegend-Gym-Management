@@ -938,110 +938,133 @@ export default function CoachProgramsPage() {
                 </div>
 
                 <div className="card-body p-[22px]">
-                  {/* Table header */}
-                  <div className="ex-head grid grid-cols-[2.3fr_0.7fr_0.7fr_0.7fr_40px] gap-2.5 text-[11.5px] font-bold text-ink-faint pb-2.5">
-                    <span>حرکت (انتخاب از لیست یا نام دلخواه)</span>
-                    <span>ست</span>
-                    <span>تکرار</span>
-                    <span>استراحت (ثانیه)</span>
-                    <span></span>
-                  </div>
-
-                  {/* Exercise Rows List */}
-                  <div id="exList" className="flex flex-col">
-                    {currentDay && currentDay.exercises.length > 0 ? (
-                      currentDay.exercises.map((row) => (
-                        <div
-                          key={row.id}
-                          className="ex-row grid grid-cols-[2.3fr_0.7fr_0.7fr_0.7fr_40px] gap-2.5 items-center py-2.5 border-b border-border last:border-b-0"
-                        >
-                          {/* Column 1: Dropdown of moves BESIDE Customize Move input */}
-                          <div className="flex items-center gap-2">
-                            {/* Dropdown for quick move selection */}
-                            <select
-                              className="input p-[8px_10px] text-[12.5px] w-1/2 min-w-[110px]"
-                              value={
-                                EXERCISE_LIBRARY.includes(row.exercise)
-                                  ? row.exercise
-                                  : ""
-                              }
-                              onChange={(e) => {
-                                if (e.target.value) {
-                                  handleUpdateExercise(
-                                    row.id,
-                                    "exercise",
-                                    e.target.value
-                                  );
-                                }
-                              }}
-                              title="انتخاب از بانک حرکات"
+                  <div className="table-wrap overflow-x-auto">
+                    <table className="w-full table-fixed border-collapse">
+                      <thead>
+                        <tr className="border-b border-border text-[13.5px] font-extrabold text-ink-faint">
+                          <th className="text-right pt-4 pb-3 px-2 w-[46%] font-extrabold whitespace-nowrap">
+                            حرکت (انتخاب از لیست یا نام دلخواه)
+                          </th>
+                          <th className="text-center pt-4 pb-3 px-2 w-[16%] font-extrabold whitespace-nowrap">
+                            ست
+                          </th>
+                          <th className="text-center pt-4 pb-3 px-2 w-[16%] font-extrabold whitespace-nowrap">
+                            تکرار
+                          </th>
+                          <th className="text-center pt-4 pb-3 px-2 w-[16%] font-extrabold whitespace-nowrap">
+                            استراحت (ثانیه)
+                          </th>
+                          <th className="w-[6%] pt-4 pb-3 px-1"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="exList">
+                        {currentDay && currentDay.exercises.length > 0 ? (
+                          currentDay.exercises.map((row) => (
+                            <tr
+                              key={row.id}
+                              className="border-b border-border last:border-b-0 hover:bg-bg/40 transition-colors"
                             >
-                              <option value="">انتخاب از لیست حرکات…</option>
-                              {EXERCISE_LIBRARY.map((item) => (
-                                <option key={item} value={item}>
-                                  {item}
-                                </option>
-                              ))}
-                            </select>
+                              {/* Column 1: Dropdown of moves BESIDE Customize Move input */}
+                              <td className="py-2.5 px-2">
+                                <div className="flex items-center gap-2">
+                                  {/* Dropdown for quick move selection */}
+                                  <select
+                                    className="input p-[8px_10px] text-[12.5px] w-1/2 min-w-[110px]"
+                                    value={
+                                      EXERCISE_LIBRARY.includes(row.exercise)
+                                        ? row.exercise
+                                        : ""
+                                    }
+                                    onChange={(e) => {
+                                      if (e.target.value) {
+                                        handleUpdateExercise(
+                                          row.id,
+                                          "exercise",
+                                          e.target.value
+                                        );
+                                      }
+                                    }}
+                                    title="انتخاب از بانک حرکات"
+                                  >
+                                    <option value="">انتخاب از لیست حرکات…</option>
+                                    {EXERCISE_LIBRARY.map((item) => (
+                                      <option key={item} value={item}>
+                                        {item}
+                                      </option>
+                                    ))}
+                                  </select>
 
-                            {/* Custom text input beside dropdown to write customize move */}
-                            <input
-                              className="input p-[8px_12px] text-[12.5px] w-1/2 min-w-[110px]"
-                              value={row.exercise}
-                              onChange={(e) =>
-                                handleUpdateExercise(
-                                  row.id,
-                                  "exercise",
-                                  e.target.value
-                                )
-                              }
-                              placeholder="یا نام حرکت دلخواه…"
-                              title="نوشتن نام حرکت سفارشی یا ویرایش"
-                            />
-                          </div>
+                                  {/* Custom text input beside dropdown to write customize move */}
+                                  <input
+                                    className="input p-[8px_12px] text-[12.5px] w-1/2 min-w-[110px]"
+                                    value={row.exercise}
+                                    onChange={(e) =>
+                                      handleUpdateExercise(
+                                        row.id,
+                                        "exercise",
+                                        e.target.value
+                                      )
+                                    }
+                                    placeholder="یا نام حرکت دلخواه…"
+                                    title="نوشتن نام حرکت سفارشی یا ویرایش"
+                                  />
+                                </div>
+                              </td>
 
-                          <input
-                            className="input p-[9px_12px] text-[13px] text-center"
-                            value={row.sets}
-                            onChange={(e) =>
-                              handleUpdateExercise(row.id, "sets", e.target.value)
-                            }
-                            placeholder="ست"
-                          />
-                          <input
-                            className="input p-[9px_12px] text-[13px] text-center"
-                            value={row.reps}
-                            onChange={(e) =>
-                              handleUpdateExercise(row.id, "reps", e.target.value)
-                            }
-                            placeholder="تکرار"
-                          />
-                          <input
-                            className="input p-[9px_12px] text-[13px] text-center"
-                            value={row.rest}
-                            onChange={(e) =>
-                              handleUpdateExercise(row.id, "rest", e.target.value)
-                            }
-                            placeholder="ثانیه"
-                          />
-                          <div className="ex-del-wrap flex items-center justify-center">
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteExercise(row.id)}
-                              className="row-action text-ink-faint w-[32px] h-[32px] rounded-[8px] inline-flex items-center justify-center transition-all duration-150 hover:bg-[#FFF1F2] hover:text-[#E11D48] cursor-pointer"
-                              aria-label="حذف حرکت"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="py-6 text-center text-[13px] text-ink-faint">
-                        حرکتی برای {currentDay?.title || "این روز"} اضافه نشده — از
-                        دکمه‌ی پایین استفاده کن
-                      </div>
-                    )}
+                              <td className="py-2.5 px-2 text-center">
+                                <input
+                                  className="input p-[9px_12px] text-[13px] text-center w-full"
+                                  value={row.sets}
+                                  onChange={(e) =>
+                                    handleUpdateExercise(row.id, "sets", e.target.value)
+                                  }
+                                  placeholder="ست"
+                                />
+                              </td>
+                              <td className="py-2.5 px-2 text-center">
+                                <input
+                                  className="input p-[9px_12px] text-[13px] text-center w-full"
+                                  value={row.reps}
+                                  onChange={(e) =>
+                                    handleUpdateExercise(row.id, "reps", e.target.value)
+                                  }
+                                  placeholder="تکرار"
+                                />
+                              </td>
+                              <td className="py-2.5 px-2 text-center">
+                                <input
+                                  className="input p-[9px_12px] text-[13px] text-center w-full"
+                                  value={row.rest}
+                                  onChange={(e) =>
+                                    handleUpdateExercise(row.id, "rest", e.target.value)
+                                  }
+                                  placeholder="ثانیه"
+                                />
+                              </td>
+                              <td className="py-2.5 px-1 text-center">
+                                <div className="ex-del-wrap flex items-center justify-center">
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteExercise(row.id)}
+                                    className="row-action text-ink-faint w-[32px] h-[32px] rounded-[8px] inline-flex items-center justify-center transition-all duration-150 hover:bg-[#FFF1F2] hover:text-[#E11D48] cursor-pointer"
+                                    aria-label="حذف حرکت"
+                                  >
+                                    <Trash2 className="h-4 w-4" />
+                                  </button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan={5} className="py-6 text-center text-[13px] text-ink-faint">
+                              حرکتی برای {currentDay?.title || "این روز"} اضافه نشده — از
+                              دکمه‌ی پایین استفاده کن
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
                   </div>
 
                   {/* Add Exercise button */}
