@@ -97,6 +97,7 @@ export default function CoachSettingsPage() {
     waitlist: true,
 
     // 4. Security
+    public_profile: true,
     two_step: true,
 
     // 5. Preferences
@@ -974,6 +975,23 @@ export default function CoachSettingsPage() {
                         ذخیره‌ی رمز
                       </button>
                     </div>
+                  </div>
+
+                  {/* Public Profile Visibility */}
+                  <div className="toggle-row" style={{ marginTop: "14px" }}>
+                    <div className="meta">
+                      <div className="t">نمایش عمومی پروفایل</div>
+                      <div className="d">نمایش پروفایل در صفحه‌ی مربیان باشگاه</div>
+                    </div>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={form.public_profile}
+                        onChange={(e) => setForm({ ...form, public_profile: e.target.checked })}
+                        aria-label="نمایش عمومی پروفایل"
+                      />
+                      <span className="slider" />
+                    </label>
                   </div>
 
                   {/* Two Step Auth */}

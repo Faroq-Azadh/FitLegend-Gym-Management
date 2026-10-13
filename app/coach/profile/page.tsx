@@ -6,7 +6,7 @@ import { CoachTopbar } from "@/components/coach/coach-topbar";
 
 export default function CoachProfilePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"info" | "expert" | "account">("info");
+  const [activeTab, setActiveTab] = useState<"info" | "expert">("info");
 
   // Form states - Info
   const [firstName, setFirstName] = useState("آرش");
@@ -38,11 +38,7 @@ export default function CoachProfilePage() {
   const [mainCert, setMainCert] = useState("NASM-CPT");
   const [avatarUrl, setAvatarUrl] = useState<string>("/images/coach-profile.jpg");
 
-  // Form states - Account
-  const [sessionAlerts, setSessionAlerts] = useState(true);
-  const [messageAlerts, setMessageAlerts] = useState(true);
-  const [weeklyReport, setWeeklyReport] = useState(false);
-  const [publicProfile, setPublicProfile] = useState(true);
+
 
   // Save feedback states
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
@@ -231,23 +227,6 @@ export default function CoachProfilePage() {
                   <path d="M12 2 15.09 8.26 22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2Z" />
                 </svg>
                 تخصص‌ها
-              </button>
-              <button
-                type="button"
-                className={`tab ${activeTab === "account" ? "active" : ""}`}
-                onClick={() => setActiveTab("account")}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="3" />
-                  <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
-                </svg>
-                تنظیمات حساب
               </button>
             </div>
 
@@ -453,85 +432,7 @@ export default function CoachProfilePage() {
               </div>
             )}
 
-            {/* Panel 3: Account Settings */}
-            {activeTab === "account" && (
-              <div className="panel">
-                <div className="panel-title">تنظیمات حساب</div>
-                <div className="panel-sub">اعلان‌ها و ترجیحات حساب</div>
-                <div className="toggle-row">
-                  <div className="meta">
-                    <div className="t">اعلان جلسات</div>
-                    <div className="d">یادآوری پیش از هر جلسه‌ی تمرین</div>
-                  </div>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={sessionAlerts}
-                      onChange={(e) => setSessionAlerts(e.target.checked)}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </div>
-                <div className="toggle-row">
-                  <div className="meta">
-                    <div className="t">پیام شاگردان</div>
-                    <div className="d">اعلان هنگام دریافت پیام جدید</div>
-                  </div>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={messageAlerts}
-                      onChange={(e) => setMessageAlerts(e.target.checked)}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </div>
-                <div className="toggle-row">
-                  <div className="meta">
-                    <div className="t">گزارش هفتگی</div>
-                    <div className="d">خلاصه‌ی عملکرد شاگردان در ایمیل</div>
-                  </div>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={weeklyReport}
-                      onChange={(e) => setWeeklyReport(e.target.checked)}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </div>
-                <div className="toggle-row">
-                  <div className="meta">
-                    <div className="t">نمایش عمومی پروفایل</div>
-                    <div className="d">نمایش پروفایل در صفحه‌ی مربیان باشگاه</div>
-                  </div>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={publicProfile}
-                      onChange={(e) => setPublicProfile(e.target.checked)}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </div>
-                <div
-                  style={{
-                    marginTop: "18px",
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    gap: "10px",
-                  }}
-                >
-                  <button
-                    type="button"
-                    onClick={() => handleSave("تنظیمات حساب با موفقیت ذخیره شد")}
-                    className="btn btn-primary btn-sm"
-                  >
-                    ذخیره‌ی تنظیمات
-                  </button>
-                </div>
-              </div>
-            )}
+
           </div>
         </main>
       </div>
