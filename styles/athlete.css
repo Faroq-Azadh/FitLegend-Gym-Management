@@ -1290,3 +1290,189 @@
     font-size: 22px !important;
   }
 }
+
+/* ===== CLASSES & BOOKING SPECIFIC STYLES ===== */
+.app .kpi-grid.kpi-3 {
+  grid-template-columns: repeat(3, 1fr) !important;
+}
+
+@media (max-width: 980px) {
+  .app .kpi-grid.kpi-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .app .kpi-grid.kpi-3 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.app .grid-3 {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 18px !important;
+}
+
+@media (max-width: 1100px) {
+  .app .grid-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .app .grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Status badge */
+.app .status {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  padding: 5px 11px !important;
+  border-radius: 100px !important;
+  white-space: nowrap !important;
+}
+
+.app .status .d {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+}
+
+.app .status.active {
+  color: var(--primary-dark) !important;
+  background: var(--tint) !important;
+}
+
+.app .status.active .d {
+  background: var(--primary) !important;
+}
+
+.app .status.expiring {
+  color: #B45309 !important;
+  background: #FFFBEB !important;
+}
+
+.app .status.expiring .d {
+  background: #F59E0B !important;
+}
+
+.app .status.expired {
+  color: #9F1239 !important;
+  background: #FFF1F2 !important;
+}
+
+.app .status.expired .d {
+  background: #F43F5E !important;
+}
+
+/* Filter Search */
+.app .filter-search {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  padding: 9px 14px !important;
+  min-width: 220px !important;
+  flex: 1 !important;
+  max-width: 340px !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.app .filter-search:focus-within {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(22, 224, 160, 0.15) !important;
+}
+
+.app .filter-search.w-full {
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+.app .filter-search svg {
+  width: 17px !important;
+  height: 17px !important;
+  color: var(--ink-faint) !important;
+  flex-shrink: 0 !important;
+}
+
+.app .filter-search input {
+  border: none !important;
+  outline: none !important;
+  background: none !important;
+  font-size: 13.5px !important;
+  color: var(--ink) !important;
+  width: 100% !important;
+  font-family: inherit !important;
+}
+
+.app .filter-search input::placeholder {
+  color: var(--ink-faint) !important;
+}
+
+/* Empty State */
+.app .empty-state {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  gap: 14px !important;
+  padding: 48px 24px !important;
+}
+
+.app .empty-state .es-ico {
+  width: 72px !important;
+  height: 72px !important;
+  border-radius: 20px !important;
+  background: var(--tint) !important;
+  color: var(--primary-dark) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.app .empty-state .es-ico svg {
+  width: 34px !important;
+  height: 34px !important;
+  stroke-width: 1.8 !important;
+}
+
+.app .empty-state .es-ico.neutral {
+  background: var(--bg) !important;
+  color: var(--ink-faint) !important;
+}
+
+.app .empty-state .es-ico.danger {
+  background: #FFF1F2 !important;
+  color: #E11D48 !important;
+}
+
+.app .empty-state .es-title {
+  font-size: 16px !important;
+  font-weight: 800 !important;
+  color: var(--ink) !important;
+}
+
+.app .empty-state .es-sub {
+  font-size: 13.5px !important;
+  color: var(--ink-faint) !important;
+  max-width: 340px !important;
+  line-height: 1.7 !important;
+}
+
+.app .empty-state .es-actions {
+  display: flex !important;
+  gap: 10px !important;
+  margin-top: 4px !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+}
