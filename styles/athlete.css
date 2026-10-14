@@ -561,7 +561,7 @@
 
 .app .grid-2b {
     display: grid !important;
-    grid-template-columns: 1fr 1.4fr !important;
+    grid-template-columns: 1.4fr 1fr !important;
     gap: 18px !important;
 }
 
@@ -1265,10 +1265,10 @@
 
 .app thead th {
     text-align: right !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    color: var(--ink-faint) !important;
-    padding: 0 22px 14px !important;
+    font-size: 13.5px !important;
+    font-weight: 800 !important;
+    color: var(--ink-soft) !important;
+    padding: 14px 22px !important;
     border-bottom: 1px solid var(--border) !important;
     white-space: nowrap !important;
 }
@@ -1916,4 +1916,368 @@
 .app .tbl-btn.delete:hover {
     background: #EF4444 !important;
     color: #ffffff !important;
+}
+
+/* ===== MEMBERSHIP HERO & INVOICE TABLE (from titan-gym-os-membership.html) ===== */
+.app .mem-hero {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
+    color: #FFFFFF !important;
+    border-radius: var(--radius) !important;
+    padding: 26px !important;
+    position: relative !important;
+    overflow: hidden !important;
+    border: 1px solid rgba(22, 224, 160, 0.25) !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14) !important;
+}
+
+.app .mem-hero::after {
+    content: "" !important;
+    position: absolute !important;
+    left: -40px !important;
+    top: -40px !important;
+    width: 220px !important;
+    height: 220px !important;
+    border-radius: 50% !important;
+    background: radial-gradient(circle, rgba(22, 224, 160, 0.35), transparent 70%) !important;
+    pointer-events: none !important;
+}
+
+.app .mem-hero .top {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    position: relative !important;
+    z-index: 1 !important;
+    flex-wrap: wrap !important;
+}
+
+.app .mem-hero .plan {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #FFFFFF !important;
+    letter-spacing: -0.01em !important;
+}
+
+.app .mem-hero .sub {
+    font-size: 13px !important;
+    color: #CBD5E1 !important;
+    margin-top: 6px !important;
+    line-height: 1.5 !important;
+}
+
+.app .mem-hero .chip {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    background: rgba(22, 224, 160, 0.2) !important;
+    color: #16E0A0 !important;
+    padding: 6px 14px !important;
+    border-radius: 100px !important;
+    border: 1px solid rgba(22, 224, 160, 0.35) !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+}
+
+.app .mem-hero .big {
+    font-size: 34px !important;
+    font-weight: 800 !important;
+    margin-top: 18px !important;
+    position: relative !important;
+    z-index: 1 !important;
+    color: #FFFFFF !important;
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+}
+
+.app .mem-hero .big span {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #CBD5E1 !important;
+}
+
+.app .mem-bar {
+    height: 8px !important;
+    border-radius: 100px !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    overflow: hidden !important;
+    margin-top: 14px !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.app .mem-bar-fill {
+    height: 100% !important;
+    border-radius: 100px !important;
+    background: linear-gradient(90deg, var(--primary), var(--cyan)) !important;
+}
+
+.app .mem-hero .foot {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin-top: 12px !important;
+    font-size: 12.5px !important;
+    color: #CBD5E1 !important;
+    position: relative !important;
+    z-index: 1 !important;
+    flex-wrap: wrap !important;
+}
+
+/* Payment Methods */
+.app .pm-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 13px !important;
+    padding: 14px 16px !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: 13px !important;
+    margin-bottom: 10px !important;
+    transition: all 0.18s ease !important;
+    background: var(--surface) !important;
+}
+
+.app .pm-card:last-child {
+    margin-bottom: 0 !important;
+}
+
+.app .pm-card.default {
+    border-color: var(--primary) !important;
+    background: var(--tint) !important;
+}
+
+.app .pm-ico {
+    width: 44px !important;
+    height: 30px !important;
+    border-radius: 7px !important;
+    background: linear-gradient(135deg, #0F172A, #334155) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #FFFFFF !important;
+    flex-shrink: 0 !important;
+}
+
+.app .pm-ico svg {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.app .pm-card .nm {
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: var(--ink) !important;
+}
+
+.app .pm-card .ex {
+    font-size: 12px !important;
+    color: var(--ink-faint) !important;
+    margin-top: 2px !important;
+}
+
+.app .pm-card .df {
+    margin-right: auto !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    color: var(--primary-dark) !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--primary) !important;
+    padding: 3px 9px !important;
+    border-radius: 100px !important;
+}
+
+/* Table Tabs & Badges */
+.app .tabs {
+    display: flex !important;
+    gap: 4px !important;
+    background: var(--bg) !important;
+    padding: 5px !important;
+    border-radius: 12px !important;
+}
+
+.app .tab {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: var(--ink-faint) !important;
+    padding: 8px 14px !important;
+    border-radius: 9px !important;
+    transition: all 0.18s ease !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+.app .tab .cnt {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    background: var(--border) !important;
+    color: var(--ink-soft) !important;
+    padding: 1px 7px !important;
+    border-radius: 100px !important;
+}
+
+.app .tab.active {
+    background: var(--surface) !important;
+    color: var(--ink) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.app .tab.active .cnt {
+    background: var(--tint) !important;
+    color: var(--primary-dark) !important;
+}
+
+.app .txid {
+    font-weight: 700 !important;
+    color: var(--ink) !important;
+    font-family: inherit !important;
+    letter-spacing: 0.02em !important;
+}
+
+.app .amount {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: var(--ink) !important;
+}
+
+.app .amount .cur {
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    color: var(--ink-faint) !important;
+    margin-right: 3px !important;
+}
+
+.app .status {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    padding: 5px 11px !important;
+    border-radius: 100px !important;
+}
+
+.app .status .d {
+    width: 6px !important;
+    height: 6px !important;
+    border-radius: 50% !important;
+}
+
+.app .status.paid {
+    color: var(--primary-dark) !important;
+    background: var(--tint) !important;
+}
+
+.app .status.paid .d {
+    background: var(--primary) !important;
+}
+
+.app .status.pending {
+    color: #B45309 !important;
+    background: #FFFBEB !important;
+}
+
+.app .status.pending .d {
+    background: #F59E0B !important;
+}
+
+.app .status.failed {
+    color: #9F1239 !important;
+    background: #FFF1F2 !important;
+}
+
+.app .status.failed .d {
+    background: #F43F5E !important;
+}
+
+.app .row-action {
+    color: var(--ink-faint) !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.15s ease !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.app .row-action svg {
+    width: 17px !important;
+    height: 17px !important;
+}
+
+.app .row-action:hover {
+    background: var(--tint) !important;
+    color: var(--primary-dark) !important;
+}
+
+.app .table-foot {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 14px !important;
+    padding: 16px 20px !important;
+    flex-wrap: wrap !important;
+    border-top: 1px solid var(--border) !important;
+}
+
+.app .table-foot .info {
+    font-size: 13px !important;
+    color: var(--ink-faint) !important;
+    font-weight: 500 !important;
+}
+
+.app .pager {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.app .pager button {
+    min-width: 36px !important;
+    height: 36px !important;
+    padding: 0 10px !important;
+    border-radius: 10px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: var(--ink-soft) !important;
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    transition: all 0.15s ease !important;
+    cursor: pointer !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.app .pager button:hover:not(:disabled) {
+    border-color: var(--primary) !important;
+    background: var(--tint) !important;
+    color: var(--primary-dark) !important;
+}
+
+.app .pager button.active {
+    background: var(--ink) !important;
+    color: #FFFFFF !important;
+    border-color: var(--ink) !important;
+}
+
+.app .pager button:disabled {
+    opacity: 0.45 !important;
+    cursor: not-allowed !important;
+}
+
+.app .pager button svg {
+    width: 16px !important;
+    height: 16px !important;
 }
