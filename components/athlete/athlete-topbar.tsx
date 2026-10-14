@@ -2,7 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { AthleteNotificationsModal } from "@/components/athlete/athlete-notifications-modal";
+import {
+  AthleteNotificationsModal,
+  INITIAL_NOTIFICATIONS,
+  NotificationItem,
+} from "@/components/athlete/athlete-notifications-modal";
 import { AthleteMessagesModal } from "@/components/athlete/athlete-messages-modal";
 
 interface AthleteTopbarProps {
@@ -21,6 +25,9 @@ export function AthleteTopbar({
 }: AthleteTopbarProps) {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isMessagesOpen, setIsMessagesOpen] = useState(false);
+  const [notifications, setNotifications] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
+
+  const hasUnread = notifications.some((n) => !n.read);
 
   return (
     <>
@@ -57,7 +64,7 @@ export function AthleteTopbar({
             type="button"
             onClick={() => setIsNotifOpen(true)}
           >
-            <span className="notif-dot" />
+            {hasUnread && <span className="notif-dot" />}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
               <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
@@ -93,6 +100,8 @@ export function AthleteTopbar({
       <AthleteNotificationsModal
         isOpen={isNotifOpen}
         onClose={() => setIsNotifOpen(false)}
+        notifications={notifications}
+        onNotificationsChange={setNotifications}
       />
 
       {/* Messages Modal */}

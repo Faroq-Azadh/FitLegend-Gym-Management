@@ -28,10 +28,23 @@ interface PlanOption {
   id: "bronze" | "gold" | "platinum";
   title: string;
   duration: string;
+  totalDays: number;
   price: string;
   rawPrice: number;
   desc: string;
   features: string[];
+}
+
+function formatPersianDate(date: Date): string {
+  try {
+    return new Intl.DateTimeFormat("fa-IR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  } catch {
+    return date.toLocaleDateString("fa-IR");
+  }
 }
 
 const PLANS: PlanOption[] = [
@@ -39,6 +52,7 @@ const PLANS: PlanOption[] = [
     id: "bronze",
     title: "اشتراک برنزی باشگاه تیتان (۱ ماهه)",
     duration: "۱ ماهه",
+    totalDays: 30,
     price: "۹۵۰٬۰۰۰ تومان",
     rawPrice: 950000,
     desc: "دسترسی به سالن بدنسازی در روزهای زوج",
@@ -48,6 +62,7 @@ const PLANS: PlanOption[] = [
     id: "gold",
     title: "عضویت طلایی باشگاه تیتان (۳ ماهه)",
     duration: "۳ ماهه",
+    totalDays: 90,
     price: "۲٬۸۵۰٬۰۰۰ تومان",
     rawPrice: 2850000,
     desc: "دسترسی کامل به همه‌ی سالن‌ها، مربی اختصاصی و رزرو ۲ کلاس گروهی در هفته",
@@ -57,6 +72,7 @@ const PLANS: PlanOption[] = [
     id: "platinum",
     title: "عضویت VIP پلاتینیوم (۶ ماهه)",
     duration: "۶ ماهه",
+    totalDays: 180,
     price: "۵٬۲۰۰٬۰۰۰ تومان",
     rawPrice: 5200000,
     desc: "دسترسی ۲۴ ساعته + مربی ارشد + استخر و سونا + بوفه رایگان + پارکینگ اختصاصی",
@@ -147,6 +163,48 @@ export default function AthleteMembershipPage() {
   const [daysRemaining, setDaysRemaining] = useState(25);
   const [startDate, setStartDate] = useState("۱۵ شهریور ۱۴۰۳");
   const [endDate, setEndDate] = useState("۵ آبان ۱۴۰۳");
+
+  // Real-time subscription timestamps for dynamic progress calculation
+  const [startDateTime, setStartDateTime] = useState<number>(() => {
+    const d = new Date();
+    d.setDate(d.getDate() - 65); // 65 days elapsed (90 total - 25 remaining)
+    return d.getTime();
+  });
+  const [endDateTime, setEndDateTime] = useState<number>(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 25); // 25 days remaining
+    return d.getTime();
+  });
+  const [currentTime, setCurrentTime] = useState<number>(() => Date.now());
+
+  // Real-time synchronization of remaining days and current timestamp
+  useEffect(() => {
+    const updateTimeAndStatus = () => {
+      const now = Date.now();
+      setCurrentTime(now);
+      const diffMs = endDateTime - now;
+      const days = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+      setDaysRemaining(days);
+    };
+
+    updateTimeAndStatus();
+    const interval = setInterval(updateTimeAndStatus, 60000);
+    return () => clearInterval(interval);
+  }, [endDateTime]);
+
+  // Dynamic progress calculation:
+  // - Starts at 0% when renewed (reset)
+  // - Fills up dynamically as time elapses and remaining days decrease
+  // - Fills up completely (100%) when subscription expires
+  const totalDays = activePlan.totalDays || 90;
+  const totalDurationMs = Math.max(1, endDateTime - startDateTime);
+  const elapsedMs = Math.max(0, Math.min(totalDurationMs, currentTime - startDateTime));
+  const timeProgress = Math.min(100, Math.max(0, Math.round((elapsedMs / totalDurationMs) * 100)));
+  const daysElapsed = Math.max(0, totalDays - daysRemaining);
+  const daysProgress = Math.min(100, Math.max(0, Math.round((daysElapsed / totalDays) * 100)));
+
+  const isExpired = daysRemaining <= 0 || (endDateTime > 0 && currentTime >= endDateTime);
+  const progressPercent = isExpired ? 100 : Math.max(timeProgress, daysProgress);
 
   // Invoices & Tab Filtering
   const [invoices, setInvoices] = useState<InvoiceItem[]>(INITIAL_INVOICES);
@@ -288,27 +346,28 @@ export default function AthleteMembershipPage() {
       setActivePlan(chosen);
 
       // Add new invoice to history
+      const now = new Date();
+      const planDurationDays = chosen.totalDays;
+      const newStartDate = new Date(now);
+      const newEndDate = new Date(now.getTime() + planDurationDays * 24 * 60 * 60 * 1000);
+
       const newInvoice: InvoiceItem = {
         id: `TXN-${toPersianDigits(Math.floor(1000 + Math.random() * 9000))}`,
         planName: `${chosen.title} · پرداخت آنلاین`,
-        date: "امروز · ۲۴ مهر ۱۴۰۴",
+        date: `امروز · ${toPersianDigits(formatPersianDate(now))}`,
         amount: chosen.price.replace(" تومان", ""),
         status: "paid",
         statusText: "موفق",
       };
       setInvoices((prev) => [newInvoice, ...prev]);
 
-      // Update days and dates
-      if (chosen.id === "bronze") {
-        setDaysRemaining(30);
-        setEndDate("۲۴ آبان ۱۴۰۴");
-      } else if (chosen.id === "gold") {
-        setDaysRemaining(90);
-        setEndDate("۲۴ دی ۱۴۰۴");
-      } else {
-        setDaysRemaining(180);
-        setEndDate("۲۴ فروردین ۱۴۰۵");
-      }
+      // Reset subscription progress and update timestamps
+      setStartDateTime(newStartDate.getTime());
+      setEndDateTime(newEndDate.getTime());
+      setCurrentTime(now.getTime());
+      setDaysRemaining(planDurationDays);
+      setStartDate(formatPersianDate(newStartDate));
+      setEndDate(formatPersianDate(newEndDate));
 
       showToast(`پرداخت با موفقیت انجام شد و ${chosen.title} فعال گردید.`);
     }, 1200);
@@ -368,17 +427,33 @@ export default function AthleteMembershipPage() {
                   <div className="sub">{activePlan.desc}</div>
                 </div>
                 <span className="chip">
-                  <span className="w-2 h-2 rounded-full bg-[#16E0A0] inline-block animate-pulse"></span>
-                  اشتراک فعال
+                  <span className={`w-2 h-2 rounded-full inline-block ${!isExpired ? "bg-[#16E0A0] animate-pulse" : "bg-[#EF4444]"}`}></span>
+                  {!isExpired ? "اشتراک فعال" : "اشتراک منقضی شده"}
                 </span>
               </div>
 
               <div className="big">
-                {toPersianDigits(daysRemaining)} <span>روز باقی‌مانده تا پایان اعتبار دوره</span>
+                {!isExpired ? (
+                  <>
+                    {toPersianDigits(daysRemaining)} <span>روز باقی‌مانده تا پایان اعتبار دوره</span>
+                  </>
+                ) : (
+                  <span className="text-[#F87171] font-bold">اعتبار اشتراک به پایان رسیده است</span>
+                )}
               </div>
 
-              <div className="mem-bar">
-                <div className="mem-bar-fill" style={{ width: `${Math.min(100, Math.round((daysRemaining / 90) * 100))}%` }}></div>
+              <div
+                className="mem-bar"
+                role="progressbar"
+                aria-valuenow={progressPercent}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label="میزان پیشرفت دوره اعتبار اشتراک"
+              >
+                <div
+                  className="mem-bar-fill"
+                  style={{ width: `${progressPercent}%` }}
+                />
               </div>
 
               <div className="foot">

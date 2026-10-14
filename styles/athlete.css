@@ -2012,6 +2012,7 @@
     height: 100% !important;
     border-radius: 100px !important;
     background: linear-gradient(90deg, var(--primary), var(--cyan)) !important;
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .app .mem-hero .foot {
