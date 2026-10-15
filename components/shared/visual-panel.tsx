@@ -81,7 +81,7 @@ export function VisualPanel({ variant }: VisualPanelProps) {
         {variant === "register" && (
           <>
             <h2 className="mb-4 text-[30px] font-extrabold leading-[1.5] text-white">
-              باشگاه خود را روی تیتان راه‌اندازی کنید
+              باشگاه خود را روی فیتلجند راه‌اندازی کنید
             </h2>
             <p className="mb-[30px] text-[15px] leading-[1.8] text-[#CBD5E1]">
               فرم زیر را پر کنید تا باشگاه و حساب مدیر شما همین حالا ساخته شود. بدون

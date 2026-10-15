@@ -371,13 +371,13 @@ export function MembersTable({
       } catch { }
     };
     window.addEventListener(MEMBERS_UPDATED_EVENT, handleSync);
-    window.addEventListener("titan:gym-changed", handleSync);
-    window.addEventListener("titan:auth-logout", handleSync);
+    window.addEventListener("fitlegend:gym-changed", handleSync);
+    window.addEventListener("fitlegend:auth-logout", handleSync);
     window.addEventListener("storage", handleSync);
     return () => {
       window.removeEventListener(MEMBERS_UPDATED_EVENT, handleSync);
-      window.removeEventListener("titan:gym-changed", handleSync);
-      window.removeEventListener("titan:auth-logout", handleSync);
+      window.removeEventListener("fitlegend:gym-changed", handleSync);
+      window.removeEventListener("fitlegend:auth-logout", handleSync);
       window.removeEventListener("storage", handleSync);
     };
   }, []);
@@ -772,7 +772,7 @@ export function MembersTable({
       coachIdToSend = formData.assigned_coach_id;
     }
 
-    // Prepare payload matching MemberCreate in Titan_Gym_OS_API.yaml
+    // Prepare payload matching MemberCreate in FitLegend_Gym_OS_API.yaml
     const payload = {
       first_name: formData.first_name.trim(),
       last_name: formData.last_name.trim(),
@@ -1453,7 +1453,7 @@ export function MembersTable({
                   </h3>
                 </div>
                 <p className="mt-1 text-[12px] text-ink-faint">
-                  ثبت مشخصات و اختصاص پلن عضویت در سامانه تیتان جیم
+                  ثبت مشخصات و اختصاص پلن عضویت در سامانه فیتلجند جیم
                 </p>
               </div>
               <button

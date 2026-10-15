@@ -113,7 +113,7 @@ export default function AthleteMessagesPage() {
                   </div>
                 </div>
               </div>
-              <span className="pill">مربی ارشد تیتان</span>
+              <span className="pill">مربی ارشد فیتلجند</span>
             </div>
 
             {/* Chat Stream */}

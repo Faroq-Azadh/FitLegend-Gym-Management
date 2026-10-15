@@ -17,7 +17,7 @@ export function LandingPricing() {
       name: "رایگان",
       price: "۰",
       period: "تومان / ۱۴ روز",
-      desc: "برای باشگاه‌های کوچک که می‌خواهند تیتان را بدون هزینه امتحان کنند",
+      desc: "برای باشگاه‌های کوچک که می‌خواهند فیتلجند را بدون هزینه امتحان کنند",
       btnText: "شروع رایگان",
       btnClass:
         "border-[1.5px] border-border bg-surface text-ink hover:border-primary hover:bg-tint",

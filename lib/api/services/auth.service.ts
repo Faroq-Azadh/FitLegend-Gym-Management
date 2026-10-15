@@ -120,7 +120,7 @@ export const authService = {
         refresh: data.refresh,
       });
       if (typeof window !== "undefined" && data.user) {
-        localStorage.setItem("titan_user", JSON.stringify(data.user));
+        localStorage.setItem("fitlegend_user", JSON.stringify(data.user));
       }
     }
 
@@ -203,7 +203,7 @@ export const authService = {
     // Direct user in response
     if (anyData?.user) {
       if (typeof window !== "undefined") {
-        localStorage.setItem("titan_user", JSON.stringify(anyData.user));
+        localStorage.setItem("fitlegend_user", JSON.stringify(anyData.user));
       }
       return { access: access || "", refresh: refresh || "", user: anyData.user };
     }
@@ -219,13 +219,13 @@ export const authService = {
           email: payload.identifier.includes("@") ? payload.identifier : null,
           phone_number: !payload.identifier.includes("@") ? payload.identifier : null,
           is_phone_verified: true,
-          full_name: "کاربر تیتان",
+          full_name: "کاربر فیتلجند",
           avatar: null,
           role: "OWNER",
           date_joined: new Date().toISOString(),
         };
         if (typeof window !== "undefined") {
-          localStorage.setItem("titan_user", JSON.stringify(fallbackUser));
+          localStorage.setItem("fitlegend_user", JSON.stringify(fallbackUser));
         }
         return {
           access: access || tokenStorage.getAccessToken() || "",
@@ -270,7 +270,7 @@ export const authService = {
         refresh,
       });
       if (typeof window !== "undefined" && anyData.user) {
-        localStorage.setItem("titan_user", JSON.stringify(anyData.user));
+        localStorage.setItem("fitlegend_user", JSON.stringify(anyData.user));
       }
       return {
         access,
@@ -279,7 +279,7 @@ export const authService = {
       };
     } else {
       if (typeof window !== "undefined") {
-        localStorage.setItem("titan_session_refreshable", "true");
+        localStorage.setItem("fitlegend_session_refreshable", "true");
       }
     }
 
@@ -335,7 +335,7 @@ export const authService = {
   async getMe(): Promise<User> {
     const user = await apiClient.get<User>(ENDPOINTS.AUTH.ME, { requiresAuth: true });
     if (typeof window !== "undefined" && user) {
-      localStorage.setItem("titan_user", JSON.stringify(user));
+      localStorage.setItem("fitlegend_user", JSON.stringify(user));
     }
     return user;
   },
@@ -347,14 +347,14 @@ export const authService = {
   async updateMe(payload: Partial<User>): Promise<User> {
     const updated = await apiClient.patch<User>(ENDPOINTS.AUTH.ME, payload, { requiresAuth: true });
     if (typeof window !== "undefined" && updated) {
-      const cached = localStorage.getItem("titan_user");
+      const cached = localStorage.getItem("fitlegend_user");
       let merged = updated;
       if (cached) {
         try {
           merged = { ...JSON.parse(cached), ...updated };
         } catch {}
       }
-      localStorage.setItem("titan_user", JSON.stringify(merged));
+      localStorage.setItem("fitlegend_user", JSON.stringify(merged));
     }
     return updated;
   },
@@ -387,7 +387,7 @@ export const authService = {
       // Proceed to cleanup even if backend logout fails
     } finally {
       if (typeof window !== "undefined") {
-        localStorage.removeItem("titan_user");
+        localStorage.removeItem("fitlegend_user");
       }
       tokenStorage.clearTokens();
     }

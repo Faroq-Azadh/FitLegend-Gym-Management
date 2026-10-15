@@ -18,7 +18,7 @@ import { toPersianDigits } from "@/lib/persian-digits";
 import { tokenStorage } from "@/lib/api/token";
 import { getCurrentGymScope } from "@/lib/session-scope";
 
-export const PAYMENTS_UPDATED_EVENT = "titan_gym_payments_updated";
+export const PAYMENTS_UPDATED_EVENT = "fitlegend_gym_payments_updated";
 
 /**
  * Format any amount into full Persian digits with thousands separators + "تومان"
@@ -39,7 +39,7 @@ function isValidUuid(str?: string | null): boolean {
 
 export function getPaymentStatusOverridesKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_payment_status_overrides_${s}`;
+  return `fitlegend_payment_status_overrides_${s}`;
 }
 
 export function getPaymentStatusOverrides(scope?: string): Record<string, PaymentStatus> {
@@ -82,13 +82,13 @@ export function usePaymentsData() {
       setStatusOverrides(getPaymentStatusOverrides());
     };
     window.addEventListener(PAYMENTS_UPDATED_EVENT, handleUpdate);
-    window.addEventListener("titan:gym-changed", handleUpdate);
-    window.addEventListener("titan:auth-logout", handleUpdate);
+    window.addEventListener("fitlegend:gym-changed", handleUpdate);
+    window.addEventListener("fitlegend:auth-logout", handleUpdate);
     window.addEventListener("storage", handleUpdate);
     return () => {
       window.removeEventListener(PAYMENTS_UPDATED_EVENT, handleUpdate);
-      window.removeEventListener("titan:gym-changed", handleUpdate);
-      window.removeEventListener("titan:auth-logout", handleUpdate);
+      window.removeEventListener("fitlegend:gym-changed", handleUpdate);
+      window.removeEventListener("fitlegend:auth-logout", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
     };
   }, []);

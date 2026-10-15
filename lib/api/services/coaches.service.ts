@@ -183,7 +183,7 @@ export const coachesService = {
 
   /**
    * Add a new coach (creates User + CoachProfile in Django)
-   * Matches CoachCreate schema in Titan_Gym_OS_API.yaml
+   * Matches CoachCreate schema in FitLegend_Gym_OS_API.yaml
    */
   async addCoach(payload: AddCoachPayload): Promise<CoachItem> {
     const body: Record<string, unknown> = {

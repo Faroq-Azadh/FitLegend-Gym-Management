@@ -5,7 +5,7 @@ import { ProfileClubData } from "./types";
 import { useGymMe, useUpdateGymMe, useGymSettings, useUpdateGymSettings } from "@/lib/hooks/queries/use-gym-me";
 import { Check, Loader2, AlertCircle } from "lucide-react";
 
-const CLUB_INFO_STORAGE_KEY = "titan_gym_club_info_overrides";
+const CLUB_INFO_STORAGE_KEY = "fitlegend_gym_club_info_overrides";
 
 interface ClubInfoTabProps {
   club: ProfileClubData;
@@ -33,7 +33,7 @@ export function ClubInfoTab({ club, onUpdateClub }: ClubInfoTabProps) {
     const workingHours = settingsData?.working_hours as any;
 
     setFormData((prev) => ({
-      clubName: gymData?.name || localSaved?.name || club.clubName || "باشگاه ورزشی تیتان",
+      clubName: gymData?.name || localSaved?.name || club.clubName || "باشگاه ورزشی فیتلجند",
       phone: gymData?.phone_number || localSaved?.phone_number || club.phone || "۰۲۱۴۴۵۵۶۶۷۷",
       startHour: workingHours?.open || localSaved?.startHour || club.startHour || "۰۶:۰۰",
       endHour: workingHours?.close || localSaved?.endHour || club.endHour || "۲۳:۰۰",

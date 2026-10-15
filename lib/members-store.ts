@@ -42,15 +42,15 @@ export interface MemberCounts {
 
 import { getCurrentGymScope, getCurrentUserScope, isFlexGymOrFarooq } from "@/lib/session-scope";
 
-export const MEMBERS_OVERRIDES_KEY = "titan_gym_members_overrides";
-export const MEMBERS_UPDATED_EVENT = "titan_gym_members_updated";
+export const MEMBERS_OVERRIDES_KEY = "fitlegend_gym_members_overrides";
+export const MEMBERS_UPDATED_EVENT = "fitlegend_gym_members_updated";
 
-export const DELETED_MEMBER_IDS_KEY = "titan_gym_deleted_member_ids";
-export const DELETED_MEMBER_NAMES_KEY = "titan_gym_deleted_member_names";
+export const DELETED_MEMBER_IDS_KEY = "fitlegend_gym_deleted_member_ids";
+export const DELETED_MEMBER_NAMES_KEY = "fitlegend_gym_deleted_member_names";
 
 export function getDeletedMemberIdsKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_deleted_members_${s}`;
+  return `fitlegend_deleted_members_${s}`;
 }
 
 export function getDeletedMemberIds(scope?: string): Set<string> {
@@ -69,7 +69,7 @@ export function getDeletedMemberIds(scope?: string): Set<string> {
 export function getDeletedMemberNames(scope?: string): Set<string> {
   if (typeof window === "undefined") return new Set(["مریم رضایی"]);
   try {
-    const key = `titan_deleted_member_names_${scope || getCurrentGymScope()}`;
+    const key = `fitlegend_deleted_member_names_${scope || getCurrentGymScope()}`;
     const raw = localStorage.getItem(key);
     const parsed: string[] = raw ? JSON.parse(raw) : [];
     return new Set(["مریم رضایی", ...parsed]);
@@ -88,7 +88,7 @@ export function markMemberAsDeleted(id: string, name?: string, scope?: string): 
 
     const names = getDeletedMemberNames(scope);
     if (name?.trim()) names.add(name.trim());
-    const keyNames = `titan_deleted_member_names_${scope || getCurrentGymScope()}`;
+    const keyNames = `fitlegend_deleted_member_names_${scope || getCurrentGymScope()}`;
     localStorage.setItem(keyNames, JSON.stringify(Array.from(names)));
   } catch {}
 }
@@ -145,7 +145,7 @@ export function getPhoneLookupKeys(phone?: string | null): string[] {
 
 export function getLocalMemberOverridesKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_members_overrides_${s}`;
+  return `fitlegend_members_overrides_${s}`;
 }
 
 /**
@@ -160,7 +160,7 @@ export function getLocalMemberOverrides(scope?: string): Record<string, MemberOv
     let result: Record<string, MemberOverride> = raw ? JSON.parse(raw) : {};
 
     if (isFlex) {
-      const userKey = `titan_members_overrides_user_${getCurrentUserScope()}`;
+      const userKey = `fitlegend_members_overrides_user_${getCurrentUserScope()}`;
       const userRaw = localStorage.getItem(userKey);
       if (userRaw) {
         try {
@@ -295,13 +295,13 @@ export function useMembersData(search?: string) {
     };
 
     window.addEventListener(MEMBERS_UPDATED_EVENT, handleUpdate);
-    window.addEventListener("titan:gym-changed", handleUpdate);
-    window.addEventListener("titan:auth-logout", handleUpdate);
+    window.addEventListener("fitlegend:gym-changed", handleUpdate);
+    window.addEventListener("fitlegend:auth-logout", handleUpdate);
     window.addEventListener("storage", handleUpdate);
     return () => {
       window.removeEventListener(MEMBERS_UPDATED_EVENT, handleUpdate);
-      window.removeEventListener("titan:gym-changed", handleUpdate);
-      window.removeEventListener("titan:auth-logout", handleUpdate);
+      window.removeEventListener("fitlegend:gym-changed", handleUpdate);
+      window.removeEventListener("fitlegend:auth-logout", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
     };
   }, []);

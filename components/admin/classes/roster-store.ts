@@ -2,8 +2,8 @@ import { ClassMember } from "./types";
 import { isDeletedMember, normalizePersianName } from "@/lib/members-store";
 import { getCurrentGymScope } from "@/lib/session-scope";
 
-const CLASS_ROSTER_PREFIX = "titan_gym_class_roster_";
-export const ROSTER_UPDATED_EVENT = "titan_gym_roster_updated";
+const CLASS_ROSTER_PREFIX = "fitlegend_gym_class_roster_";
+export const ROSTER_UPDATED_EVENT = "fitlegend_gym_roster_updated";
 
 // Only Maryam Rezaei and explicitly deleted members are disallowed
 const DISALLOWED_MOCK_NAMES = new Set([
@@ -88,7 +88,7 @@ export function purgeDisallowedMembersFromAllClassRosters(validMembers?: any[]):
 
     // Also clean local bookings store if Maryam Rezaei or disallowed members exist
     try {
-      const rawBookings = localStorage.getItem("titan_gym_bookings_local");
+      const rawBookings = localStorage.getItem("fitlegend_gym_bookings_local");
       if (rawBookings) {
         const parsedBookings = JSON.parse(rawBookings);
         if (Array.isArray(parsedBookings)) {
@@ -97,7 +97,7 @@ export function purgeDisallowedMembersFromAllClassRosters(validMembers?: any[]):
             return !isDisallowedMember({ id: b.member_id || b.id, name: bName }, validMembers);
           });
           if (cleanedBookings.length !== parsedBookings.length) {
-            localStorage.setItem("titan_gym_bookings_local", JSON.stringify(cleanedBookings));
+            localStorage.setItem("fitlegend_gym_bookings_local", JSON.stringify(cleanedBookings));
             changedAny = true;
           }
         }
@@ -152,7 +152,7 @@ export function removeMemberFromAllClassRosters(id: string, name?: string): void
 
     // Clean local bookings
     try {
-      const rawBookings = localStorage.getItem("titan_gym_bookings_local");
+      const rawBookings = localStorage.getItem("fitlegend_gym_bookings_local");
       if (rawBookings) {
         const parsed = JSON.parse(rawBookings);
         if (Array.isArray(parsed)) {
@@ -162,7 +162,7 @@ export function removeMemberFromAllClassRosters(id: string, name?: string): void
             return true;
           });
           if (cleaned.length !== parsed.length) {
-            localStorage.setItem("titan_gym_bookings_local", JSON.stringify(cleaned));
+            localStorage.setItem("fitlegend_gym_bookings_local", JSON.stringify(cleaned));
             changed = true;
           }
         }
@@ -177,7 +177,7 @@ export function removeMemberFromAllClassRosters(id: string, name?: string): void
 
 export function getClassRosterKey(classId: string, scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_gym_class_roster_${s}_${classId}`;
+  return `fitlegend_gym_class_roster_${s}_${classId}`;
 }
 
 /**

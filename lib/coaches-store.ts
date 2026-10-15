@@ -4,9 +4,9 @@ import { useState, useEffect, useMemo, useCallback } from "react";
 import { useCoaches } from "@/lib/hooks/queries/use-coaches";
 import { toPersianDigits, normalizeDigits } from "@/lib/persian-digits";
 
-export const COACHES_OVERRIDES_KEY = "titan_gym_coaches_overrides";
-export const DELETED_COACHES_KEY = "titan_gym_deleted_coach_ids";
-export const COACHES_UPDATED_EVENT = "titan_coaches_updated";
+export const COACHES_OVERRIDES_KEY = "fitlegend_gym_coaches_overrides";
+export const DELETED_COACHES_KEY = "fitlegend_gym_deleted_coach_ids";
+export const COACHES_UPDATED_EVENT = "fitlegend_coaches_updated";
 
 export interface CoachOverride {
   name?: string;
@@ -51,7 +51,7 @@ export function getPhoneLookupKeys(phone?: string | null): string[] {
 
 export function getDeletedCoachIdsKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_deleted_coaches_${s}`;
+  return `fitlegend_deleted_coaches_${s}`;
 }
 
 export function getDeletedCoachIds(scope?: string): string[] {
@@ -93,7 +93,7 @@ import {
 
 export function getLocalCoachOverridesKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_coaches_overrides_${s}`;
+  return `fitlegend_coaches_overrides_${s}`;
 }
 
 export function getLocalCoachOverrides(scope?: string): Record<string, CoachOverride> {
@@ -141,10 +141,10 @@ export function saveLocalCoachOverridesBatch(entries: Record<string, CoachOverri
 
 export function getLocalTeamMembersKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_team_${s}`;
+  return `fitlegend_team_${s}`;
 }
 
-export const LOCAL_TEAM_MEMBERS_KEY = "titan_gym_local_team_members";
+export const LOCAL_TEAM_MEMBERS_KEY = "fitlegend_gym_local_team_members";
 
 export interface LocalTeamMember {
   id: string;
@@ -185,7 +185,7 @@ export function getLocalTeamMembers(scope?: string): LocalTeamMember[] {
     }
 
     if (isFlex) {
-      const userKey = `titan_team_user_${getCurrentUserScope()}`;
+      const userKey = `fitlegend_team_user_${getCurrentUserScope()}`;
       const userRaw = localStorage.getItem(userKey);
       if (userRaw) {
         try {
@@ -368,13 +368,13 @@ export function useCoachesData() {
       setLocalTeam(getLocalTeamMembers());
     };
     window.addEventListener(COACHES_UPDATED_EVENT, handleSync);
-    window.addEventListener("titan:gym-changed", handleSync);
-    window.addEventListener("titan:auth-logout", handleSync);
+    window.addEventListener("fitlegend:gym-changed", handleSync);
+    window.addEventListener("fitlegend:auth-logout", handleSync);
     window.addEventListener("storage", handleSync);
     return () => {
       window.removeEventListener(COACHES_UPDATED_EVENT, handleSync);
-      window.removeEventListener("titan:gym-changed", handleSync);
-      window.removeEventListener("titan:auth-logout", handleSync);
+      window.removeEventListener("fitlegend:gym-changed", handleSync);
+      window.removeEventListener("fitlegend:auth-logout", handleSync);
       window.removeEventListener("storage", handleSync);
     };
   }, []);

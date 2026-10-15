@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+
 /* ===== VAZIRMATN FONT FACES ===== */
 /* arabic 400 */
 @font-face {
@@ -3120,7 +3121,7 @@
     margin-right: 0;
 }
 
-/* ===== ATTENDANCE PAGE STYLES (from titan-gym-os-coach-attendance.html) ===== */
+/* ===== ATTENDANCE PAGE STYLES (from fitlegend-gym-os-coach-attendance.html) ===== */
 .day-strip {
   display: flex;
   gap: 8px;
@@ -3502,7 +3503,7 @@
   }
 }
 
-/* ===== COACH SETTINGS STYLES (from titan-gym-os-coach-settings.html) ===== */
+/* ===== COACH SETTINGS STYLES (from fitlegend-gym-os-coach-settings.html) ===== */
 .matrix {
   width: 100%;
   border-collapse: collapse;

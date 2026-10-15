@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: Titan Gym OS API
+  title: FitLegend Gym OS API
   version: 1.0.0
-  description: API documentation for Titan Gym OS
+  description: API documentation for FitLegend Gym OS
 paths:
   /attendance/check-in/:
     post:

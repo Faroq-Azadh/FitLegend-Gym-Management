@@ -9,7 +9,7 @@ export function LandingFinalCTA() {
             باشگاه‌تان را همین امروز هوشمند کنید
           </h2>
           <p className="relative z-10 mx-auto mb-[36px] max-w-[480px] text-[16px] text-white/95">
-            بدون نیاز به کارت بانکی، ۴۵ روز رایگان همه امکانات تیتان را تجربه کنید.
+            بدون نیاز به کارت بانکی، ۴۵ روز رایگان همه امکانات فیتلجند را تجربه کنید.
           </p>
           <Link
             href="/register-gym"

@@ -153,7 +153,7 @@ export default function AdminPlansPage() {
   let localOverrideCode: string | null = null;
   if (typeof window !== "undefined") {
     try {
-      const rawOverride = localStorage.getItem(`titan_gym_plan_override_${userScope}`);
+      const rawOverride = localStorage.getItem(`fitlegend_gym_plan_override_${userScope}`);
       if (rawOverride) {
         const parsed = JSON.parse(rawOverride);
         localOverrideCode = parsed.code || null;
@@ -240,7 +240,7 @@ export default function AdminPlansPage() {
                 پلن‌ها و تعرفه‌ها
               </h1>
               <div className="mt-[5px] text-[14px] text-ink-faint">
-                مدیریت پلن‌های عضویت ورزشکاران و ارتقای اشتراک پلتفرم تیتان جیم
+                مدیریت پلن‌های عضویت ورزشکاران و ارتقای اشتراک پلتفرم فیتلجند جیم
               </div>
             </div>
 
@@ -351,7 +351,7 @@ export default function AdminPlansPage() {
         onSave={handleSavePlan}
       />
 
-      {/* Titan SaaS Subscription Upgrade & Simulated Gateway Modal */}
+      {/* FitLegend SaaS Subscription Upgrade & Simulated Gateway Modal */}
       <UpgradePlanModal
         isOpen={isUpgradeModalOpen}
         onClose={() => setIsUpgradeModalOpen(false)}

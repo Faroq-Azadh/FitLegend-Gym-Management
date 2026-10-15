@@ -47,10 +47,10 @@ export function LoginForm({ onSubmit, onSuccess }: LoginFormProps) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       try {
-        const isRemembered = localStorage.getItem("titan_remember_me") === "true";
+        const isRemembered = localStorage.getItem("fitlegend_remember_me") === "true";
         if (isRemembered) {
-          const savedId = localStorage.getItem("titan_saved_identifier") || "";
-          const savedPass = localStorage.getItem("titan_saved_password") || "";
+          const savedId = localStorage.getItem("fitlegend_saved_identifier") || "";
+          const savedPass = localStorage.getItem("fitlegend_saved_password") || "";
           if (savedId) setValue("identifier", savedId);
           if (savedPass) setValue("password", savedPass);
           setValue("remember", true);
@@ -81,9 +81,9 @@ export function LoginForm({ onSubmit, onSuccess }: LoginFormProps) {
       // Always cache current active session password for profile security tab
       if (typeof window !== "undefined") {
         try {
-          localStorage.setItem("titan_user_password", values.password);
-          localStorage.setItem("titan_saved_password", values.password);
-          sessionStorage.setItem("titan_active_password", values.password);
+          localStorage.setItem("fitlegend_user_password", values.password);
+          localStorage.setItem("fitlegend_saved_password", values.password);
+          sessionStorage.setItem("fitlegend_active_password", values.password);
         } catch {}
       }
 
@@ -91,13 +91,13 @@ export function LoginForm({ onSubmit, onSuccess }: LoginFormProps) {
       if (typeof window !== "undefined") {
         try {
           if (values.remember) {
-            localStorage.setItem("titan_remember_me", "true");
-            localStorage.setItem("titan_saved_identifier", normalizedIdentifier);
-            localStorage.setItem("titan_saved_password", values.password);
+            localStorage.setItem("fitlegend_remember_me", "true");
+            localStorage.setItem("fitlegend_saved_identifier", normalizedIdentifier);
+            localStorage.setItem("fitlegend_saved_password", values.password);
           } else {
-            localStorage.removeItem("titan_remember_me");
-            localStorage.removeItem("titan_saved_identifier");
-            localStorage.removeItem("titan_saved_password");
+            localStorage.removeItem("fitlegend_remember_me");
+            localStorage.removeItem("fitlegend_saved_identifier");
+            localStorage.removeItem("fitlegend_saved_password");
           }
         } catch {
           // Ignore storage errors
@@ -120,7 +120,9 @@ export function LoginForm({ onSubmit, onSuccess }: LoginFormProps) {
         }
       }
     } catch (err) {
-      if (err instanceof ApiError) {
+      if (err instanceof ApiError && err.isNetworkError) {
+        setApiError("سرور در دسترس نیست؛ برای ورود به پنل، می‌توانید از گزینه‌های ورود سریع زیر استفاده کنید.");
+      } else if (err instanceof ApiError) {
         setApiError(err.detail || "نام کاربری یا رمز عبور اشتباه است.");
       } else if (err instanceof Error) {
         setApiError(err.message);
@@ -129,6 +131,33 @@ export function LoginForm({ onSubmit, onSuccess }: LoginFormProps) {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDemoLogin = (role: "OWNER" | "COACH" | "MEMBER") => {
+    const demoUser = {
+      id: "demo-" + role.toLowerCase(),
+      email: role === "OWNER" ? "admin@fitlegend.ir" : role === "COACH" ? "coach@fitlegend.ir" : "athlete@fitlegend.ir",
+      phone_number: "09123456789",
+      is_phone_verified: true,
+      full_name: role === "OWNER" ? "علی حسینی" : role === "COACH" ? "آرش رستمی" : "سارا محمدی",
+      avatar: null,
+      role,
+      date_joined: new Date().toISOString(),
+    };
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.setItem("fitlegend_user", JSON.stringify(demoUser));
+        localStorage.setItem("fitlegend_session_refreshable", "true");
+        localStorage.setItem("fitlegend_access_token", "demo-token");
+      } catch {}
+    }
+    if (role === "OWNER") {
+      router.push("/admin");
+    } else if (role === "COACH") {
+      router.push("/coach");
+    } else {
+      router.push("/athlete");
     }
   };
 
@@ -232,6 +261,35 @@ export function LoginForm({ onSubmit, onSuccess }: LoginFormProps) {
           "ورود به پنل"
         )}
       </Button>
+
+      <div className="mt-5 border-t border-border pt-4">
+        <p className="mb-2.5 text-center text-[12px] font-semibold text-ink-faint">
+          ورود سریع به پنل‌ها (نسخه آزمایشی / دمو):
+        </p>
+        <div className="grid grid-cols-3 gap-2">
+          <button
+            type="button"
+            onClick={() => handleDemoLogin("OWNER")}
+            className="flex items-center justify-center rounded-[8px] border border-border bg-surface px-2 py-2 text-[12.5px] font-bold text-ink transition-all hover:border-primary hover:bg-tint hover:text-primary-dark"
+          >
+            پنل مدیر
+          </button>
+          <button
+            type="button"
+            onClick={() => handleDemoLogin("COACH")}
+            className="flex items-center justify-center rounded-[8px] border border-border bg-surface px-2 py-2 text-[12.5px] font-bold text-ink transition-all hover:border-primary hover:bg-tint hover:text-primary-dark"
+          >
+            پنل مربی
+          </button>
+          <button
+            type="button"
+            onClick={() => handleDemoLogin("MEMBER")}
+            className="flex items-center justify-center rounded-[8px] border border-border bg-surface px-2 py-2 text-[12.5px] font-bold text-ink transition-all hover:border-primary hover:bg-tint hover:text-primary-dark"
+          >
+            ورزشکار
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

@@ -123,7 +123,7 @@ export function UpgradePlanModal({
       try {
         const userScope = getCurrentUserScope();
         if (selectedPlan) {
-          localStorage.setItem(`titan_gym_plan_override_${userScope}`, JSON.stringify({
+          localStorage.setItem(`fitlegend_gym_plan_override_${userScope}`, JSON.stringify({
             code: selectedPlan.code,
             name: selectedPlan.name,
             updatedAt: new Date().toISOString(),
@@ -186,7 +186,7 @@ export function UpgradePlanModal({
             </span>
             <div>
               <h3 className="text-[17px] font-black text-ink">
-                ارتقای اشتراک سامانه مدیریت تیتان جیم
+                ارتقای اشتراک سامانه مدیریت فیتلجند جیم
               </h3>
               <p className="text-[12px] text-ink-faint">
                 باشگاه {gymName} · دسترسی به امکانات و افزایش ظرفیت اعضا
@@ -483,7 +483,7 @@ export function UpgradePlanModal({
                       درگاه پرداخت الکترونیک شاپرک · {gatewayProvider === "zarinpal" ? "زرین‌پال" : gatewayProvider === "saman" ? "سامان‌کیش" : "به‌پرداخت"}
                     </div>
                     <div className="text-[11px] text-ink-faint">
-                      پذیرنده: تیتان جیم او اس (Titan Gym OS)
+                      پذیرنده: فیتلجند جیم او اس (FitLegend Gym OS)
                     </div>
                   </div>
                 </div>

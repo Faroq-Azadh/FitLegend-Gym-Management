@@ -25,7 +25,7 @@ export function AboutStory() {
               داشت — فقط پراکنده بین چند دفتر، چند فایل اکسل و حافظه‌ی چند نفر.
             </p>
             <p className="text-[15.5px] leading-[2] text-ink-soft">
-              تیتان را ساختیم تا این پراکندگی تمام شود. عضویت، رزرو کلاس، پرداخت،
+              فیتلجند را ساختیم تا این پراکندگی تمام شود. عضویت، رزرو کلاس، پرداخت،
               برنامه‌ی تمرینی و گزارش عملکرد، همه در یک جا — و مهم‌تر از همه، قابل
               فهم برای کسی که وقت ندارد با نرم‌افزار کلنجار برود.
             </p>
@@ -52,7 +52,7 @@ export function AboutStory() {
                 ت
               </div>
               <div>
-                <div className="text-[14px] font-bold text-white">تیم تیتان</div>
+                <div className="text-[14px] font-bold text-white">تیم فیتلجند</div>
                 <div className="text-[12.5px] text-ink-faint">کردستان، ایران</div>
               </div>
             </div>

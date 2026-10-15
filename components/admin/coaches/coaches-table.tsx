@@ -111,7 +111,7 @@ export function CoachesTable({
   const [localCoachOverrides, setLocalCoachOverrides] = useState<Record<string, any>>(() => {
     if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem("titan_gym_coaches_overrides");
+        const saved = localStorage.getItem("fitlegend_gym_coaches_overrides");
         if (saved) return JSON.parse(saved);
       } catch { }
     }
@@ -122,7 +122,7 @@ export function CoachesTable({
   const [localMemberOverrides, setLocalMemberOverrides] = useState<Record<string, any>>(() => {
     if (typeof window !== "undefined") {
       try {
-        const saved = localStorage.getItem("titan_gym_members_overrides");
+        const saved = localStorage.getItem("fitlegend_gym_members_overrides");
         if (saved) return JSON.parse(saved);
       } catch { }
     }
@@ -177,19 +177,19 @@ export function CoachesTable({
   const saveLocalCoachOverride = (id: string, override: any) => {
     if (typeof window === "undefined" || !id) return;
     try {
-      const raw = localStorage.getItem("titan_gym_coaches_overrides");
+      const raw = localStorage.getItem("fitlegend_gym_coaches_overrides");
       const current = raw ? JSON.parse(raw) : {};
       current[id] = { ...(current[id] || {}), ...override };
       setLocalCoachOverrides(current);
-      localStorage.setItem("titan_gym_coaches_overrides", JSON.stringify(current));
-      window.dispatchEvent(new Event("titan_coaches_updated"));
+      localStorage.setItem("fitlegend_gym_coaches_overrides", JSON.stringify(current));
+      window.dispatchEvent(new Event("fitlegend_coaches_updated"));
     } catch { }
   };
 
   const saveLocalCoachOverridesBatch = (entries: Record<string, any>) => {
     if (typeof window === "undefined") return;
     try {
-      const raw = localStorage.getItem("titan_gym_coaches_overrides");
+      const raw = localStorage.getItem("fitlegend_gym_coaches_overrides");
       const current = raw ? JSON.parse(raw) : {};
       for (const [key, val] of Object.entries(entries)) {
         if (key) {
@@ -197,28 +197,28 @@ export function CoachesTable({
         }
       }
       setLocalCoachOverrides(current);
-      localStorage.setItem("titan_gym_coaches_overrides", JSON.stringify(current));
-      window.dispatchEvent(new Event("titan_coaches_updated"));
+      localStorage.setItem("fitlegend_gym_coaches_overrides", JSON.stringify(current));
+      window.dispatchEvent(new Event("fitlegend_coaches_updated"));
     } catch { }
   };
 
   useEffect(() => {
     const handleSync = () => {
       try {
-        const savedCoaches = localStorage.getItem("titan_gym_coaches_overrides");
+        const savedCoaches = localStorage.getItem("fitlegend_gym_coaches_overrides");
         if (savedCoaches) setLocalCoachOverrides(JSON.parse(savedCoaches));
-        const savedMembers = localStorage.getItem("titan_gym_members_overrides");
+        const savedMembers = localStorage.getItem("fitlegend_gym_members_overrides");
         if (savedMembers) setLocalMemberOverrides(JSON.parse(savedMembers));
         setDeletedCoachIds(getDeletedCoachIds());
         setLocalTeamMembers(getLocalTeamMembers());
       } catch { }
     };
     window.addEventListener(COACHES_UPDATED_EVENT, handleSync);
-    window.addEventListener("titan_members_updated", handleSync);
+    window.addEventListener("fitlegend_members_updated", handleSync);
     window.addEventListener("storage", handleSync);
     return () => {
       window.removeEventListener(COACHES_UPDATED_EVENT, handleSync);
-      window.removeEventListener("titan_members_updated", handleSync);
+      window.removeEventListener("fitlegend_members_updated", handleSync);
       window.removeEventListener("storage", handleSync);
     };
   }, []);
@@ -520,7 +520,7 @@ export function CoachesTable({
     avatar: "",
   });
 
-  // Dedicated Add Coach Form State matching Titan_Gym_OS_API.yaml CoachCreate
+  // Dedicated Add Coach Form State matching FitLegend_Gym_OS_API.yaml CoachCreate
   const [addFormData, setAddFormData] = useState({
     first_name: "",
     last_name: "",
@@ -1382,7 +1382,7 @@ export function CoachesTable({
                   افزودن مربی جدید
                 </h3>
                 <p className="mt-1 text-[12.5px] text-ink-soft">
-                  ثبت مربی در سامانه بر اساس استاندارد تایتان جیم
+                  ثبت مربی در سامانه بر اساس استاندارد فیتلجند جیم
                 </p>
               </div>
               <button

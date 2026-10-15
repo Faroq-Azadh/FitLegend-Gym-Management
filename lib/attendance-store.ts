@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { tokenStorage } from "@/lib/api/token";
 import { getCurrentGymScope } from "@/lib/session-scope";
 
-export const ATTENDANCE_STORAGE_KEY = "titan_gym_daily_attendance";
-export const ATTENDANCE_UPDATED_EVENT = "titan_gym_attendance_updated";
+export const ATTENDANCE_STORAGE_KEY = "fitlegend_gym_daily_attendance";
+export const ATTENDANCE_UPDATED_EVENT = "fitlegend_gym_attendance_updated";
 
 export interface DailyAttendanceRecord {
   date: string; // YYYY-MM-DD
@@ -26,12 +26,12 @@ export function getTodayIsoString(offsetDays = 0): string {
 
 export function getAttendanceKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_gym_daily_attendance_${s}`;
+  return `fitlegend_gym_daily_attendance_${s}`;
 }
 
 export function getWeeklyAttendanceKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_gym_weekly_attendance_${s}`;
+  return `fitlegend_gym_weekly_attendance_${s}`;
 }
 
 export function getStoredWeeklyAttendance(scope?: string): Record<string, number> {
@@ -168,11 +168,11 @@ export function useTodayAttendance(backendTodayCheckins?: number | null) {
     };
 
     window.addEventListener(ATTENDANCE_UPDATED_EVENT, handleUpdate);
-    window.addEventListener("titan:gym-changed", handleUpdate);
+    window.addEventListener("fitlegend:gym-changed", handleUpdate);
     window.addEventListener("storage", handleUpdate);
     return () => {
       window.removeEventListener(ATTENDANCE_UPDATED_EVENT, handleUpdate);
-      window.removeEventListener("titan:gym-changed", handleUpdate);
+      window.removeEventListener("fitlegend:gym-changed", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
     };
   }, [gymScope]);

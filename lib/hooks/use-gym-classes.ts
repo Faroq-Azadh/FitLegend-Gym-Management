@@ -33,7 +33,7 @@ export const DAYS_REV_MAP: Record<string, number> = {
 
 export function getLocalClassesMetaKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_gym_classes_meta_${s}`;
+  return `fitlegend_gym_classes_meta_${s}`;
 }
 
 export function getLocalClassesMeta(scope?: string): Record<string, any> {
@@ -42,7 +42,7 @@ export function getLocalClassesMeta(scope?: string): Record<string, any> {
     const s = scope || getCurrentGymScope();
     const raw =
       localStorage.getItem(getLocalClassesMetaKey(s)) ||
-      (s === "gym_flex" || s.includes("farooq") ? localStorage.getItem("titan_gym_classes_meta") : null);
+      (s === "gym_flex" || s.includes("farooq") ? localStorage.getItem("fitlegend_gym_classes_meta") : null);
     return raw ? JSON.parse(raw) : {};
   } catch {
     return {};
@@ -57,7 +57,7 @@ export function saveLocalClassMeta(id: string, meta: any, scope?: string): void 
     current[id] = { ...(current[id] || {}), ...meta };
     localStorage.setItem(getLocalClassesMetaKey(s), JSON.stringify(current));
     window.dispatchEvent(new CustomEvent(ROSTER_UPDATED_EVENT));
-    window.dispatchEvent(new CustomEvent("titan_gym_classes_updated"));
+    window.dispatchEvent(new CustomEvent("fitlegend_gym_classes_updated"));
   } catch {}
 }
 
@@ -76,17 +76,17 @@ export function useGymClasses() {
     if (typeof window === "undefined") return;
     const handleUpdate = () => setRevision((p) => p + 1);
     window.addEventListener(ROSTER_UPDATED_EVENT, handleUpdate);
-    window.addEventListener("titan_gym_classes_updated", handleUpdate);
-    window.addEventListener("titan_gym_bookings_updated", handleUpdate);
-    window.addEventListener("titan:gym-changed", handleUpdate);
-    window.addEventListener("titan:auth-logout", handleUpdate);
+    window.addEventListener("fitlegend_gym_classes_updated", handleUpdate);
+    window.addEventListener("fitlegend_gym_bookings_updated", handleUpdate);
+    window.addEventListener("fitlegend:gym-changed", handleUpdate);
+    window.addEventListener("fitlegend:auth-logout", handleUpdate);
     window.addEventListener("storage", handleUpdate);
     return () => {
       window.removeEventListener(ROSTER_UPDATED_EVENT, handleUpdate);
-      window.removeEventListener("titan_gym_classes_updated", handleUpdate);
-      window.removeEventListener("titan_gym_bookings_updated", handleUpdate);
-      window.removeEventListener("titan:gym-changed", handleUpdate);
-      window.removeEventListener("titan:auth-logout", handleUpdate);
+      window.removeEventListener("fitlegend_gym_classes_updated", handleUpdate);
+      window.removeEventListener("fitlegend_gym_bookings_updated", handleUpdate);
+      window.removeEventListener("fitlegend:gym-changed", handleUpdate);
+      window.removeEventListener("fitlegend:auth-logout", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
     };
   }, []);

@@ -1,6 +1,6 @@
-# تیتان — Gym OS Auth
+# فیتلجند — Gym OS Auth
 
-Production-ready Next.js application for Titan Gym OS login and gym registration flows.
+Production-ready Next.js application for FitLegend Gym OS login and gym registration flows.
 
 ## Tech Stack
 

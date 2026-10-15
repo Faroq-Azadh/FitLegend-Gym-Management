@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { AdminAuthGuard } from "@/components/admin/admin-auth-guard";
 
 export const metadata: Metadata = {
-  title: "پنل مدیر باشگاه — تیتان",
-  description: "داشبورد مدیریت و نظارت بر آمار، کلاس‌ها، اعضا و درآمد باشگاه ورزشی تیتان",
+  title: "پنل مدیر باشگاه — فیتلجند",
+  description: "داشبورد مدیریت و نظارت بر آمار، کلاس‌ها، اعضا و درآمد باشگاه ورزشی فیتلجند",
 };
 
 export default function AdminLayout({

@@ -187,7 +187,7 @@ export default function AthleteProgramPage() {
   useEffect(() => {
     const loadSaved = () => {
       try {
-        const saved = localStorage.getItem("titan_program_completed");
+        const saved = localStorage.getItem("fitlegend_program_completed");
         if (saved) {
           setCompletedExercises(JSON.parse(saved));
         } else {
@@ -199,7 +199,7 @@ export default function AthleteProgramPage() {
             "2": true,
           };
           setCompletedExercises(defaultState);
-          localStorage.setItem("titan_program_completed", JSON.stringify(defaultState));
+          localStorage.setItem("fitlegend_program_completed", JSON.stringify(defaultState));
         }
       } catch {
         // Ignore localStorage errors
@@ -230,7 +230,7 @@ export default function AthleteProgramPage() {
       }
 
       try {
-        localStorage.setItem("titan_program_completed", JSON.stringify(updated));
+        localStorage.setItem("fitlegend_program_completed", JSON.stringify(updated));
         window.dispatchEvent(new Event("workout-progress-updated"));
       } catch {
         // Ignore localStorage errors
@@ -279,7 +279,7 @@ export default function AthleteProgramPage() {
           {/* Print only header: shows ONLY when downloading PDF/printing */}
           <div className="print-header" style={{ display: "none" }}>
             <h1>برنامه‌ی تمرینی — لیست حرکات</h1>
-            <p>برنامه‌ی حجم اختصاصی تیتان · ۳ روز در هفته</p>
+            <p>برنامه‌ی حجم اختصاصی فیتلجند · ۳ روز در هفته</p>
           </div>
 
           {/* Page Head (hidden in print) */}

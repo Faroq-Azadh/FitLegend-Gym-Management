@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LogoMark } from "@/components/ui/logo";
 import { useAuth } from "@/lib/auth-context";
 import { useGymMe } from "@/lib/hooks/queries/use-gym-me";
 import { useOwnerDashboard } from "@/lib/hooks/queries/use-owner-dashboard";
@@ -252,18 +253,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         {/* Sidebar head with logo */}
         <div className="flex items-center justify-between px-[22px] pt-[22px] pb-[16px]">
           <Link href="/admin" className="flex items-center gap-[10px] text-[18px] font-extrabold text-ink truncate">
-            <span className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-primary to-cyan">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#0F172A"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                className="h-[18px] w-[18px]"
-              >
-                <path d="M4 12h4M16 12h4M8 7v10M16 7v10M8 12h8" />
-              </svg>
-            </span>
+            <LogoMark size="md" />
             <span className="truncate">{gym?.name || "باشگاه ورزشی"}</span>
           </Link>
         </div>

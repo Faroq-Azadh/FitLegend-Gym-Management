@@ -35,7 +35,7 @@ const PLAN_NOTES: Record<PlanId, ReactNode> = {
   free: (
     <>
       {persianNumber(REGISTER_CONFIG.freeTrialDays)} روز امکان استفاده از تمامی
-      امکانات تیتان را دارید.
+      امکانات فیتلجند را دارید.
     </>
   ),
   basic:
@@ -248,7 +248,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           >
             <Input
               id="gymName"
-              placeholder="مثلاً باشگاه تیتان اسپرت"
+              placeholder="مثلاً باشگاه فیتلجند اسپرت"
               error={!!errors.gymName}
               {...field("gymName")}
             />
@@ -441,7 +441,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             <a href="#" className="font-semibold text-primary-dark">
               حریم خصوصی
             </a>{" "}
-            تیتان موافقم.
+            فیتلجند موافقم.
           </label>
         </div>
 

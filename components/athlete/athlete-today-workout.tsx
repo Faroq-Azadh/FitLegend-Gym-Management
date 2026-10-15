@@ -69,7 +69,7 @@ export function AthleteTodayWorkout() {
   useEffect(() => {
     const syncFromStorage = () => {
       try {
-        const saved = localStorage.getItem("titan_program_completed");
+        const saved = localStorage.getItem("fitlegend_program_completed");
         if (saved) {
           const completedMap: Record<string, boolean> = JSON.parse(saved);
           setExercises((prev) =>
@@ -103,11 +103,11 @@ export function AthleteTodayWorkout() {
     );
 
     try {
-      const saved = localStorage.getItem("titan_program_completed");
+      const saved = localStorage.getItem("fitlegend_program_completed");
       const completedMap: Record<string, boolean> = saved ? JSON.parse(saved) : {};
       completedMap[item.programId] = nextDone;
       completedMap[item.id] = nextDone;
-      localStorage.setItem("titan_program_completed", JSON.stringify(completedMap));
+      localStorage.setItem("fitlegend_program_completed", JSON.stringify(completedMap));
       window.dispatchEvent(new Event("workout-progress-updated"));
     } catch {
       // Ignore localStorage errors

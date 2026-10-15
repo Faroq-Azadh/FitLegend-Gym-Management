@@ -86,7 +86,7 @@ export const membersService = {
 
   /**
    * Create a new member in the gym (POST /members/)
-   * Conforms exactly to MemberCreate schema in Titan_Gym_OS_API.yaml
+   * Conforms exactly to MemberCreate schema in FitLegend_Gym_OS_API.yaml
    */
   async createMember(payload: CreateMemberPayload): Promise<MemberListItem> {
     const today = new Date().toISOString().slice(0, 10);

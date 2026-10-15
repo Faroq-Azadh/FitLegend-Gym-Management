@@ -130,7 +130,7 @@ export function PersonalInfoTab({ user, onUpdateUser }: PersonalInfoTabProps) {
             <input
               type="email"
               disabled
-              value={formData.email || (authUser?.email ?? "admin@titan.fit")}
+              value={formData.email || (authUser?.email ?? "admin@fitlegend.fit")}
               className="w-full rounded-[12px] border-[1.5px] border-border bg-bg/50 p-[11px_14px] text-[13.5px] text-ink-faint cursor-not-allowed outline-none"
             />
           </div>

@@ -18,7 +18,7 @@ export default function AthleteProfilePage() {
   // Account Information State (Moved from Settings)
   const [firstName, setFirstName] = useState("سارا");
   const [lastName, setLastName] = useState("محمدی");
-  const [email, setEmail] = useState("sara@titan.fit");
+  const [email, setEmail] = useState("sara@fitlegend.fit");
   const [phone, setPhone] = useState("۰۹۱۲۱۱۱۲۲۳۳");
   const [sensitiveConditions, setSensitiveConditions] = useState(
     "آسیب‌دیدگی جزئی زانوی چپ در تمرینات سنگین — نیاز به گرم‌کردن اختصاصی پیش از اسکات"
@@ -72,7 +72,7 @@ export default function AthleteProfilePage() {
   const handleReset = () => {
     setFirstName("سارا");
     setLastName("محمدی");
-    setEmail("sara@titan.fit");
+    setEmail("sara@fitlegend.fit");
     setPhone("۰۹۱۲۱۱۱۲۲۳۳");
     setSensitiveConditions(
       "آسیب‌دیدگی جزئی زانوی چپ در تمرینات سنگین — نیاز به گرم‌کردن اختصاصی پیش از اسکات"
@@ -162,7 +162,7 @@ export default function AthleteProfilePage() {
                     </span>
                   </div>
                   <div className="text-[12.5px] text-ink-faint mb-4">
-                    عضو رسمی باشگاه تیتان از شهریور ۱۴۰۲ · سطح پیشرفته
+                    عضو رسمی باشگاه فیتلجند از شهریور ۱۴۰۲ · سطح پیشرفته
                   </div>
 
                   {/* Profile Picture Actions: Set, Change, Remove */}

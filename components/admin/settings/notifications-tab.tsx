@@ -30,9 +30,9 @@ import {
   CheckCheck,
 } from "lucide-react";
 
-const NOTIF_STORAGE_KEY = "titan_gym_notification_preferences";
-const MANAGER_PHONE_STORAGE_KEY = "titan_gym_manager_phone";
-const NOTIF_HISTORY_STORAGE_KEY = "titan_gym_notifications_history";
+const NOTIF_STORAGE_KEY = "fitlegend_gym_notification_preferences";
+const MANAGER_PHONE_STORAGE_KEY = "fitlegend_gym_manager_phone";
+const NOTIF_HISTORY_STORAGE_KEY = "fitlegend_gym_notifications_history";
 
 interface NotificationConfig {
   id: string;
@@ -344,35 +344,35 @@ export function NotificationsTab() {
     const dateStr = getPersianDateStr();
 
     if (item.key === "daily_report") {
-      targetName = user?.full_name || "مدیریت باشگاه تیتان";
+      targetName = user?.full_name || "مدیریت باشگاه فیتلجند";
       targetPhone = managerPhone;
-      text = `📊 گزارش روزانه مدیریت باشگاه تیتان
+      text = `📊 گزارش روزانه مدیریت باشگاه فیتلجند
 📅 تاریخ: ${dateStr}
 💰 درآمد کل ثبت‌شده: ${formatFullToman(totalRevenue)}
 👥 حضور و شاگردان امروز: ${toPersianDigits(totalClassStudents)} نفر
 ⚠️ اشتراک‌های رو به اتمام: ${toPersianDigits(expiringMembers.length)} عضو
 ✅ وضعیت سامانه و دستگاه‌ها: فعال و پایدار
-باشگاه ورزشی تیتان`;
+باشگاه ورزشی فیتلجند`;
     } else if (item.key === "renewal_reminder") {
       const firstExp = expiringMembers[0];
       targetName = firstExp ? firstExp.name : "اعضای رو به اتمام";
       targetPhone = firstExp?.phone || managerPhone;
       text = `ورزشکار گرامی ${targetName}،
-با سلام؛ اشتراک باشگاه تیتان شما ظرف چند روز آینده به پایان می‌رسد. جهت تمدید اشتراک و جلوگیری از قطع دسترسی کمد و تمرین، می‌توانید از طریق پنل کاربری یا پذیرش اقدام فرمایید.
-با تشکر، باشگاه ورزشی تیتان`;
+با سلام؛ اشتراک باشگاه فیتلجند شما ظرف چند روز آینده به پایان می‌رسد. جهت تمدید اشتراک و جلوگیری از قطع دسترسی کمد و تمرین، می‌توانید از طریق پنل کاربری یا پذیرش اقدام فرمایید.
+با تشکر، باشگاه ورزشی فیتلجند`;
     } else if (item.key === "welcome_member") {
       const recent = members[0];
       targetName = recent ? recent.name : "عضو جدید";
       targetPhone = recent?.phone || managerPhone;
       text = `ورزشکار عزیز ${targetName}،
-به جمع خانواده باشگاه ورزشی تیتان خوش آمدید! 🏋️
+به جمع خانواده باشگاه ورزشی فیتلجند خوش آمدید! 🏋️
 اطلاعات ورود به سامانه و کمد هوشمند شما فعال شد.
 ساعت کاری: همه‌روزه از ۶:۰۰ الی ۲۳:۰۰
-پشتیبانی تیتان: ${managerPhone}`;
+پشتیبانی فیتلجند: ${managerPhone}`;
     } else if (item.key === "class_reminder") {
       targetName = "شاگردان کلاس ورزشی";
       targetPhone = managerPhone;
-      text = `یادآوری کلاس ورزشی باشگاه تیتان:
+      text = `یادآوری کلاس ورزشی باشگاه فیتلجند:
 شاگرد گرامی، سانس کلاس تخصصی شما ۱ ساعت دیگر آغاز می‌شود. لطفاً ۱۵ دقیقه پیش از شروع در سالن حضور داشته باشید.
 همراه داشتن کارت عضویت الزامی است.`;
     }
@@ -524,7 +524,7 @@ export function NotificationsTab() {
       {/* Top Header */}
       <div className="flex flex-wrap items-center justify-between gap-[12px]">
         <div>
-          <div className="text-[16px] font-extrabold text-ink">سامانه اعلان‌ها و پیامک‌های هوشمند تیتان</div>
+          <div className="text-[16px] font-extrabold text-ink">سامانه اعلان‌ها و پیامک‌های هوشمند فیتلجند</div>
           <div className="mt-[2px] text-[13px] text-ink-faint">
             تنظیم شماره همراه مدیر، ارسال پیامک‌های خودکار و گزارش روزانه با وضعیت لحظه‌ای
           </div>
@@ -854,7 +854,7 @@ export function NotificationsTab() {
                   ) : (
                     <Send className="h-[16px] w-[16px]" />
                   )}
-                  <span>{isSending ? "در حال ارسال…" : "ارسال با درگاه پیامکی تیتان"}</span>
+                  <span>{isSending ? "در حال ارسال…" : "ارسال با درگاه پیامکی فیتلجند"}</span>
                 </button>
               </div>
 

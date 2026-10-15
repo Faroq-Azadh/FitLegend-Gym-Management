@@ -145,7 +145,7 @@ export default function AdminClassesPage() {
       const clsToDelete = classes.find((c) => c.id === id);
       markClassAsDeleted(id);
       try {
-        localStorage.removeItem(`titan_gym_class_roster_${id}`);
+        localStorage.removeItem(`fitlegend_gym_class_roster_${id}`);
       } catch {}
       try {
         await deleteClassMutation.mutateAsync(id);

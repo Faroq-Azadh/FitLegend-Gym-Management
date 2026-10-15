@@ -50,7 +50,7 @@ function formatPersianDate(date: Date): string {
 const PLANS: PlanOption[] = [
   {
     id: "bronze",
-    title: "اشتراک برنزی باشگاه تیتان (۱ ماهه)",
+    title: "اشتراک برنزی باشگاه فیتلجند (۱ ماهه)",
     duration: "۱ ماهه",
     totalDays: 30,
     price: "۹۵۰٬۰۰۰ تومان",
@@ -60,7 +60,7 @@ const PLANS: PlanOption[] = [
   },
   {
     id: "gold",
-    title: "عضویت طلایی باشگاه تیتان (۳ ماهه)",
+    title: "عضویت طلایی باشگاه فیتلجند (۳ ماهه)",
     duration: "۳ ماهه",
     totalDays: 90,
     price: "۲٬۸۵۰٬۰۰۰ تومان",
@@ -998,7 +998,7 @@ export default function AthleteMembershipPage() {
             <div className="bg-[#1E293B] text-white p-5 flex items-center justify-between border-b border-white/10">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-dark to-[#22D3EE] flex items-center justify-center font-black text-ink text-[16px]">
-                  TITAN
+                  FITLEGEND
                 </div>
                 <div>
                   <div className="text-[15px] font-extrabold">درگاه پرداخت الکترونیک شاپرک</div>
@@ -1017,7 +1017,7 @@ export default function AthleteMembershipPage() {
                 <div className="bg-bg p-3.5 rounded-[16px] border border-border mb-5">
                   <div className="flex justify-between text-[13px] text-ink-soft mb-1.5">
                     <span>پذیرنده:</span>
-                    <span className="font-bold text-ink">باشگاه ورزشی و بدنسازی تیتان</span>
+                    <span className="font-bold text-ink">باشگاه ورزشی و بدنسازی فیتلجند</span>
                   </div>
                   <div className="flex justify-between text-[13px] text-ink-soft mb-1.5">
                     <span>پلن درخواستی:</span>

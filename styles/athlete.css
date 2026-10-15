@@ -1918,7 +1918,7 @@
     color: #ffffff !important;
 }
 
-/* ===== MEMBERSHIP HERO & INVOICE TABLE (from titan-gym-os-membership.html) ===== */
+/* ===== MEMBERSHIP HERO & INVOICE TABLE (from fitlegend-gym-os-membership.html) ===== */
 .app .mem-hero {
     background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
     color: #FFFFFF !important;
@@ -2283,7 +2283,7 @@
     height: 16px !important;
 }
 
-/* ===== SETTINGS PAGE (from titan-gym-os-settings.html) ===== */
+/* ===== SETTINGS PAGE (from fitlegend-gym-os-settings.html) ===== */
 .app .card .tabs-bar.settings-tabs {
     display: flex !important;
     gap: 4px !important;

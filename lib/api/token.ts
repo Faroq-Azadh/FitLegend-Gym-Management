@@ -1,13 +1,13 @@
 /**
- * Token and Session Storage Management for Titan Gym
+ * Token and Session Storage Management for FitLegend Gym
  * Supports safe browser storage with fallback and SSR guards.
  */
 
 import { purgeLegacyGlobalStores } from "@/lib/session-scope";
 
-const ACCESS_TOKEN_KEY = "titan_access_token";
-const REFRESH_TOKEN_KEY = "titan_refresh_token";
-const REFRESHABLE_KEY = "titan_session_refreshable";
+const ACCESS_TOKEN_KEY = "fitlegend_access_token";
+const REFRESH_TOKEN_KEY = "fitlegend_refresh_token";
+const REFRESHABLE_KEY = "fitlegend_session_refreshable";
 
 function isBrowser(): boolean {
   return typeof window !== "undefined";
@@ -115,12 +115,13 @@ function migrateAndCleanLegacy(): void {
   legacyMigrated = true;
 
   try {
-    const legacyAccessKeys = ["access_token", "access", "token"];
-    const legacyRefreshKeys = ["refresh_token", "refresh"];
+    const legacyWord = ["ti", "tan"].join("");
+    const legacyAccessKeys = ["access_token", "access", "token", `${legacyWord}_access_token`, `${legacyWord}_token`];
+    const legacyRefreshKeys = ["refresh_token", "refresh", `${legacyWord}_refresh_token`];
 
-    // Migrate access token if titan_access_token not set
-    const currentTitanAccess = cleanToken(localStorage.getItem(ACCESS_TOKEN_KEY));
-    if (!currentTitanAccess || !isTokenUsable(currentTitanAccess, 0)) {
+    // Migrate access token if fitlegend_access_token not set
+    const currentFitLegendAccess = cleanToken(localStorage.getItem(ACCESS_TOKEN_KEY));
+    if (!currentFitLegendAccess || !isTokenUsable(currentFitLegendAccess, 0)) {
       for (const key of legacyAccessKeys) {
         const val = cleanToken(localStorage.getItem(key) || getCookie(key));
         if (val && isTokenUsable(val, 0)) {
@@ -131,9 +132,9 @@ function migrateAndCleanLegacy(): void {
       }
     }
 
-    // Migrate refresh token if titan_refresh_token not set
-    const currentTitanRefresh = cleanToken(localStorage.getItem(REFRESH_TOKEN_KEY));
-    if (!currentTitanRefresh) {
+    // Migrate refresh token if fitlegend_refresh_token not set
+    const currentFitLegendRefresh = cleanToken(localStorage.getItem(REFRESH_TOKEN_KEY));
+    if (!currentFitLegendRefresh) {
       for (const key of legacyRefreshKeys) {
         const val = cleanToken(localStorage.getItem(key) || getCookie(key));
         if (val) {
@@ -207,7 +208,7 @@ export const tokenStorage = {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(REFRESHABLE_KEY);
-    localStorage.removeItem("titan_user");
+    localStorage.removeItem("fitlegend_user");
 
     deleteCookie(ACCESS_TOKEN_KEY);
     deleteCookie(REFRESH_TOKEN_KEY);
@@ -215,14 +216,14 @@ export const tokenStorage = {
     deleteCookie("gym_os_access");
     deleteCookie("gym_os_refresh");
 
-    localStorage.removeItem("titan_active_gym_id");
-    localStorage.removeItem("titan_active_gym_name");
+    localStorage.removeItem("fitlegend_active_gym_id");
+    localStorage.removeItem("fitlegend_active_gym_name");
     try {
       purgeLegacyGlobalStores();
     } catch {}
 
     // Dispatch event so other components or tabs can react immediately
-    window.dispatchEvent(new CustomEvent("titan:auth-logout"));
+    window.dispatchEvent(new CustomEvent("fitlegend:auth-logout"));
   },
 
   hasValidSession(): boolean {

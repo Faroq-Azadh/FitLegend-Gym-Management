@@ -67,7 +67,7 @@ export function useCreateClass() {
       await queryClient.refetchQueries({ queryKey: ["classes-calendar"] });
       await queryClient.invalidateQueries({ queryKey: ["owner-dashboard"] });
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("titan_gym_classes_updated"));
+        window.dispatchEvent(new CustomEvent("fitlegend_gym_classes_updated"));
       }
     },
   });
@@ -105,7 +105,7 @@ export function useUpdateClass() {
       await queryClient.refetchQueries({ queryKey: ["classes-calendar"] });
       await queryClient.invalidateQueries({ queryKey: ["owner-dashboard"] });
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("titan_gym_classes_updated"));
+        window.dispatchEvent(new CustomEvent("fitlegend_gym_classes_updated"));
       }
     },
   });
@@ -130,7 +130,7 @@ export function useDeleteClass() {
       await queryClient.refetchQueries({ queryKey: ["classes-calendar"] });
       await queryClient.invalidateQueries({ queryKey: ["owner-dashboard"] });
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("titan_gym_classes_updated"));
+        window.dispatchEvent(new CustomEvent("fitlegend_gym_classes_updated"));
       }
     },
   });
@@ -144,7 +144,7 @@ export function useApproveBooking() {
       queryClient.invalidateQueries({ queryKey: ["classes-bookings"] });
       queryClient.invalidateQueries({ queryKey: ["owner-dashboard"] });
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("titan_gym_bookings_updated"));
+        window.dispatchEvent(new CustomEvent("fitlegend_gym_bookings_updated"));
       }
     },
   });
@@ -158,7 +158,7 @@ export function useRejectBooking() {
       queryClient.invalidateQueries({ queryKey: ["classes-bookings"] });
       queryClient.invalidateQueries({ queryKey: ["owner-dashboard"] });
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("titan_gym_bookings_updated"));
+        window.dispatchEvent(new CustomEvent("fitlegend_gym_bookings_updated"));
       }
     },
   });
@@ -173,7 +173,7 @@ export function useCreateBooking() {
       queryClient.invalidateQueries({ queryKey: ["owner-dashboard"] });
       queryClient.invalidateQueries({ queryKey: ["classes"] });
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("titan_gym_bookings_updated"));
+        window.dispatchEvent(new CustomEvent("fitlegend_gym_bookings_updated"));
       }
     },
   });
@@ -190,7 +190,7 @@ export function useDeleteBooking() {
       queryClient.invalidateQueries({ queryKey: ["owner-dashboard"] });
       queryClient.invalidateQueries({ queryKey: ["classes"] });
       if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("titan_gym_bookings_updated"));
+        window.dispatchEvent(new CustomEvent("fitlegend_gym_bookings_updated"));
       }
     },
   });

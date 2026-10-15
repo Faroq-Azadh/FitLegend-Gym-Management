@@ -6,7 +6,7 @@ import { useGymSettings, useUpdateGymSettings } from "@/lib/hooks/queries/use-gy
 import { toPersianDigits, normalizeDigits } from "@/lib/persian-digits";
 import { Check, Loader2, Plus, Trash2, Clock } from "lucide-react";
 
-const WORKING_HOURS_KEY = "titan_gym_working_hours";
+const WORKING_HOURS_KEY = "fitlegend_gym_working_hours";
 
 const INITIAL_HOURS: WorkingHourItem[] = [
   {

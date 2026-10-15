@@ -6,7 +6,7 @@ import { useGymSettings, useUpdateGymSettings } from "@/lib/hooks/queries/use-gy
 import { useAuth } from "@/lib/auth-context";
 import { Check, Loader2, Bell } from "lucide-react";
 
-const NOTIF_PROFILE_STORAGE_KEY = "titan_profile_notifications";
+const NOTIF_PROFILE_STORAGE_KEY = "fitlegend_profile_notifications";
 
 interface NotificationsTabProps {
   notifications: ProfileNotificationData;

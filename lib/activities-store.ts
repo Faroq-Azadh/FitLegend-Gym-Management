@@ -77,11 +77,11 @@ import { getCurrentGymScope, getCurrentUserScope, isFlexGymOrFarooq } from "@/li
 
 export function getActivitiesStorageKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_activities_${s}`;
+  return `fitlegend_activities_${s}`;
 }
 
-export const ACTIVITIES_STORAGE_KEY = "titan_gym_recent_activities";
-export const ACTIVITIES_UPDATED_EVENT = "titan_gym_activities_updated";
+export const ACTIVITIES_STORAGE_KEY = "fitlegend_gym_recent_activities";
+export const ACTIVITIES_UPDATED_EVENT = "fitlegend_gym_activities_updated";
 
 /**
  * Safely retrieve locally logged activities from browser storage scoped to the active gym
@@ -103,7 +103,7 @@ export function getLocalActivities(gymScope?: string): ActivityItem[] {
 
     if (isFlex) {
       // Flex gym: also read user-scoped key and legacy global key
-      const userKey = `titan_activities_user_${getCurrentUserScope()}`;
+      const userKey = `fitlegend_activities_user_${getCurrentUserScope()}`;
       const userRaw = localStorage.getItem(userKey);
       if (userRaw) {
         try {
@@ -236,14 +236,14 @@ export function useActivitiesData(backendActivities?: RecentActivityEvent[]) {
     };
 
     window.addEventListener(ACTIVITIES_UPDATED_EVENT, handleUpdate);
-    window.addEventListener("titan:gym-changed", handleUpdate);
+    window.addEventListener("fitlegend:gym-changed", handleUpdate);
     window.addEventListener("storage", handleUpdate);
-    window.addEventListener("titan:auth-logout", handleUpdate);
+    window.addEventListener("fitlegend:auth-logout", handleUpdate);
     return () => {
       window.removeEventListener(ACTIVITIES_UPDATED_EVENT, handleUpdate);
-      window.removeEventListener("titan:gym-changed", handleUpdate);
+      window.removeEventListener("fitlegend:gym-changed", handleUpdate);
       window.removeEventListener("storage", handleUpdate);
-      window.removeEventListener("titan:auth-logout", handleUpdate);
+      window.removeEventListener("fitlegend:auth-logout", handleUpdate);
     };
   }, [backendActivities]);
 

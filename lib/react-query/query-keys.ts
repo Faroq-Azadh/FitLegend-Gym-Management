@@ -1,6 +1,6 @@
 /**
  * Centralized Query Keys factory for TanStack React Query.
- * Ensures predictable cache invalidation and strong typing across Titan Gym.
+ * Ensures predictable cache invalidation and strong typing across FitLegend Gym.
  */
 
 export const queryKeys = {

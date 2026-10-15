@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "ورود — تیتان",
-  description: "ورود به پنل مدیریت باشگاه تیتان",
+  title: "ورود — فیتلجند",
+  description: "ورود به پنل مدیریت باشگاه فیتلجند",
 };
 
 export default function LoginLayout({

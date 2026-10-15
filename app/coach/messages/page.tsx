@@ -360,7 +360,7 @@ const INITIAL_CONVERSATIONS: ConversationItem[] = [
       {
         id: "m22",
         type: "out",
-        text: "سلام امیر جان، به خانواده تیتان خوش اومدی! برنامه اولیه‌ت در پنل قرار گرفت.",
+        text: "سلام امیر جان، به خانواده فیتلجند خوش اومدی! برنامه اولیه‌ت در پنل قرار گرفت.",
         time: "۱۱:۰۰",
       },
       {
@@ -603,7 +603,7 @@ export default function CoachMessagesPage() {
 
       {/* Main Container */}
       <div className="main flex flex-1 flex-col min-w-0 h-screen max-h-screen overflow-hidden">
-        {/* Topbar: Matching titan-gym-os-messages.html with title and "پیام جدید" action */}
+        {/* Topbar: Matching fitlegend-gym-os-messages.html with title and "پیام جدید" action */}
         <CoachTopbar
           onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
           title="پیام‌ها"
@@ -630,7 +630,7 @@ export default function CoachMessagesPage() {
           }
         />
 
-        {/* Content Shell: Exactly matching titan-gym-os-messages.html with strict independent scroll */}
+        {/* Content Shell: Exactly matching fitlegend-gym-os-messages.html with strict independent scroll */}
         <div className="content msg-content flex-1 flex flex-col p-0 min-h-0 h-[calc(100vh-72px)] max-h-[calc(100vh-72px)] overflow-hidden">
           <div className="msg-shell flex flex-1 min-h-0 h-full max-h-full overflow-hidden bg-surface">
             {/* Conversation List Sidebar */}

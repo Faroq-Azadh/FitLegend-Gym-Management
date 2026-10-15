@@ -58,7 +58,7 @@ export function PlansTable({
           <div className="mt-[2px] text-[12.5px] text-ink-faint">
             {activeTab === "member_plans"
               ? "لیست تعرفه‌های عضویت تعریف شده برای ورزشکاران باشگاه"
-              : "لیست پلن‌های اشتراک نرم‌افزار و پلتفرم تیتان جیم"}
+              : "لیست پلن‌های اشتراک نرم‌افزار و پلتفرم فیتلجند جیم"}
           </div>
         </div>
 
@@ -91,7 +91,7 @@ export function PlansTable({
             )}
           >
             <Sparkles className="h-3.5 w-3.5 text-primary-dark" />
-            <span>تعرفه‌های تیتان جیم</span>
+            <span>تعرفه‌های فیتلجند جیم</span>
             <span className="rounded-full bg-bg px-2 py-0.2 text-[11px] font-black text-ink-faint border border-border">
               {toPersianDigits(displayedSystemPlans.length)}
             </span>
@@ -240,7 +240,7 @@ export function PlansTable({
         </div>
       )}
 
-      {/* Tab 2: System Tariffs Table (Titan Gym SaaS) */}
+      {/* Tab 2: System Tariffs Table (FitLegend Gym SaaS) */}
       {activeTab === "system_plans" && (
         <div className="overflow-x-auto">
           <table className="w-full text-right text-[13px]">

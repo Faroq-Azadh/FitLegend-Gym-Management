@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 interface LogoProps {
@@ -7,28 +8,30 @@ interface LogoProps {
   href?: string;
 }
 
-function LogoMark({ size = "md" }: { size?: "sm" | "md" }) {
+export function LogoMark({ size = "md", className }: { size?: "sm" | "md" | "lg"; className?: string }) {
   const box =
     size === "sm"
-      ? "h-8 w-8 rounded-[9px] [&_svg]:h-4 [&_svg]:w-4"
-      : "h-[34px] w-[34px] rounded-[10px] [&_svg]:h-[18px] [&_svg]:w-[18px]";
+      ? "h-8 w-8 rounded-[9px] p-1"
+      : size === "lg"
+        ? "h-10 w-10 rounded-[12px] p-1.5"
+        : "h-[34px] w-[34px] rounded-[10px] p-1";
 
   return (
     <span
       className={cn(
-        "flex shrink-0 items-center justify-center bg-gradient-to-br from-primary to-cyan",
+        "flex shrink-0 items-center justify-center bg-[#0B132B] shadow-sm ring-1 ring-white/10",
         box,
+        className,
       )}
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#0F172A"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      >
-        <path d="M4 12h4M16 12h4M8 7v10M16 7v10M8 12h8" />
-      </svg>
+      <Image
+        src="/images/fitlegend-icon.png"
+        alt="FitLegend"
+        width={36}
+        height={36}
+        className="h-full w-full object-contain"
+        priority
+      />
     </span>
   );
 }
@@ -42,12 +45,12 @@ export function Logo({
   const content = (
     <>
       <LogoMark size={size ?? (variant === "dark" && className?.includes("hidden") ? "sm" : "md")} />
-      <span>تیتان</span>
+      <span>فیتلجند</span>
     </>
   );
 
   const classes = cn(
-    "flex items-center gap-2.5 font-extrabold",
+    "flex items-center gap-2.5 font-extrabold tracking-tight",
     variant === "light" && "text-xl text-white",
     variant === "dark" && "text-[20px] text-[#0F172A]",
     className,
@@ -55,7 +58,7 @@ export function Logo({
 
   if (href) {
     return (
-      <Link href={href} className={classes} aria-label="تیتان — صفحه اصلی">
+      <Link href={href} className={classes} aria-label="فیتلجند — صفحه اصلی">
         {content}
       </Link>
     );
@@ -73,3 +76,4 @@ export function MobileLogo({ className, href = "/" }: { className?: string; href
     />
   );
 }
+

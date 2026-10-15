@@ -3,8 +3,11 @@ import { QueryProvider } from "@/components/providers/query-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "تیتان — مدیریت باشگاه",
+  title: "فیتلجند — مدیریت باشگاه",
   description: "پلتفرم مدیریت باشگاه، عضویت، رزرو و پرداخت",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

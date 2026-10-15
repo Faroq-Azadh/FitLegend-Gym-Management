@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { LogoMark } from "@/components/ui/logo";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 
@@ -35,12 +36,8 @@ export function AthleteSidebar({ isOpen, onClose }: AthleteSidebarProps) {
       <aside className={`sidebar ${isOpen ? "open" : ""}`} id="sidebar">
         <div className="sidebar-head">
           <Link href="/athlete" className="logo">
-            <span className="logo-mark">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#0F172A" strokeWidth="2.5" strokeLinecap="round">
-                <path d="M4 12h4M16 12h4M8 7v10M16 7v10M8 12h8" />
-              </svg>
-            </span>
-            تیتان
+            <LogoMark size="sm" />
+            فیتلجند
           </Link>
         </div>
 

@@ -1065,7 +1065,7 @@ export default function CoachStudentsPage() {
         </div>
       )}
 
-      {/* Add Student Modal Window (matching titan-gym-os-add-member.html) */}
+      {/* Add Student Modal Window (matching fitlegend-gym-os-add-member.html) */}
       <CoachAddMemberModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}

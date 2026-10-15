@@ -31,13 +31,13 @@ export function LandingProblemSolution() {
       <div className="mx-auto max-w-[1240px] px-5 min-[640px]:px-8">
         <ScrollReveal className="mb-16 max-w-[640px]">
           <span className="mb-3.5 inline-block text-[13px] font-bold tracking-wide text-primary-dark">
-            چرا تیتان
+            چرا فیتلجند
           </span>
           <h2 className="mb-4 text-[28px] font-extrabold leading-[1.3] text-ink min-[640px]:text-[36px] min-[981px]:text-[42px]">
             مدیریت باشگاه نباید این‌قدر پیچیده باشد
           </h2>
           <p className="text-[16px] leading-[1.8] text-ink-soft">
-            اکسل، کاغذ و چند اپلیکیشن جدا از هم، کار شما را کند می‌کنند. تیتان همه را در
+            اکسل، کاغذ و چند اپلیکیشن جدا از هم، کار شما را کند می‌کنند. فیتلجند همه را در
             یک جا جمع می‌کند.
           </p>
         </ScrollReveal>
@@ -70,7 +70,7 @@ export function LandingProblemSolution() {
           <ScrollReveal delay={0.15}>
             <h3 className="mb-6 flex items-center gap-2.5 text-[14px] font-bold text-ink-faint">
               <span className="h-2 w-2 rounded-full bg-primary" />
-              با تیتان
+              با فیتلجند
             </h3>
             <div className="flex flex-col gap-4">
               {solutions.map((text, idx) => (

@@ -9,7 +9,7 @@ export function LandingFooter() {
         <div className="mb-[50px] grid grid-cols-1 gap-8 min-[640px]:grid-cols-3 min-[981px]:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <div className="mb-4">
-              <Logo />
+              <Logo variant="dark" />
             </div>
             <p className="max-w-[280px] text-[14px] leading-[1.8] text-ink-faint">
               سیستم مدیریت باشگاه برای باشگاه‌داران و مربیانی که می‌خواهند با داده
@@ -96,7 +96,7 @@ export function LandingFooter() {
 
         <div className="flex flex-col items-start justify-between gap-4 border-t border-border pt-[30px] min-[640px]:flex-row min-[640px]:items-center">
           <p className="text-[13px] text-ink-faint">
-            © ۱۴۰۵ تیتان. تمامی حقوق محفوظ است.
+            © ۱۴۰۵ فیتلجند. تمامی حقوق محفوظ است.
           </p>
           <div className="flex items-center gap-3.5">
             <a

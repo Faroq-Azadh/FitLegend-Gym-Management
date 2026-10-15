@@ -27,7 +27,7 @@ export function AboutTeam() {
             تیم ما
           </span>
           <h2 className="mb-4 text-[28px] font-extrabold leading-[1.3] text-ink min-[640px]:text-[36px] min-[981px]:text-[42px]">
-            آدم‌هایی که پشت تیتان هستند
+            آدم‌هایی که پشت فیتلجند هستند
           </h2>
           <p className="text-[16px] leading-[1.8] text-ink-soft">
             تیمی کوچک از مهندس، طراح و آدم‌هایی که خودشان سال‌ها در باشگاه کار

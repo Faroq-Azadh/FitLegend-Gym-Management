@@ -61,7 +61,7 @@ export default function AdminMembersPage() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", `titan-members-${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute("download", `fitlegend-members-${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

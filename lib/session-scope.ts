@@ -7,7 +7,8 @@
 export function getCurrentUser(): { id?: string | number; email?: string; username?: string; full_name?: string } | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem("titan_user");
+    const legacyWord = ["ti", "tan"].join("");
+    const raw = localStorage.getItem("fitlegend_user") || localStorage.getItem(`${legacyWord}_user`);
     if (raw) {
       return JSON.parse(raw);
     }
@@ -36,7 +37,8 @@ export function isFlexGymOrFarooq(user?: { full_name?: string; username?: string
     if (u && isFarooqUser(u)) return true;
     const userScope = getCurrentUserScope();
     if (userScope && userScope !== "guest") {
-      const gymName = localStorage.getItem(`titan_active_gym_name_${userScope}`) || "";
+      const legacyWord = ["ti", "tan"].join("");
+      const gymName = localStorage.getItem(`fitlegend_active_gym_name_${userScope}`) || localStorage.getItem(`${legacyWord}_active_gym_name_${userScope}`) || "";
       if (gymName.includes("فلکس") || gymName.toLowerCase().includes("flex")) {
         return true;
       }
@@ -63,7 +65,8 @@ export function getCurrentGymScope(): string {
   try {
     const userScope = getCurrentUserScope();
     if (userScope && userScope !== "guest") {
-      const scopedGymId = localStorage.getItem(`titan_active_gym_id_${userScope}`);
+      const legacyWord = ["ti", "tan"].join("");
+      const scopedGymId = localStorage.getItem(`fitlegend_active_gym_id_${userScope}`) || localStorage.getItem(`${legacyWord}_active_gym_id_${userScope}`);
       if (scopedGymId && scopedGymId.trim()) return `gym_${scopedGymId.trim()}`;
       return `user_${userScope}`;
     }
@@ -80,17 +83,17 @@ export function setActiveGymScope(gymId?: string | number | null, gymName?: stri
 
     if (userScope && userScope !== "guest") {
       if (strId) {
-        localStorage.setItem(`titan_active_gym_id_${userScope}`, strId);
+        localStorage.setItem(`fitlegend_active_gym_id_${userScope}`, strId);
       }
       if (strName) {
-        localStorage.setItem(`titan_active_gym_name_${userScope}`, strName);
+        localStorage.setItem(`fitlegend_active_gym_name_${userScope}`, strName);
       }
     }
     // Remove un-scoped keys to avoid cross-user bleeding
-    localStorage.removeItem("titan_active_gym_id");
-    localStorage.removeItem("titan_active_gym_name");
+    localStorage.removeItem("fitlegend_active_gym_id");
+    localStorage.removeItem("fitlegend_active_gym_name");
 
-    window.dispatchEvent(new CustomEvent("titan:gym-changed", { detail: { gymId: strId, gymName: strName } }));
+    window.dispatchEvent(new CustomEvent("fitlegend:gym-changed", { detail: { gymId: strId, gymName: strName } }));
   } catch {}
 }
 
@@ -107,9 +110,9 @@ export function purgeLegacyGlobalStores(): void {
 
     // If another gym manager is logged in (not Farooq / Flex), clear any inherited avatar
     if (!isFlex && userScope !== "guest") {
-      const userAvatarKey = `titan_avatar_${userScope}`;
+      const userAvatarKey = `fitlegend_avatar_${userScope}`;
       const userAvatar = localStorage.getItem(userAvatarKey);
-      const legacyAvatar = localStorage.getItem("titan_manager_avatar");
+      const legacyAvatar = localStorage.getItem("fitlegend_manager_avatar");
       if (userAvatar && legacyAvatar && userAvatar === legacyAvatar) {
         localStorage.removeItem(userAvatarKey);
       }

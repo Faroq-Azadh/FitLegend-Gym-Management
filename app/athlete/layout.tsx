@@ -3,8 +3,8 @@ import { AthleteAuthGuard } from "@/components/athlete/athlete-auth-guard";
 import "@/styles/athlete.css";
 
 export const metadata: Metadata = {
-  title: "داشبورد ورزشکار — تیتان",
-  description: "پنل اختصاصی ورزشکار، برنامه تمرین، پیشرفت و رزرو کلاس‌های باشگاه تیتان",
+  title: "داشبورد ورزشکار — فیتلجند",
+  description: "پنل اختصاصی ورزشکار، برنامه تمرین، پیشرفت و رزرو کلاس‌های باشگاه فیتلجند",
 };
 
 export default function AthleteLayout({

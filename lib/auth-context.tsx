@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!hasSession) {
         // Drop any stale cached user session, but preserve manager profile picture
         if (typeof window !== "undefined") {
-          localStorage.removeItem("titan_user");
+          localStorage.removeItem("fitlegend_user");
         }
         if (isMounted) {
           setUser(null);
@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // 2. Hydrate cached user only if session is valid
       if (typeof window !== "undefined") {
         try {
-          const cached = localStorage.getItem("titan_user");
+          const cached = localStorage.getItem("fitlegend_user");
           if (cached && isMounted) {
             const parsed = JSON.parse(cached);
             const localAvatar = getSavedManagerAvatar(parsed?.email || (parsed?.id ? String(parsed.id) : null));
@@ -124,7 +124,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
       }
     };
-    window.addEventListener("titan:auth-logout", handleLogoutEvent);
+    window.addEventListener("fitlegend:auth-logout", handleLogoutEvent);
 
     // Listen to avatar updates
     const handleAvatarUpdate = (e: any) => {
@@ -137,7 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => {
       isMounted = false;
-      window.removeEventListener("titan:auth-logout", handleLogoutEvent);
+      window.removeEventListener("fitlegend:auth-logout", handleLogoutEvent);
       window.removeEventListener(AVATAR_UPDATED_EVENT, handleAvatarUpdate);
     };
   }, []);
@@ -150,7 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch {}
       if (typeof window !== "undefined") {
         try {
-          localStorage.setItem("titan_user", JSON.stringify(res.user));
+          localStorage.setItem("fitlegend_user", JSON.stringify(res.user));
         } catch {}
       }
       purgeLegacyGlobalStores();
@@ -174,7 +174,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch {}
       if (typeof window !== "undefined") {
         try {
-          localStorage.setItem("titan_user", JSON.stringify(res.user));
+          localStorage.setItem("fitlegend_user", JSON.stringify(res.user));
         } catch {}
       }
       purgeLegacyGlobalStores();
@@ -202,7 +202,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       } catch {}
       if (typeof window !== "undefined") {
         try {
-          localStorage.setItem("titan_user", JSON.stringify(res.user));
+          localStorage.setItem("fitlegend_user", JSON.stringify(res.user));
         } catch {}
       }
       purgeLegacyGlobalStores();
@@ -281,7 +281,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
       if (typeof window !== "undefined") {
         try {
-          localStorage.setItem("titan_user", JSON.stringify(merged));
+          localStorage.setItem("fitlegend_user", JSON.stringify(merged));
         } catch {}
       }
       return merged;

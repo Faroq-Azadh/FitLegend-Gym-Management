@@ -5,7 +5,7 @@
 
 import { isFlexGymOrFarooq } from "@/lib/session-scope";
 
-export const AVATAR_UPDATED_EVENT = "titan:avatar-updated";
+export const AVATAR_UPDATED_EVENT = "fitlegend:avatar-updated";
 
 /**
  * Retrieve the saved avatar for the manager strictly scoped to that user's identity
@@ -15,7 +15,7 @@ export function getSavedManagerAvatar(identifier?: string | null): string | null
   try {
     let cleanId = identifier ? String(identifier).trim().toLowerCase() : null;
     let rawUserObj: any = null;
-    const rawUser = localStorage.getItem("titan_user");
+    const rawUser = localStorage.getItem("fitlegend_user");
     if (rawUser) {
       try {
         rawUserObj = JSON.parse(rawUser);
@@ -26,14 +26,14 @@ export function getSavedManagerAvatar(identifier?: string | null): string | null
       cleanId = (rawUserObj.email || (rawUserObj.id ? String(rawUserObj.id) : null))?.trim().toLowerCase() || null;
     }
 
-    const legacyGlobal = localStorage.getItem("titan_manager_avatar");
+    const legacyGlobal = localStorage.getItem("fitlegend_manager_avatar");
     const isFarooq = isFlexGymOrFarooq(rawUserObj);
 
     if (cleanId) {
-      const specific = localStorage.getItem(`titan_avatar_${cleanId}`);
+      const specific = localStorage.getItem(`fitlegend_avatar_${cleanId}`);
       if (specific) {
         if (!isFarooq && legacyGlobal && specific === legacyGlobal) {
-          localStorage.removeItem(`titan_avatar_${cleanId}`);
+          localStorage.removeItem(`fitlegend_avatar_${cleanId}`);
           return null;
         }
         return specific;
@@ -43,7 +43,7 @@ export function getSavedManagerAvatar(identifier?: string | null): string | null
     // If active user is Farooq / Flex manager, fall back to legacy global avatar
     if (isFarooq && legacyGlobal) {
       if (cleanId) {
-        localStorage.setItem(`titan_avatar_${cleanId}`, legacyGlobal);
+        localStorage.setItem(`fitlegend_avatar_${cleanId}`, legacyGlobal);
       }
       return legacyGlobal;
     }
@@ -59,7 +59,7 @@ export function saveManagerAvatar(avatar: string, identifier?: string | null): v
   try {
     let cleanId = identifier ? String(identifier).trim().toLowerCase() : null;
     let rawUserObj: any = null;
-    const rawUser = localStorage.getItem("titan_user");
+    const rawUser = localStorage.getItem("fitlegend_user");
     if (rawUser) {
       try {
         rawUserObj = JSON.parse(rawUser);
@@ -71,11 +71,11 @@ export function saveManagerAvatar(avatar: string, identifier?: string | null): v
     }
 
     if (cleanId) {
-      localStorage.setItem(`titan_avatar_${cleanId}`, avatar);
+      localStorage.setItem(`fitlegend_avatar_${cleanId}`, avatar);
     }
 
     if (isFlexGymOrFarooq(rawUserObj)) {
-      localStorage.setItem("titan_manager_avatar", avatar);
+      localStorage.setItem("fitlegend_manager_avatar", avatar);
     }
 
     window.dispatchEvent(new CustomEvent(AVATAR_UPDATED_EVENT, { detail: { avatar } }));

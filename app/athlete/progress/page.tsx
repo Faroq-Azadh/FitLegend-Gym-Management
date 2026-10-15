@@ -145,7 +145,7 @@ function getBmiInfo(bmi: number) {
     isGood: false,
     goodVerdict: "نامناسب (نیازمند برنامه کاهش وزن زیر نظر مربی)",
     description:
-      "شاخص ۳۰ یا بیشتر بیانگر چاقی است. برای حفظ سلامت مفاصل و سلامت عمومی، کاهش تدریجی و اصولی وزن زیر نظر مربیان تیتان و اصلاح تغذیه اکیداً توصیه می‌شود.",
+      "شاخص ۳۰ یا بیشتر بیانگر چاقی است. برای حفظ سلامت مفاصل و سلامت عمومی، کاهش تدریجی و اصولی وزن زیر نظر مربیان فیتلجند و اصلاح تغذیه اکیداً توصیه می‌شود.",
   };
 }
 
@@ -354,7 +354,7 @@ export default function AthleteProgressPage() {
         idealDiffText = `${toPersianDigits(diff)} کیلو مازاد وزن`;
         idealStatusBadge = "چاقی (نیازمند اصلاح)";
         idealStatusColor = "#E11D48";
-        recommendation = "اجرای برنامه کاهش وزن تدریجی زیر نظر مستقیم مربی تیتان، کاهش چربی اشباع و پیاده‌روی روزانه";
+        recommendation = "اجرای برنامه کاهش وزن تدریجی زیر نظر مستقیم مربی فیتلجند، کاهش چربی اشباع و پیاده‌روی روزانه";
       }
 
       return {
@@ -1366,7 +1366,7 @@ export default function AthleteProgressPage() {
             </div>
           </div>
 
-          {/* Body composition + strength records (verbatim from titan-gym-os-track-progress.html) */}
+          {/* Body composition + strength records (verbatim from fitlegend-gym-os-track-progress.html) */}
           <div className="grid-2" style={{ marginBottom: "18px" }}>
             {/* Composition Donut */}
             <div className="card">
@@ -1626,7 +1626,7 @@ export default function AthleteProgressPage() {
                   تحلیل جامع شاخص توده بدنی (BMI) — {activeSelectedBmi.monthName}
                 </h3>
                 <div className="text-[12px] text-ink-faint mt-0.5">
-                  ارزیابی وضعیت سلامت بر اساس استانداردهای بین‌المللی WHO و توصیه‌های باشگاه تیتان
+                  ارزیابی وضعیت سلامت بر اساس استانداردهای بین‌المللی WHO و توصیه‌های باشگاه فیتلجند
                 </div>
               </div>
               <button
@@ -1816,7 +1816,7 @@ export default function AthleteProgressPage() {
                 }}
               >
                 <div style={{ fontSize: "13px", fontWeight: 800, color: "var(--ink)", marginBottom: "6px" }}>
-                  💡 توصیه تخصصی مربی و تمرین تیتان:
+                  💡 توصیه تخصصی مربی و تمرین فیتلجند:
                 </div>
                 <div style={{ fontSize: "12.5px", color: "var(--ink-soft)", lineHeight: 1.8 }}>
                   {activeSelectedBmi.recommendation}

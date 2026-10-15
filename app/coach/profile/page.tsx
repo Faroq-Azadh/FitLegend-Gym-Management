@@ -11,7 +11,7 @@ export default function CoachProfilePage() {
   // Form states - Info
   const [firstName, setFirstName] = useState("آرش");
   const [lastName, setLastName] = useState("رستمی");
-  const [email, setEmail] = useState("arash@titan.fit");
+  const [email, setEmail] = useState("arash@fitlegend.fit");
   const [phone, setPhone] = useState("۰۹۱۲۳۴۵۶۷۸۹");
   const [bio, setBio] = useState(
     "مربی بدنسازی و فیتنس با تمرکز بر افزایش حجم و قدرت. علاقه‌مند به برنامه‌ریزی علمی و پیگیری دقیق پیشرفت شاگردان."
@@ -74,7 +74,7 @@ export default function CoachProfilePage() {
   const handleResetInfo = () => {
     setFirstName("آرش");
     setLastName("رستمی");
-    setEmail("arash@titan.fit");
+    setEmail("arash@fitlegend.fit");
     setPhone("۰۹۱۲۳۴۵۶۷۸۹");
     setBio(
       "مربی بدنسازی و فیتنس با تمرکز بر افزایش حجم و قدرت. علاقه‌مند به برنامه‌ریزی علمی و پیگیری دقیق پیشرفت شاگردان."

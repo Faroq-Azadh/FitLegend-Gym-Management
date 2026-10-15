@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
 import { CoachTopbar } from "@/components/coach/coach-topbar";
+import { LogoMark } from "@/components/ui/logo";
 
 type TimeRange = "30d" | "90d" | "year";
 
@@ -170,7 +171,7 @@ export default function CoachPerformancePage() {
 
     const rangeConfig = RANGE_DATA[selected];
     const originalTitle = document.title;
-    document.title = `گزارش_عملکرد_تیتان_${rangeConfig.label.replace(/\s+/g, "_")}`;
+    document.title = `گزارش_عملکرد_فیتلجند_${rangeConfig.label.replace(/\s+/g, "_")}`;
 
     setTimeout(() => {
       window.print();
@@ -222,21 +223,10 @@ export default function CoachPerformancePage() {
           {/* Printable Official Header (visible only when generating PDF / printing) */}
           <div className="hidden print:flex items-center justify-between pb-4 mb-4 border-b border-border">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#16E0A0] to-[#22D3EE] flex items-center justify-center font-extrabold text-ink">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#0F172A"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  className="w-5 h-5"
-                >
-                  <path d="M4 12h4M16 12h4M8 7v10M16 7v10M8 12h8" />
-                </svg>
-              </div>
+              <LogoMark size="lg" />
               <div>
                 <div className="text-[18px] font-extrabold text-ink">
-                  باشگاه ورزشی تیتان — گزارش عملکرد مربی
+                  باشگاه ورزشی فیتلجند — گزارش عملکرد مربی
                 </div>
                 <div className="text-[12px] text-ink-faint">
                   مربی: آرش رستمی | بازه گزارش: {currentMetrics.pdfLabel} | تاریخ تولید: {persianDate}
@@ -244,7 +234,7 @@ export default function CoachPerformancePage() {
               </div>
             </div>
             <div className="text-left text-[11px] text-ink-faint">
-              <div className="font-bold text-ink">سامانه مدیریت باشگاه تیتان</div>
+              <div className="font-bold text-ink">سامانه مدیریت باشگاه فیتلجند</div>
               <div>خروجی رسمی عملکرد مربیگری</div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface MotionFadeProps {
@@ -12,9 +12,18 @@ interface MotionFadeProps {
 
 export function MotionFade({ className, children, delay = 0 }: MotionFadeProps) {
   const prefersReducedMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
 
-  if (prefersReducedMotion) {
-    return <div className={className}>{children}</div>;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (prefersReducedMotion || !mounted) {
+    return (
+      <div className={cn("animate-in fade-in slide-in-from-bottom-2 duration-300", className)}>
+        {children}
+      </div>
+    );
   }
 
   return (

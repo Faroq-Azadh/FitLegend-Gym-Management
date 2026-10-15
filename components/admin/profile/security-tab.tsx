@@ -5,8 +5,8 @@ import { ProfileSecurityData } from "./types";
 import { authService } from "@/lib/api/services/auth.service";
 import { Check, Eye, EyeOff, Loader2, AlertCircle, ShieldCheck } from "lucide-react";
 
-const USER_PASSWORD_STORAGE_KEY = "titan_user_password";
-const USER_SECURITY_STORAGE_KEY = "titan_user_security";
+const USER_PASSWORD_STORAGE_KEY = "fitlegend_user_password";
+const USER_SECURITY_STORAGE_KEY = "fitlegend_user_security";
 
 interface SecurityTabProps {
   security: ProfileSecurityData;
@@ -14,13 +14,13 @@ interface SecurityTabProps {
 }
 
 export function SecurityTab({ security, onUpdateSecurity }: SecurityTabProps) {
-  // Current password state: dynamically loaded from browser login storage (titan_saved_password / titan_user_password)
+  // Current password state: dynamically loaded from browser login storage (fitlegend_saved_password / fitlegend_user_password)
   const [currentPassword, setCurrentPassword] = useState<string>(() => {
     if (typeof window !== "undefined") {
       const stored =
-        localStorage.getItem("titan_saved_password") ||
+        localStorage.getItem("fitlegend_saved_password") ||
         localStorage.getItem(USER_PASSWORD_STORAGE_KEY) ||
-        sessionStorage.getItem("titan_active_password") ||
+        sessionStorage.getItem("fitlegend_active_password") ||
         localStorage.getItem("password");
       if (stored) return stored;
     }
@@ -47,9 +47,9 @@ export function SecurityTab({ security, onUpdateSecurity }: SecurityTabProps) {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const p =
-        localStorage.getItem("titan_saved_password") ||
+        localStorage.getItem("fitlegend_saved_password") ||
         localStorage.getItem(USER_PASSWORD_STORAGE_KEY) ||
-        sessionStorage.getItem("titan_active_password") ||
+        sessionStorage.getItem("fitlegend_active_password") ||
         localStorage.getItem("password");
       if (p) {
         setCurrentPassword(p);
@@ -71,8 +71,8 @@ export function SecurityTab({ security, onUpdateSecurity }: SecurityTabProps) {
     if (typeof window !== "undefined") {
       try {
         localStorage.setItem(USER_PASSWORD_STORAGE_KEY, val);
-        localStorage.setItem("titan_saved_password", val);
-        sessionStorage.setItem("titan_active_password", val);
+        localStorage.setItem("fitlegend_saved_password", val);
+        sessionStorage.setItem("fitlegend_active_password", val);
       } catch {}
     }
   };
@@ -106,8 +106,8 @@ export function SecurityTab({ security, onUpdateSecurity }: SecurityTabProps) {
         setCurrentPassword(newPassword);
         if (typeof window !== "undefined") {
           localStorage.setItem(USER_PASSWORD_STORAGE_KEY, newPassword);
-          localStorage.setItem("titan_saved_password", newPassword);
-          sessionStorage.setItem("titan_active_password", newPassword);
+          localStorage.setItem("fitlegend_saved_password", newPassword);
+          sessionStorage.setItem("fitlegend_active_password", newPassword);
         }
       }
 

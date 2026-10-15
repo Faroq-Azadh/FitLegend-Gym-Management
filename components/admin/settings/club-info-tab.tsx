@@ -4,16 +4,16 @@ import { useState, useEffect } from "react";
 import { useGymMe, useUpdateGymMe } from "@/lib/hooks/queries/use-gym-me";
 import { Check, Loader2, AlertCircle } from "lucide-react";
 
-const CLUB_INFO_STORAGE_KEY = "titan_gym_club_info_overrides";
+const CLUB_INFO_STORAGE_KEY = "fitlegend_gym_club_info_overrides";
 
 export function ClubInfoTab() {
   const { data: gymData, isLoading: isGymLoading } = useGymMe();
   const updateGymMutation = useUpdateGymMe();
 
   const [formData, setFormData] = useState({
-    name: "باشگاه ورزشی تیتان",
+    name: "باشگاه ورزشی فیتلجند",
     phone_number: "۰۲۱۴۴۵۵۶۶۷۷",
-    email: "info@titan.fit",
+    email: "info@fitlegend.fit",
     city: "تهران",
     address: "تهران، سعادت‌آباد، بلوار دریا، پلاک ۱۲۰",
     about: "باشگاه تخصصی بدنسازی و فیتنس با مجهزترین امکانات و تیم مربیان حرفه‌ای.",
@@ -32,9 +32,9 @@ export function ClubInfoTab() {
 
     if (gymData) {
       setFormData({
-        name: gymData.name || localSaved?.name || "باشگاه ورزشی تیتان",
+        name: gymData.name || localSaved?.name || "باشگاه ورزشی فیتلجند",
         phone_number: gymData.phone_number || localSaved?.phone_number || "۰۲۱۴۴۵۵۶۶۷۷",
-        email: gymData.email || localSaved?.email || "info@titan.fit",
+        email: gymData.email || localSaved?.email || "info@fitlegend.fit",
         city: gymData.city || localSaved?.city || "تهران",
         address: gymData.address || localSaved?.address || "تهران، سعادت‌آباد، بلوار دریا، پلاک ۱۲۰",
         about: gymData.about || localSaved?.about || "باشگاه تخصصی بدنسازی و فیتنس با مجهزترین امکانات و تیم مربیان حرفه‌ای.",
@@ -125,7 +125,7 @@ export function ClubInfoTab() {
               required
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="مثال: باشگاه ورزشی تیتان"
+              placeholder="مثال: باشگاه ورزشی فیتلجند"
               className="w-full rounded-[12px] border-[1.5px] border-border bg-surface p-[11px_14px] text-[13.5px] text-ink placeholder:text-ink-faint focus:border-primary focus:bg-tint focus:outline-none"
             />
           </div>
@@ -150,7 +150,7 @@ export function ClubInfoTab() {
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="info@titan.fit"
+              placeholder="info@fitlegend.fit"
               className="w-full rounded-[12px] border-[1.5px] border-border bg-surface p-[11px_14px] text-[13.5px] text-ink placeholder:text-ink-faint focus:border-primary focus:bg-tint focus:outline-none"
             />
           </div>

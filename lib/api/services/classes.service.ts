@@ -80,7 +80,7 @@ export interface CreateBookingPayload {
 
 export function getLocalBookingsKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_gym_bookings_local_${s}`;
+  return `fitlegend_gym_bookings_local_${s}`;
 }
 
 export function getLocalBookings(scope?: string): BookingRosterRow[] {
@@ -89,7 +89,7 @@ export function getLocalBookings(scope?: string): BookingRosterRow[] {
     const s = scope || getCurrentGymScope();
     const raw =
       localStorage.getItem(getLocalBookingsKey(s)) ||
-      (s === "gym_flex" || s.includes("farooq") ? localStorage.getItem("titan_gym_bookings_local") : null);
+      (s === "gym_flex" || s.includes("farooq") ? localStorage.getItem("fitlegend_gym_bookings_local") : null);
     if (!raw) return [];
     const parsed: BookingRosterRow[] = JSON.parse(raw);
     if (Array.isArray(parsed)) {
@@ -121,7 +121,7 @@ export function saveLocalBookings(bookings: BookingRosterRow[], scope?: string):
 
 export function getDeletedClassesKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_gym_deleted_class_ids_${s}`;
+  return `fitlegend_gym_deleted_class_ids_${s}`;
 }
 
 export function getDeletedClassIds(scope?: string): Set<string> {
@@ -130,7 +130,7 @@ export function getDeletedClassIds(scope?: string): Set<string> {
     const s = scope || getCurrentGymScope();
     const raw =
       localStorage.getItem(getDeletedClassesKey(s)) ||
-      (s === "gym_flex" || s.includes("farooq") ? localStorage.getItem("titan_gym_deleted_class_ids") : null);
+      (s === "gym_flex" || s.includes("farooq") ? localStorage.getItem("fitlegend_gym_deleted_class_ids") : null);
     return raw ? new Set(JSON.parse(raw)) : new Set();
   } catch {
     return new Set();
@@ -164,7 +164,7 @@ export function isDeletedClass(id: string | number, scope?: string): boolean {
 
 export function getLocalClassesKey(scope?: string): string {
   const s = scope || getCurrentGymScope();
-  return `titan_gym_local_classes_${s}`;
+  return `fitlegend_gym_local_classes_${s}`;
 }
 
 export function getLocalClasses(scope?: string): GymClassTemplate[] {
@@ -185,7 +185,7 @@ export function saveLocalClass(cls: GymClassTemplate, scope?: string): void {
     const current = getLocalClasses(s).filter((c) => String(c.id) !== String(cls.id));
     current.unshift(cls);
     localStorage.setItem(getLocalClassesKey(s), JSON.stringify(current));
-    window.dispatchEvent(new CustomEvent("titan_gym_classes_updated"));
+    window.dispatchEvent(new CustomEvent("fitlegend_gym_classes_updated"));
   } catch {}
 }
 
@@ -202,7 +202,7 @@ export function updateLocalClass(
       String(c.id) === String(id) ? { ...c, ...payload } : c
     );
     localStorage.setItem(getLocalClassesKey(s), JSON.stringify(updated));
-    window.dispatchEvent(new CustomEvent("titan_gym_classes_updated"));
+    window.dispatchEvent(new CustomEvent("fitlegend_gym_classes_updated"));
   } catch {}
 }
 
@@ -212,7 +212,7 @@ export function removeLocalClass(id: string | number, scope?: string): void {
     const s = scope || getCurrentGymScope();
     const current = getLocalClasses(s).filter((c) => String(c.id) !== String(id));
     localStorage.setItem(getLocalClassesKey(s), JSON.stringify(current));
-    window.dispatchEvent(new CustomEvent("titan_gym_classes_updated"));
+    window.dispatchEvent(new CustomEvent("fitlegend_gym_classes_updated"));
   } catch {}
 }
 
