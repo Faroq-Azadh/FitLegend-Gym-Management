@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { cn } from "@/lib/utils";
@@ -9,6 +10,8 @@ import { cn } from "@/lib/utils";
 export function LandingHeader() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,15 +21,34 @@ export function LandingHeader() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Scroll to hash on page load or after route transition
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash) {
+      const hash = window.location.hash.replace("#", "");
+      const element = document.getElementById(hash);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+    }
+  }, [pathname]);
+
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     targetId: string,
   ) => {
-    e.preventDefault();
     setMobileMenuOpen(false);
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    if (pathname === "/") {
+      e.preventDefault();
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", `/#${targetId}`);
+      }
+    } else {
+      e.preventDefault();
+      router.push(`/#${targetId}`);
     }
   };
 
@@ -42,28 +64,28 @@ export function LandingHeader() {
 
         <nav className="hidden items-center gap-9 min-[981px]:flex">
           <a
-            href="#features"
+            href="/#features"
             onClick={(e) => handleNavClick(e, "features")}
             className="text-[15px] font-medium text-ink-soft transition-colors hover:text-ink"
           >
             امکانات
           </a>
           <a
-            href="#how"
+            href="/#how"
             onClick={(e) => handleNavClick(e, "how")}
             className="text-[15px] font-medium text-ink-soft transition-colors hover:text-ink"
           >
             نحوه کار
           </a>
           <a
-            href="#analytics"
+            href="/#analytics"
             onClick={(e) => handleNavClick(e, "analytics")}
             className="text-[15px] font-medium text-ink-soft transition-colors hover:text-ink"
           >
             تحلیل داده
           </a>
           <a
-            href="#pricing"
+            href="/#pricing"
             onClick={(e) => handleNavClick(e, "pricing")}
             className="text-[15px] font-medium text-ink-soft transition-colors hover:text-ink"
           >
@@ -71,7 +93,10 @@ export function LandingHeader() {
           </a>
           <Link
             href="/about"
-            className="text-[15px] font-medium text-ink-soft transition-colors hover:text-ink"
+            className={cn(
+              "text-[15px] font-medium transition-colors hover:text-ink",
+              pathname === "/about" ? "font-bold text-primary-dark" : "text-ink-soft"
+            )}
           >
             درباره ما
           </Link>
@@ -111,28 +136,28 @@ export function LandingHeader() {
         <div className="border-b border-border bg-surface px-5 py-6 shadow-md min-[981px]:hidden">
           <nav className="flex flex-col gap-4">
             <a
-              href="#features"
+              href="/#features"
               onClick={(e) => handleNavClick(e, "features")}
               className="text-[15px] font-semibold text-ink-soft hover:text-ink"
             >
               امکانات
             </a>
             <a
-              href="#how"
+              href="/#how"
               onClick={(e) => handleNavClick(e, "how")}
               className="text-[15px] font-semibold text-ink-soft hover:text-ink"
             >
               نحوه کار
             </a>
             <a
-              href="#analytics"
+              href="/#analytics"
               onClick={(e) => handleNavClick(e, "analytics")}
               className="text-[15px] font-semibold text-ink-soft hover:text-ink"
             >
               تحلیل داده
             </a>
             <a
-              href="#pricing"
+              href="/#pricing"
               onClick={(e) => handleNavClick(e, "pricing")}
               className="text-[15px] font-semibold text-ink-soft hover:text-ink"
             >
@@ -141,7 +166,10 @@ export function LandingHeader() {
             <Link
               href="/about"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-[15px] font-semibold text-ink-soft hover:text-ink"
+              className={cn(
+                "text-[15px] font-semibold hover:text-ink",
+                pathname === "/about" ? "font-bold text-primary-dark" : "text-ink-soft"
+              )}
             >
               درباره ما
             </Link>

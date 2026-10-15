@@ -254,7 +254,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
         <div className="flex items-center justify-between px-[22px] pt-[22px] pb-[16px]">
           <Link href="/admin" className="flex items-center gap-[10px] text-[18px] font-extrabold text-ink truncate">
             <LogoMark size="md" />
-            <span className="truncate">{gym?.name || "باشگاه ورزشی"}</span>
+            <span className="truncate">{gym?.name || "فیت لجند"}</span>
           </Link>
         </div>
 

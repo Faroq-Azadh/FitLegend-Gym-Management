@@ -216,7 +216,7 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
         <div className="flex items-center justify-between p-[22px_22px_16px]">
           <Link href="/coach" className="flex items-center gap-[10px] text-[20px] font-extrabold text-ink">
             <LogoMark size="md" />
-            <span>فیتلجند</span>
+            <span>فیت لجند</span>
           </Link>
         </div>
 

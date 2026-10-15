@@ -11,25 +11,25 @@ interface LogoProps {
 export function LogoMark({ size = "md", className }: { size?: "sm" | "md" | "lg"; className?: string }) {
   const box =
     size === "sm"
-      ? "h-8 w-8 rounded-[9px] p-1"
+      ? "h-9 w-9 rounded-[10px] p-0.5"
       : size === "lg"
-        ? "h-10 w-10 rounded-[12px] p-1.5"
-        : "h-[34px] w-[34px] rounded-[10px] p-1";
+        ? "h-[50px] w-[50px] rounded-[14px] p-1.5"
+        : "h-[42px] w-[42px] rounded-[12px] p-1";
 
   return (
     <span
       className={cn(
-        "flex shrink-0 items-center justify-center bg-[#0B132B] shadow-sm ring-1 ring-white/10",
+        "flex shrink-0 items-center justify-center bg-[#0B132B] shadow-sm ring-1 ring-white/10 overflow-hidden",
         box,
         className,
       )}
     >
       <Image
         src="/images/fitlegend-icon.png"
-        alt="FitLegend"
-        width={36}
-        height={36}
-        className="h-full w-full object-contain"
+        alt="فیتلجند"
+        width={48}
+        height={48}
+        className="h-full w-full object-contain scale-110"
         priority
       />
     </span>
@@ -45,14 +45,14 @@ export function Logo({
   const content = (
     <>
       <LogoMark size={size ?? (variant === "dark" && className?.includes("hidden") ? "sm" : "md")} />
-      <span>فیتلجند</span>
+      <span className="font-extrabold tracking-tight">فیت لجند</span>
     </>
   );
 
   const classes = cn(
-    "flex items-center gap-2.5 font-extrabold tracking-tight",
+    "flex items-center gap-3 font-extrabold tracking-tight",
     variant === "light" && "text-xl text-white",
-    variant === "dark" && "text-[20px] text-[#0F172A]",
+    variant === "dark" && "text-[21px] text-[#0F172A]",
     className,
   );
 

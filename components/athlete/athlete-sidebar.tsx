@@ -36,8 +36,8 @@ export function AthleteSidebar({ isOpen, onClose }: AthleteSidebarProps) {
       <aside className={`sidebar ${isOpen ? "open" : ""}`} id="sidebar">
         <div className="sidebar-head">
           <Link href="/athlete" className="logo">
-            <LogoMark size="sm" />
-            فیتلجند
+            <LogoMark size="md" />
+            فیت لجند
           </Link>
         </div>
 
