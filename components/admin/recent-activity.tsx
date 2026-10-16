@@ -292,7 +292,7 @@ export function RecentActivity({ activities: propActivities, isLoading: propLoad
                     className={cn(
                       "flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-[11px]",
                       config.variant === "emerald" && "bg-tint text-primary-dark",
-                      config.variant === "cyan" && "bg-[#22D3EE]/15 text-[#0891B2]",
+                      config.variant === "cyan" && "bg-[#0EA5E9]/15 text-[#0369A1]",
                       config.variant === "amber" && "bg-[#FFFBEB] text-[#B45309]",
                       config.variant === "purple" && "bg-[#F3E8FF] text-[#7E22CE]",
                       config.variant === "blue" && "bg-[#EFF6FF] text-[#2563EB]",
@@ -432,7 +432,7 @@ export function RecentActivity({ activities: propActivities, isLoading: propLoad
                         className={cn(
                           "flex h-[40px] w-[40px] shrink-0 items-center justify-center rounded-[12px]",
                           config.variant === "emerald" && "bg-tint text-primary-dark",
-                          config.variant === "cyan" && "bg-[#22D3EE]/15 text-[#0891B2]",
+                          config.variant === "cyan" && "bg-[#0EA5E9]/15 text-[#0369A1]",
                           config.variant === "amber" && "bg-[#FFFBEB] text-[#B45309]",
                           config.variant === "purple" && "bg-[#F3E8FF] text-[#7E22CE]",
                           config.variant === "blue" && "bg-[#EFF6FF] text-[#2563EB]",

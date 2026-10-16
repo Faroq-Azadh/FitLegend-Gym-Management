@@ -218,7 +218,7 @@ export function usePaymentsData() {
         memberAvatar: initials || "عض",
         avatarGradient: isRefunded
           ? "linear-gradient(135deg,#94A3B8,#64748B)"
-          : "linear-gradient(135deg,#16E0A0,#22D3EE)",
+          : "linear-gradient(135deg,#F25C1F,#0EA5E9)",
         avatarUrl: memberAvatarImg,
         forTitle: cleanTitle,
         amount: amt || 0,

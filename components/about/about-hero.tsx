@@ -20,7 +20,7 @@ export function AboutHero() {
           <div className="flex flex-wrap justify-center gap-3.5">
             <Link
               href="/register-gym"
-              className="flex items-center justify-center rounded-[14px] bg-ink px-[30px] py-[15px] text-[16px] font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-emerald"
+              className="flex items-center justify-center rounded-[14px] btn-ink-gradient px-[30px] py-[15px] text-[16px] font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-emerald"
             >
               شروع رایگان
             </Link>

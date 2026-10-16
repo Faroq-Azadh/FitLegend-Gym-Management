@@ -119,7 +119,7 @@ export function TopClassesList() {
                 <div className="h-[7px] overflow-hidden rounded-full bg-bg">
                   <div
                     style={{ width: `${cls.percent}%` }}
-                    className="h-full rounded-full bg-gradient-to-r from-primary to-[#22D3EE] transition-all duration-500"
+                    className="h-full rounded-full bg-gradient-to-r from-primary to-[#0EA5E9] transition-all duration-500"
                   />
                 </div>
               </div>

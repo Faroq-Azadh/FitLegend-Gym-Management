@@ -31,8 +31,8 @@ export interface AddBookingFormValues {
 }
 
 const AVATAR_COLORS = [
-  "#16E0A0",
-  "#22D3EE",
+  "#F25C1F",
+  "#0EA5E9",
   "#6366F1",
   "#F59E0B",
   "#EC4899",
@@ -47,9 +47,9 @@ const STATUS_CONFIG: Record<
 > = {
   confirmed: {
     label: "تأییدشده",
-    bgClass: "bg-tint",
-    dotClass: "bg-primary",
-    textClass: "text-primary-dark",
+    bgClass: "bg-[#E0F2FE]",
+    dotClass: "bg-[#0EA5E9]",
+    textClass: "text-[#0284C7]",
   },
   pending: {
     label: "در انتظار",

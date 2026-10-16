@@ -119,7 +119,7 @@ export function PeakHoursChart() {
                   "w-full max-w-[30px] rounded-t-[8px] transition-all duration-300",
                   col.count > 0
                     ? col.isPeak
-                      ? "bg-gradient-to-b from-primary to-[#22D3EE] shadow-sm"
+                      ? "bg-gradient-to-b from-primary to-[#0EA5E9] shadow-sm"
                       : "bg-primary/50 group-hover:bg-primary"
                     : "bg-border/60",
                   hoveredIdx === index ? "brightness-110 shadow-sm" : "",

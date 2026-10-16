@@ -111,7 +111,7 @@ export function CoachQuickSessionModal({
 
         {isSuccess ? (
           <div className="flex flex-col items-center justify-center py-8 text-center animate-in fade-in duration-200">
-            <span className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-tint text-primary-dark shadow-[0_4px_16px_rgba(22,224,160,0.3)]">
+            <span className="mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-tint text-primary-dark shadow-[0_4px_16px_rgba(242,92,31,0.3)]">
               <Check className="h-7 w-7 stroke-[3]" />
             </span>
             <h3 className="text-[17px] font-extrabold text-ink">جلسه با موفقیت ثبت شد</h3>

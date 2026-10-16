@@ -241,7 +241,7 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
                 className={cn(
                   "relative mb-[3px] flex items-center gap-[12px] rounded-[11px] p-[11px_12px] text-[14.5px] font-semibold transition-all duration-180",
                   active
-                    ? "bg-tint text-primary-dark before:absolute before:-right-[14px] before:top-1/2 before:h-[22px] before:w-[3px] before:-translate-y-1/2 before:rounded-l-[4px] before:bg-primary"
+                    ? "nav-active-grad text-white before:absolute before:-right-[14px] before:top-1/2 before:h-[22px] before:w-[3px] before:-translate-y-1/2 before:rounded-l-[4px] before:bg-primary"
                     : "text-ink-soft hover:bg-bg hover:text-ink"
                 )}
               >
@@ -251,9 +251,8 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
                   <span
                     className={cn(
                       "mr-auto rounded-full px-[8px] py-[2px] text-[11px] font-bold",
-                      active
-                        ? "bg-primary-dark text-white"
-                        : "bg-primary text-[#063]"
+                      active ? "bg-white text-primary-dark"
+                        : "bg-primary text-white"
                     )}
                   >
                     {item.badge}
@@ -282,7 +281,7 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
                 className={cn(
                   "relative mb-[3px] flex items-center gap-[12px] rounded-[11px] p-[11px_12px] text-[14.5px] font-semibold transition-all duration-180",
                   active
-                    ? "bg-tint text-primary-dark before:absolute before:-right-[14px] before:top-1/2 before:h-[22px] before:w-[3px] before:-translate-y-1/2 before:rounded-l-[4px] before:bg-primary"
+                    ? "nav-active-grad text-white before:absolute before:-right-[14px] before:top-1/2 before:h-[22px] before:w-[3px] before:-translate-y-1/2 before:rounded-l-[4px] before:bg-primary"
                     : "text-ink-soft hover:bg-bg hover:text-ink"
                 )}
               >
@@ -292,9 +291,8 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
                   <span
                     className={cn(
                       "mr-auto rounded-full px-[8px] py-[2px] text-[11px] font-bold",
-                      active
-                        ? "bg-primary-dark text-white"
-                        : "bg-primary text-[#063]"
+                      active ? "bg-white text-primary-dark"
+                        : "bg-primary text-white"
                     )}
                   >
                     {item.badge}

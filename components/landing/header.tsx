@@ -111,7 +111,7 @@ export function LandingHeader() {
           </Link>
           <Link
             href="/register-gym"
-            className="rounded-[12px] bg-ink px-[24px] py-[11px] text-[15px] font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-emerald"
+            className="rounded-[12px] btn-ink-gradient px-[24px] py-[11px] text-[15px] font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-emerald"
           >
             ثبت‌نام
           </Link>
@@ -185,7 +185,7 @@ export function LandingHeader() {
               <Link
                 href="/register-gym"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex w-full items-center justify-center rounded-[12px] bg-ink py-3 text-[15px] font-semibold text-white hover:bg-primary-dark"
+                className="flex w-full items-center justify-center rounded-[12px] btn-ink-gradient py-3 text-[15px] font-semibold text-white"
               >
                 ثبت‌نام
               </Link>

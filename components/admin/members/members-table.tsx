@@ -21,8 +21,8 @@ export interface MemberItem {
 
 
 const AVATAR_COLORS = [
-  "#16E0A0",
-  "#22D3EE",
+  "#F25C1F",
+  "#0EA5E9",
   "#6366F1",
   "#F59E0B",
   "#EC4899",
@@ -37,9 +37,9 @@ const STATUS_CONFIG: Record<
 > = {
   active: {
     label: "فعال",
-    bgClass: "bg-tint",
-    dotClass: "bg-primary",
-    textClass: "text-primary-dark",
+    bgClass: "bg-[#E0F2FE]",
+    dotClass: "bg-[#0EA5E9]",
+    textClass: "text-[#0284C7]",
   },
   expiring: {
     label: "رو به اتمام",
@@ -1212,7 +1212,7 @@ export function MembersTable({
                   className={cn(
                     "min-w-[36px] h-[36px] cursor-pointer rounded-[10px] border px-[10px] text-[13.5px] font-bold transition-all duration-150",
                     currentPage === pNum
-                      ? "border-ink bg-ink text-white"
+                      ? "border-ink btn-ink-gradient text-white"
                       : "border-border bg-surface text-ink-soft hover:border-primary hover:bg-tint hover:text-primary-dark"
                   )}
                 >
@@ -1428,7 +1428,7 @@ export function MembersTable({
                 </button>
                 <button
                   type="submit"
-                  className="rounded-[10px] bg-ink px-[20px] py-[9px] text-[13.5px] font-semibold text-white transition-all hover:bg-primary-dark cursor-pointer"
+                  className="rounded-[10px] btn-ink-gradient px-[20px] py-[9px] text-[13.5px] font-semibold text-white transition-all cursor-pointer"
                 >
                   ذخیره تغییرات
                 </button>
@@ -1927,7 +1927,7 @@ export function MembersTable({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-ink px-[22px] py-[9px] text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark hover:shadow-emerald cursor-pointer disabled:opacity-70"
+                  className="inline-flex items-center justify-center gap-2 rounded-[10px] btn-ink-gradient px-[22px] py-[9px] text-[13.5px] font-bold text-white transition-all hover:shadow-emerald cursor-pointer disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <>

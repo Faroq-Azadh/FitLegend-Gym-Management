@@ -295,7 +295,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                 className={cn(
                   "relative mb-[3px] flex items-center gap-[12px] rounded-[11px] px-[12px] py-[11px] text-[14.5px] font-semibold transition-all duration-180",
                   isActive
-                    ? "bg-tint text-primary-dark before:absolute before:-right-[14px] before:top-1/2 before:h-[22px] before:w-[3px] before:-translate-y-1/2 before:rounded-l-[4px] before:bg-primary"
+                    ? "nav-active-grad text-white before:absolute before:-right-[14px] before:top-1/2 before:h-[22px] before:w-[3px] before:-translate-y-1/2 before:rounded-l-[4px] before:bg-primary"
                     : "text-ink-soft hover:bg-bg hover:text-ink",
                 )}
               >
@@ -305,7 +305,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                   <span
                     className={cn(
                       "mr-auto rounded-full px-[8px] py-[2px] text-[11px] font-bold",
-                      isActive ? "bg-primary-dark text-white" : "bg-primary text-[#006633]",
+                      isActive ? "bg-white text-primary-dark" : "bg-primary text-white",
                     )}
                   >
                     {item.badge}
@@ -330,7 +330,7 @@ export function AdminSidebar({ isOpen, onClose }: AdminSidebarProps) {
                 className={cn(
                   "relative mb-[3px] flex items-center gap-[12px] rounded-[11px] px-[12px] py-[11px] text-[14.5px] font-semibold transition-all duration-180",
                   isActive
-                    ? "bg-tint text-primary-dark before:absolute before:-right-[14px] before:top-1/2 before:h-[22px] before:w-[3px] before:-translate-y-1/2 before:rounded-l-[4px] before:bg-primary"
+                    ? "nav-active-grad text-white before:absolute before:-right-[14px] before:top-1/2 before:h-[22px] before:w-[3px] before:-translate-y-1/2 before:rounded-l-[4px] before:bg-primary"
                     : "text-ink-soft hover:bg-bg hover:text-ink",
                 )}
               >

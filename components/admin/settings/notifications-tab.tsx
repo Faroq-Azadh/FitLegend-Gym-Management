@@ -531,7 +531,7 @@ export function NotificationsTab() {
         </div>
 
         {savedNotice && (
-          <span className="inline-flex items-center gap-[6px] rounded-full bg-tint px-[12px] py-[5px] text-[12px] font-bold text-primary-dark animate-in fade-in duration-200">
+          <span className="inline-flex items-center gap-[6px] rounded-full bg-[#E0F2FE] px-[12px] py-[5px] text-[12px] font-bold text-[#0284C7] animate-in fade-in duration-200">
             <Check className="h-[14px] w-[14px]" />
             تنظیمات در سامانه ثبت شد
           </span>
@@ -539,7 +539,7 @@ export function NotificationsTab() {
       </div>
 
       {/* Manager Destination Phone Card */}
-      <div className="mt-[20px] rounded-[18px] border border-primary/30 bg-surface p-[18px_20px] shadow-[0_4px_20px_rgba(22,224,160,0.06)]">
+      <div className="mt-[20px] rounded-[18px] border border-primary/30 bg-surface p-[18px_20px] shadow-[0_4px_20px_rgba(242,92,31,0.06)]">
         <div className="flex flex-wrap items-center justify-between gap-[16px]">
           <div className="flex items-center gap-[12px]">
             <div className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-[12px] bg-tint text-primary-dark shadow-xs">
@@ -572,7 +572,7 @@ export function NotificationsTab() {
             <button
               type="button"
               onClick={handleSaveManagerPhone}
-              className="inline-flex items-center gap-[6px] rounded-[10px] bg-primary px-[14px] py-[8px] text-[13px] font-bold text-ink transition-transform hover:-translate-y-[1px] hover:bg-primary-hover active:scale-95 shadow-xs shrink-0"
+              className="inline-flex items-center gap-[6px] rounded-[10px] bg-primary px-[14px] py-[8px] text-[13px] font-bold text-white transition-transform hover:-translate-y-[1px] hover:bg-primary-hover active:scale-95 shadow-xs shrink-0"
             >
               <Save className="h-[14px] w-[14px]" />
               <span>ذخیره شماره</span>
@@ -604,7 +604,7 @@ export function NotificationsTab() {
               key={item.id}
               className={`rounded-[16px] border p-[18px_20px] transition-all duration-200 ${
                 isGreen
-                  ? "border-primary/40 bg-surface shadow-[0_2px_12px_rgba(22,224,160,0.06)]"
+                  ? "border-primary/40 bg-surface shadow-[0_2px_12px_rgba(242,92,31,0.06)]"
                   : "border-border/60 bg-bg/50 opacity-70"
               }`}
             >
@@ -836,7 +836,7 @@ export function NotificationsTab() {
                 <button
                   type="button"
                   onClick={handleSendViaNativeSMS}
-                  className="inline-flex items-center justify-center gap-[8px] rounded-[12px] bg-primary px-[14px] py-[10px] text-[13px] font-bold text-ink shadow-xs transition-transform hover:-translate-y-[1px] hover:bg-primary-hover active:scale-95"
+                  className="inline-flex items-center justify-center gap-[8px] rounded-[12px] bg-primary px-[14px] py-[10px] text-[13px] font-bold text-white shadow-xs transition-transform hover:-translate-y-[1px] hover:bg-primary-hover active:scale-95"
                 >
                   <Smartphone className="h-[16px] w-[16px]" />
                   <span>ارسال با پیامک دستگاه (SMS)</span>

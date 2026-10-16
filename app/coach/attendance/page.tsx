@@ -40,7 +40,7 @@ interface SessionAttendanceState {
 }
 
 const DAYS = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه"];
-const COL = ["#0F172A", "#0FBF87", "#0891B2", "#D97706", "#E11D48", "#6366F1"];
+const COL = ["#0F172A", "#D94A10", "#0369A1", "#D97706", "#E11D48", "#6366F1"];
 const NAMES = [
   "سارا محمدی", "امیر صادقی", "رضا کاظمی", "مینا تهرانی", "کیان راد", "نیلوفر عباسی",
   "پارسا نوری", "الهام فرهادی", "دانیال کریمی", "سحر مرادی", "بهار حسینی", "علی زارعی",
@@ -383,7 +383,7 @@ function AttendanceInner() {
             {toastMessage.type === "err" ? (
               <AlertCircle className="h-[18px] w-[18px] text-[#FB7185] shrink-0" />
             ) : (
-              <Check className="h-[18px] w-[18px] text-primary shrink-0 stroke-[2.2]" />
+              <Check className="h-[18px] w-[18px] text-[#0EA5E9] shrink-0 stroke-[2.2]" />
             )}
             <span>{toastMessage.msg}</span>
           </div>
@@ -565,7 +565,7 @@ function AttendanceInner() {
                 <div className="s">
                   <div className="v">{toPersianDigits(counts.p)}</div>
                   <div className="l">
-                    <span className="dot" style={{ background: "var(--primary)" }} />
+                    <span className="dot" style={{ background: "#0EA5E9" }} />
                     حاضر
                   </div>
                 </div>
@@ -597,7 +597,7 @@ function AttendanceInner() {
                 <i
                   style={{
                     width: `${counts.total ? (counts.p / counts.total) * 100 : 0}%`,
-                    background: "var(--primary)",
+                    background: "#0EA5E9",
                   }}
                 />
                 <i

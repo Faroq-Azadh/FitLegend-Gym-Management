@@ -69,8 +69,8 @@ export interface CoachProgramItem {
 const DAYS = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه"];
 const AVATAR_COLORS = [
   "#0F172A",
-  "#0FBF87",
-  "#0891B2",
+  "#D94A10",
+  "#0369A1",
   "#D97706",
   "#E11D48",
   "#6366F1",
@@ -807,7 +807,7 @@ export default function CoachClassesPage() {
             {/* KPI 1: کلاس فعال */}
             <div className="card kpi bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(15,23,42,0.04)] hover:shadow-md transition-all">
               <div className="kpi-top flex items-center justify-between">
-                <span className="kpi-ico w-[44px] h-[44px] rounded-[12px] flex items-center justify-center bg-tint text-primary-dark">
+                <span className="kpi-ico w-[44px] h-[44px] rounded-[12px] flex items-center justify-center bg-tint text-primary-dark kpi-c-orange">
                   <Calendar className="h-[22px] w-[22px]" />
                 </span>
               </div>
@@ -820,7 +820,7 @@ export default function CoachClassesPage() {
             {/* KPI 2: جلسه در هفته */}
             <div className="card kpi bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(15,23,42,0.04)] hover:shadow-md transition-all">
               <div className="kpi-top flex items-center justify-between">
-                <span className="kpi-ico w-[44px] h-[44px] rounded-[12px] flex items-center justify-center bg-tint text-primary-dark">
+                <span className="kpi-ico w-[44px] h-[44px] rounded-[12px] flex items-center justify-center bg-tint text-primary-dark kpi-c-sky">
                   <Clock className="h-[22px] w-[22px]" />
                 </span>
               </div>
@@ -833,7 +833,7 @@ export default function CoachClassesPage() {
             {/* KPI 3: ثبت‌نام‌شده در کلاس‌ها */}
             <div className="card kpi bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(15,23,42,0.04)] hover:shadow-md transition-all">
               <div className="kpi-top flex items-center justify-between">
-                <span className="kpi-ico w-[44px] h-[44px] rounded-[12px] flex items-center justify-center bg-tint text-primary-dark">
+                <span className="kpi-ico w-[44px] h-[44px] rounded-[12px] flex items-center justify-center bg-tint text-primary-dark kpi-c-violet">
                   <Users className="h-[22px] w-[22px]" />
                 </span>
               </div>
@@ -847,7 +847,7 @@ export default function CoachClassesPage() {
             <div className="card kpi bg-surface border border-border rounded-[16px] p-5 shadow-[0_2px_8px_rgba(15,23,42,0.04)] hover:shadow-md transition-all">
               <div className="kpi-top flex items-center justify-between">
                 <span
-                  className="kpi-ico w-[44px] h-[44px] rounded-[12px] flex items-center justify-center"
+                  className="kpi-ico w-[44px] h-[44px] rounded-[12px] flex items-center justify-center kpi-c-amber"
                   style={{ background: "#FFFBEB", color: "#D97706" }}
                 >
                   <CheckCircle2 className="h-[22px] w-[22px]" />
@@ -983,7 +983,7 @@ export default function CoachClassesPage() {
                             className={cn(
                               "cls-ico w-11 h-11 rounded-[12px] flex items-center justify-center shrink-0",
                               c.cat === "functional"
-                                ? "bg-[rgba(34,211,238,0.12)] text-[#0891B2]"
+                                ? "bg-[rgba(14,165,233,0.12)] text-[#0369A1]"
                                 : "bg-tint text-primary-dark"
                             )}
                           >
@@ -1018,7 +1018,7 @@ export default function CoachClassesPage() {
                                   ? "bg-[#F1F5F9] text-[#64748B] hover:bg-slate-200"
                                   : isFull
                                   ? "bg-[#FFFBEB] text-[#B45309] hover:bg-amber-100"
-                                  : "bg-tint text-primary-dark hover:bg-emerald-100"
+                                  : "bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD]"
                               )}
                             >
                               <span
@@ -1028,7 +1028,7 @@ export default function CoachClassesPage() {
                                     ? "bg-[#94A3B8]"
                                     : isFull
                                     ? "bg-[#F59E0B]"
-                                    : "bg-primary"
+                                    : "bg-[#0EA5E9]"
                                 )}
                               />
                               <span>
@@ -1199,7 +1199,7 @@ export default function CoachClassesPage() {
                                       className={cn(
                                         "tt-class rounded-[9px] p-2 h-full cursor-pointer transition-all hover:scale-[1.02] border",
                                         matchingClass.cat === "functional"
-                                          ? "bg-[rgba(34,211,238,0.12)] border-[#22D3EE] text-[#0891B2]"
+                                          ? "bg-[rgba(14,165,233,0.12)] border-[#0EA5E9] text-[#0369A1]"
                                           : "bg-tint border-primary text-primary-dark"
                                       )}
                                       title="مشاهده و ویرایش جزئیات کلاس"
@@ -1312,7 +1312,7 @@ export default function CoachClassesPage() {
                             <button
                               type="button"
                               onClick={() => handleOpenEditProgramModal(p)}
-                              className="text-[13px] font-bold text-primary-dark bg-tint px-2.5 py-1 rounded-full whitespace-nowrap cursor-pointer hover:bg-emerald-100 transition-colors select-none"
+                              className="text-[13px] font-bold text-primary-dark bg-tint px-2.5 py-1 rounded-full whitespace-nowrap cursor-pointer hover:bg-orange-100 transition-colors select-none"
                               title="کلیک برای تغییر قیمت برنامه"
                             >
                               {toPersianDigits(p.price)} تومان
@@ -1366,14 +1366,14 @@ export default function CoachClassesPage() {
                               className={cn(
                                 "status text-[11.5px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 cursor-pointer transition-all hover:scale-105 select-none",
                                 p.st === "active"
-                                  ? "bg-tint text-primary-dark hover:bg-emerald-100"
+                                  ? "bg-[#E0F2FE] text-[#0284C7] hover:bg-[#BAE6FD]"
                                   : "bg-bg text-ink-faint hover:bg-slate-200"
                               )}
                             >
                               <span
                                 className={cn(
                                   "w-1.5 h-1.5 rounded-full",
-                                  p.st === "active" ? "bg-primary" : "bg-[#94A3B8]"
+                                  p.st === "active" ? "bg-[#0EA5E9]" : "bg-[#94A3B8]"
                                 )}
                               />
                               <span>{p.st === "active" ? "فعال" : "پیش‌نویس"}</span>
@@ -2130,7 +2130,7 @@ export default function CoachClassesPage() {
                 {toastType === "err" ? (
                   <AlertCircle className="h-4 w-4 text-[#FB7185] shrink-0" />
                 ) : (
-                  <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 text-[#0EA5E9] shrink-0" />
                 )}
                 <span>{toastMessage}</span>
               </div>

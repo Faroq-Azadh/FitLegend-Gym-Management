@@ -19,7 +19,7 @@ export function CoachKpiGrid() {
       {/* Card 1: شاگردان فعال */}
       <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
         <div className="flex items-center justify-between">
-          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-orange">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -60,7 +60,7 @@ export function CoachKpiGrid() {
       {/* Card 2: جلسات امروز */}
       <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
         <div className="flex items-center justify-between">
-          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-sky">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -89,7 +89,7 @@ export function CoachKpiGrid() {
       {/* Card 3: نرخ حضور این هفته */}
       <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
         <div className="flex items-center justify-between">
-          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-violet">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -129,7 +129,7 @@ export function CoachKpiGrid() {
       {/* Card 4: پیام‌های پاسخ‌نداده */}
       <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
         <div className="flex items-center justify-between">
-          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-[#FFFBEB] text-[#D97706]">
+          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-[#FFFBEB] text-[#D97706] kpi-c-amber">
             <svg
               viewBox="0 0 24 24"
               fill="none"

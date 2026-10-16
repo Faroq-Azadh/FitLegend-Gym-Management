@@ -120,8 +120,8 @@ export function PaymentsTable({
     switch (status) {
       case "paid":
         return (
-          <span className="inline-flex items-center gap-[6px] rounded-full bg-tint px-[11px] py-[5px] text-[12px] font-bold text-primary-dark">
-            <span className="h-[6px] w-[6px] rounded-full bg-primary" />
+          <span className="inline-flex items-center gap-[6px] rounded-full bg-[#E0F2FE] px-[11px] py-[5px] text-[12px] font-bold text-[#0284C7]">
+            <span className="h-[6px] w-[6px] rounded-full bg-[#0EA5E9]" />
             موفق
           </span>
         );
@@ -399,7 +399,7 @@ export function PaymentsTable({
             className={cn(
               "h-[36px] min-w-[36px] rounded-[10px] border px-[10px] text-[13.5px] font-bold transition-all",
               currentPage === 1
-                ? "border-ink bg-ink text-white"
+                ? "border-ink btn-ink-gradient text-white"
                 : "border-border bg-surface text-ink-soft hover:border-primary hover:bg-tint hover:text-primary-dark",
             )}
           >
@@ -411,7 +411,7 @@ export function PaymentsTable({
             className={cn(
               "h-[36px] min-w-[36px] rounded-[10px] border px-[10px] text-[13.5px] font-bold transition-all",
               currentPage === 2
-                ? "border-ink bg-ink text-white"
+                ? "border-ink btn-ink-gradient text-white"
                 : "border-border bg-surface text-ink-soft hover:border-primary hover:bg-tint hover:text-primary-dark",
             )}
           >
@@ -423,7 +423,7 @@ export function PaymentsTable({
             className={cn(
               "h-[36px] min-w-[36px] rounded-[10px] border px-[10px] text-[13.5px] font-bold transition-all",
               currentPage === 3
-                ? "border-ink bg-ink text-white"
+                ? "border-ink btn-ink-gradient text-white"
                 : "border-border bg-surface text-ink-soft hover:border-primary hover:bg-tint hover:text-primary-dark",
             )}
           >
@@ -443,7 +443,7 @@ export function PaymentsTable({
             className={cn(
               "h-[36px] min-w-[36px] rounded-[10px] border px-[10px] text-[13.5px] font-bold transition-all",
               currentPage === 180
-                ? "border-ink bg-ink text-white"
+                ? "border-ink btn-ink-gradient text-white"
                 : "border-border bg-surface text-ink-soft hover:border-primary hover:bg-tint hover:text-primary-dark",
             )}
           >

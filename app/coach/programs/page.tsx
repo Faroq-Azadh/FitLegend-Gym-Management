@@ -150,7 +150,7 @@ const INITIAL_STUDENTS_PROGRAMS: StudentProgramRecord[] = [
   {
     id: "sp-1",
     studentName: "سارا محمدی",
-    studentAvatarColor: "#16E0A0",
+    studentAvatarColor: "#F25C1F",
     programTitle: "برنامه‌ی حجم پیشرفته (Hypertrophy 4-Day)",
     goal: "افزایش حجم",
     level: "پیشرفته",
@@ -196,7 +196,7 @@ const INITIAL_STUDENTS_PROGRAMS: StudentProgramRecord[] = [
   {
     id: "sp-2",
     studentName: "امیر صادقی",
-    studentAvatarColor: "#22D3EE",
+    studentAvatarColor: "#0EA5E9",
     programTitle: "قدرت و توان انفجاری (5x5 Power)",
     goal: "افزایش قدرت",
     level: "حرفه‌ای",
@@ -652,7 +652,7 @@ export default function CoachProgramsPage() {
     const newRecord: StudentProgramRecord = {
       id: "sp-" + Date.now(),
       studentName: athlete.trim(),
-      studentAvatarColor: "#16E0A0",
+      studentAvatarColor: "#F25C1F",
       programTitle: programName.trim(),
       goal,
       level,
@@ -1218,7 +1218,7 @@ export default function CoachProgramsPage() {
             onClick={() => setIsSuccessModalOpen(false)}
           />
           <div className="relative z-10 w-full max-w-[420px] rounded-[22px] border border-border bg-surface p-6 shadow-xl text-center animate-in zoom-in-95 duration-200">
-            <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-tint text-primary-dark shadow-[0_8px_24px_rgba(22,224,160,0.3)]">
+            <span className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-tint text-primary-dark shadow-[0_8px_24px_rgba(242,92,31,0.3)]">
               <Check className="h-7 w-7 stroke-[3]" />
             </span>
             <h3 className="text-[18px] font-extrabold text-ink">
@@ -1438,7 +1438,7 @@ export default function CoachProgramsPage() {
                   className={cn(
                     "px-3 py-1.5 text-[12px] font-bold rounded-[7px] transition-all cursor-pointer",
                     programsFilter === "all"
-                      ? "bg-ink text-white shadow-sm"
+                      ? "btn-ink-gradient text-white shadow-sm"
                       : "text-ink-soft hover:text-ink"
                   )}
                 >
@@ -1532,7 +1532,7 @@ export default function CoachProgramsPage() {
                                 className={cn(
                                   "status text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5",
                                   record.status === "active" &&
-                                  "bg-tint text-primary-dark",
+                                  "bg-[#E0F2FE] text-[#0284C7]",
                                   record.status === "in_progress" &&
                                   "bg-[#FFFBEB] text-[#B45309]",
                                   record.status === "expired" &&
@@ -1542,7 +1542,7 @@ export default function CoachProgramsPage() {
                                 <span
                                   className={cn(
                                     "w-1.5 h-1.5 rounded-full",
-                                    record.status === "active" && "bg-primary",
+                                    record.status === "active" && "bg-[#0EA5E9]",
                                     record.status === "in_progress" && "bg-[#F59E0B]",
                                     record.status === "expired" && "bg-[#E11D48]"
                                   )}

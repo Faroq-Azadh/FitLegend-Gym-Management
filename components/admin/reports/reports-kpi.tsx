@@ -109,7 +109,7 @@ export function ReportsKpi({ range = "30days" }: ReportsKpiProps) {
       {/* 1. Total Revenue */}
       <div className="flex flex-col gap-[14px] rounded-[16px] border border-border bg-surface p-[20px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)] print-avoid-break">
         <div className="flex items-center justify-between">
-          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-orange">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -147,7 +147,7 @@ export function ReportsKpi({ range = "30days" }: ReportsKpiProps) {
       {/* 2. New Members */}
       <div className="flex flex-col gap-[14px] rounded-[16px] border border-border bg-surface p-[20px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)] print-avoid-break">
         <div className="flex items-center justify-between">
-          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-sky">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -187,7 +187,7 @@ export function ReportsKpi({ range = "30days" }: ReportsKpiProps) {
       {/* 3. Average Daily Attendance */}
       <div className="flex flex-col gap-[14px] rounded-[16px] border border-border bg-surface p-[20px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)] print-avoid-break">
         <div className="flex items-center justify-between">
-          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-violet">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -226,7 +226,7 @@ export function ReportsKpi({ range = "30days" }: ReportsKpiProps) {
       {/* 4. Churn Rate */}
       <div className="flex flex-col gap-[14px] rounded-[16px] border border-border bg-surface p-[20px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)] print-avoid-break">
         <div className="flex items-center justify-between">
-          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-emerald">
             <svg
               viewBox="0 0 24 24"
               fill="none"

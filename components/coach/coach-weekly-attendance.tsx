@@ -103,7 +103,7 @@ export function CoachWeeklyAttendance() {
                     "bar w-full max-w-[30px] rounded-t-[8px] transition-all duration-300 group-hover:opacity-85",
                     isMuted
                       ? "muted bg-tint"
-                      : "bg-gradient-to-t from-cyan to-primary shadow-[0_4px_12px_rgba(22,224,160,0.15)]"
+                      : "bg-gradient-to-t from-cyan to-primary shadow-[0_4px_12px_rgba(242,92,31,0.15)]"
                   )}
                   style={{ height: `${bar.percentage}%` }}
                 />

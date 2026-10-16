@@ -245,7 +245,7 @@ export default function AdminClassesPage() {
                   setEditingClass(null);
                   setIsAddModalOpen(true);
                 }}
-                className="inline-flex items-center justify-center gap-[8px] rounded-[10px] bg-ink px-[14px] py-[8px] text-[13px] font-bold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-primary-dark hover:shadow-[0_20px_50px_rgba(22,224,160,0.25)] active:translate-y-0"
+                className="inline-flex items-center justify-center gap-[8px] rounded-[10px] btn-ink-gradient px-[14px] py-[8px] text-[13px] font-bold text-white transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_20px_50px_rgba(242,92,31,0.25)] active:translate-y-0"
               >
                 <svg
                   viewBox="0 0 24 24"

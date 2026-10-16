@@ -65,8 +65,8 @@ export function ClassesTimetable({
       case "cyan":
         return {
           container:
-            "bg-[rgba(34,211,238,0.12)] border-[#22D3EE] hover:bg-[rgba(34,211,238,0.2)]",
-          title: "text-[#0891B2]",
+            "bg-[rgba(14,165,233,0.12)] border-[#0EA5E9] hover:bg-[rgba(14,165,233,0.2)]",
+          title: "text-[#0369A1]",
           meta: "text-ink-soft",
         };
       case "amber":
@@ -78,7 +78,7 @@ export function ClassesTimetable({
       case "emerald":
       default:
         return {
-          container: "bg-tint border-primary hover:bg-[#D1FAE5]",
+          container: "bg-tint border-primary hover:bg-[#FFE8DA]",
           title: "text-primary-dark",
           meta: "text-ink-soft",
         };
@@ -136,7 +136,7 @@ export function ClassesTimetable({
               className={cn(
                 "shrink-0 rounded-[8px] px-[12px] py-[6px] text-[12px] font-bold transition-all",
                 selectedCategory === cat.id
-                  ? "bg-ink text-white"
+                  ? "btn-ink-gradient text-white"
                   : "bg-bg text-ink-soft hover:bg-tint",
               )}
             >
@@ -264,7 +264,7 @@ export function ClassesTimetable({
               <span>بدنسازی و قدرتی</span>
             </div>
             <div className="flex items-center gap-[6px]">
-              <span className="h-[10px] w-[10px] rounded-full border border-[#22D3EE] bg-[rgba(34,211,238,0.2)]" />
+              <span className="h-[10px] w-[10px] rounded-full border border-[#0EA5E9] bg-[rgba(14,165,233,0.2)]" />
               <span>یوگا و فیتنس</span>
             </div>
             <div className="flex items-center gap-[6px]">

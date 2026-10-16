@@ -14,10 +14,10 @@ interface RecentMembersTableProps {
 }
 
 const GRADIENTS = [
-  "linear-gradient(135deg, #16E0A0, #22D3EE)",
-  "linear-gradient(135deg, #6366F1, #22D3EE)",
+  "linear-gradient(135deg, #F25C1F, #0EA5E9)",
+  "linear-gradient(135deg, #6366F1, #0EA5E9)",
   "linear-gradient(135deg, #F59E0B, #EF4444)",
-  "linear-gradient(135deg, #0EA5E9, #16E0A0)",
+  "linear-gradient(135deg, #0EA5E9, #F25C1F)",
   "linear-gradient(135deg, #8B5CF6, #EC4899)",
 ];
 
@@ -199,7 +199,7 @@ export function RecentMembersTable({ members: propMembers, isLoading: propLoadin
                       <span
                         className={cn(
                           "inline-flex items-center gap-[6px] rounded-full px-[11px] py-[5px] text-[12px] font-bold",
-                          statusInfo.status === "active" && "bg-tint text-primary-dark",
+                          statusInfo.status === "active" && "bg-[#E0F2FE] text-[#0284C7]",
                           statusInfo.status === "expiring" && "bg-[#FFFBEB] text-[#B45309]",
                           statusInfo.status === "expired" && "bg-[#FFF1F2] text-[#9F1239]",
                         )}
@@ -207,7 +207,7 @@ export function RecentMembersTable({ members: propMembers, isLoading: propLoadin
                         <span
                           className={cn(
                             "h-[6px] w-[6px] rounded-full",
-                            statusInfo.status === "active" && "bg-primary",
+                            statusInfo.status === "active" && "bg-[#0EA5E9]",
                             statusInfo.status === "expiring" && "bg-[#F59E0B]",
                             statusInfo.status === "expired" && "bg-[#F43F5E]",
                           )}

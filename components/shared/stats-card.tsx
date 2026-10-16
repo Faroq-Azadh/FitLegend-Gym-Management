@@ -11,7 +11,7 @@ export function StatsCard() {
       <svg className="mb-3.5 h-20 w-full" viewBox="0 0 300 80" fill="none">
         <path
           d="M0 55 L30 55 L42 28 L54 62 L66 18 L78 50 L96 40 L114 58 L132 22 L150 45 L168 14 L186 52 L204 32 L222 55 L240 25 L258 45 L276 16 L300 36"
-          stroke="#16E0A0"
+          stroke="#F25C1F"
           strokeWidth="2.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -23,8 +23,8 @@ export function StatsCard() {
         />
         <defs>
           <linearGradient id="pulseGrad" x1="0" y1="0" x2="0" y2="80">
-            <stop offset="0%" stopColor="#16E0A0" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#16E0A0" stopOpacity="0" />
+            <stop offset="0%" stopColor="#F25C1F" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#F25C1F" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>

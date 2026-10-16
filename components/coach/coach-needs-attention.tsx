@@ -100,7 +100,7 @@ export function CoachNeedsAttention() {
               className={cn(
                 "feed-ico flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-[11px]",
                 item.badge_type === "amber" && "amber bg-[#FFFBEB] text-[#B45309]",
-                item.badge_type === "cyan" && "cyan bg-[rgba(34,211,238,0.12)] text-[#0891B2]",
+                item.badge_type === "cyan" && "cyan bg-[rgba(14,165,233,0.12)] text-[#0369A1]",
                 item.badge_type === "default" && "bg-tint text-primary-dark"
               )}
             >

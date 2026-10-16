@@ -40,7 +40,7 @@ export function ClassesDayView({
     switch (theme) {
       case "cyan":
         return {
-          badge: "bg-[rgba(34,211,238,0.15)] text-[#0891B2]",
+          badge: "bg-[rgba(14,165,233,0.15)] text-[#0369A1]",
           bar: "bg-gradient-to-r from-cyan to-blue-500",
           border: "border-cyan/40",
         };
@@ -107,7 +107,7 @@ export function ClassesDayView({
             <button
               type="button"
               onClick={onAddNewClass}
-              className="mt-[18px] inline-flex items-center gap-[8px] rounded-[12px] bg-ink px-[18px] py-[10px] text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark"
+              className="mt-[18px] inline-flex items-center gap-[8px] rounded-[12px] btn-ink-gradient px-[18px] py-[10px] text-[13.5px] font-bold text-white transition-all"
             >
               افزودن کلاس جدید
             </button>

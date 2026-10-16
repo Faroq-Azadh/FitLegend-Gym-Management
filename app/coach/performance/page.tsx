@@ -299,7 +299,7 @@ export default function CoachPerformancePage() {
           <div className="kpi-grid">
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-orange">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -331,7 +331,7 @@ export default function CoachPerformancePage() {
 
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-sky">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -363,7 +363,7 @@ export default function CoachPerformancePage() {
 
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-violet">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -396,7 +396,7 @@ export default function CoachPerformancePage() {
 
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-emerald">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -479,7 +479,7 @@ export default function CoachPerformancePage() {
                         cy="21"
                         r="15.915"
                         fill="none"
-                        stroke="#16E0A0"
+                        stroke="#F25C1F"
                         strokeWidth="5"
                         strokeDasharray={currentMetrics.donut.dash1}
                         strokeDashoffset="0"
@@ -489,7 +489,7 @@ export default function CoachPerformancePage() {
                         cy="21"
                         r="15.915"
                         fill="none"
-                        stroke="#22D3EE"
+                        stroke="#0EA5E9"
                         strokeWidth="5"
                         strokeDasharray={currentMetrics.donut.dash2}
                         strokeDashoffset={currentMetrics.donut.dashOffset2}
@@ -512,12 +512,12 @@ export default function CoachPerformancePage() {
                   </div>
                   <div className="donut-legend">
                     <div className="row">
-                      <span className="dot" style={{ background: "#16E0A0" }}></span>
+                      <span className="dot" style={{ background: "#F25C1F" }}></span>
                       <span className="nm">کاهش وزن</span>
                       <span className="pc">{currentMetrics.donut.weightPct}</span>
                     </div>
                     <div className="row">
-                      <span className="dot" style={{ background: "#22D3EE" }}></span>
+                      <span className="dot" style={{ background: "#0EA5E9" }}></span>
                       <span className="nm">عضله‌سازی</span>
                       <span className="pc">{currentMetrics.donut.musclePct}</span>
                     </div>

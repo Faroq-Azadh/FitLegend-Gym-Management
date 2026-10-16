@@ -160,7 +160,7 @@ export function NewPaymentModal({
         memberEmail: memberEmail.trim(),
         txId: `TXN-${toPersianDigits(randomTx)}`,
         memberAvatar: initials || "عض",
-        avatarGradient: "linear-gradient(135deg,#16E0A0,#22D3EE)",
+        avatarGradient: "linear-gradient(135deg,#F25C1F,#0EA5E9)",
         amount: rawAmountNum,
         amountFormatted: formattedAmount,
         method,
@@ -410,7 +410,7 @@ export function NewPaymentModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-[6px] rounded-[10px] bg-ink px-[20px] py-[9px] text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark disabled:opacity-70"
+              className="inline-flex items-center gap-[6px] rounded-[10px] btn-ink-gradient px-[20px] py-[9px] text-[13.5px] font-bold text-white transition-all disabled:opacity-70"
             >
               {isSubmitting ? (
                 <>

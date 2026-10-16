@@ -13,8 +13,8 @@ interface PlanSlice {
 
 const PALETTE = [
   "#F59E0B", // Gold / Amber
-  "#0FBF87", // Primary Emerald
-  "#22D3EE", // Cyan
+  "#D94A10", // Primary Emerald
+  "#0EA5E9", // Cyan
   "#6366F1", // Indigo
   "#D97706", // Bronze
   "#EC4899", // Pink
@@ -32,8 +32,8 @@ export function PlansDonut() {
       return {
         slices: [
           { name: "ماهانه", count: 0, percent: 0, color: "#F59E0B" },
-          { name: "۳ ماهه", count: 0, percent: 0, color: "#0FBF87" },
-          { name: "۶ ماهه", count: 0, percent: 0, color: "#22D3EE" },
+          { name: "۳ ماهه", count: 0, percent: 0, color: "#D94A10" },
+          { name: "۶ ماهه", count: 0, percent: 0, color: "#0EA5E9" },
         ],
         totalActive: 0,
       };

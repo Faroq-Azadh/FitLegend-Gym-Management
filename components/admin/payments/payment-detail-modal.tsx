@@ -74,7 +74,7 @@ export function PaymentDetailModal({
             </div>
             <div className="mt-[10px] inline-flex items-center justify-center">
               {payment.status === "paid" && (
-                <span className="inline-flex items-center gap-[6px] rounded-full bg-tint px-[12px] py-[4px] text-[12.5px] font-bold text-primary-dark">
+                <span className="inline-flex items-center gap-[6px] rounded-full bg-[#E0F2FE] px-[12px] py-[4px] text-[12.5px] font-bold text-[#0284C7]">
                   <CheckCircle2 className="h-[14px] w-[14px]" />
                   پرداخت موفق و تاییدشده
                 </span>
@@ -160,7 +160,7 @@ export function PaymentDetailModal({
                 className={cn(
                   "rounded-[8px] p-[6px_8px] text-[11.5px] font-bold transition-all",
                   payment.status === "paid"
-                    ? "bg-primary-dark text-white"
+                    ? "bg-[#0EA5E9] text-white"
                     : "bg-surface border border-border text-ink hover:bg-tint"
                 )}
               >
@@ -234,7 +234,7 @@ export function PaymentDetailModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-[10px] bg-ink px-[16px] py-[8px] text-[13px] font-bold text-white transition-colors hover:bg-primary-dark"
+              className="rounded-[10px] btn-ink-gradient px-[16px] py-[8px] text-[13px] font-bold text-white transition-colors"
             >
               بستن
             </button>

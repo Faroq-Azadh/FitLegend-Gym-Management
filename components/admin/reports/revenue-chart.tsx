@@ -212,7 +212,7 @@ export function RevenueChart({ range }: RevenueChartProps) {
               درآمد (تومان)
             </span>
             <span className="flex items-center gap-[7px] text-[12.5px] font-semibold text-ink-soft">
-              <span className="h-[11px] w-[11px] rounded-[4px] bg-[#22D3EE]" />
+              <span className="h-[11px] w-[11px] rounded-[4px] bg-[#0EA5E9]" />
               عضویت جدید
             </span>
           </div>
@@ -233,8 +233,8 @@ export function RevenueChart({ range }: RevenueChartProps) {
           >
             <defs>
               <linearGradient id="fillGReportLive" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#16E0A0" stopOpacity="0.25" />
-                <stop offset="100%" stopColor="#16E0A0" stopOpacity="0.0" />
+                <stop offset="0%" stopColor="#F25C1F" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#F25C1F" stopOpacity="0.0" />
               </linearGradient>
             </defs>
 
@@ -251,7 +251,7 @@ export function RevenueChart({ range }: RevenueChartProps) {
               <path
                 d={revPathD}
                 fill="none"
-                stroke="#0FBF87"
+                stroke="#D94A10"
                 strokeWidth="3"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -263,7 +263,7 @@ export function RevenueChart({ range }: RevenueChartProps) {
               <path
                 d={memPathD}
                 fill="none"
-                stroke="#22D3EE"
+                stroke="#0EA5E9"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -280,8 +280,8 @@ export function RevenueChart({ range }: RevenueChartProps) {
                     cx={pt.x}
                     cy={pt.yRev}
                     r={isHovered ? 7 : 4.5}
-                    fill={isHovered ? "#0FBF87" : "#fff"}
-                    stroke="#0FBF87"
+                    fill={isHovered ? "#D94A10" : "#fff"}
+                    stroke="#D94A10"
                     strokeWidth={isHovered ? 3 : 2.5}
                     className="transition-all duration-150"
                   />
@@ -289,7 +289,7 @@ export function RevenueChart({ range }: RevenueChartProps) {
                     cx={pt.x}
                     cy={pt.yMem}
                     r={isHovered ? 5.5 : 3.5}
-                    fill="#22D3EE"
+                    fill="#0EA5E9"
                     className="transition-all duration-150"
                   />
                   <rect

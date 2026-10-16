@@ -156,13 +156,13 @@ export function KpiSection({ dashboard: propDashboard, isLoading: propIsLoading 
 
   return (
     <section className="mb-[18px] grid grid-cols-1 gap-[18px] min-[640px]:grid-cols-2 min-[1101px]:grid-cols-4">
-      {kpis.map((kpi) => (
+      {kpis.map((kpi, kpiIdx) => (
         <div
           key={kpi.id}
           className="flex flex-col gap-[14px] rounded-[16px] border border-border bg-surface p-[20px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]"
         >
           <div className="flex items-center justify-between">
-            <span className="flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+            <span className={`flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-${["orange","sky","violet","emerald"][kpiIdx % 4]}`}>
               {kpi.icon}
             </span>
             <span

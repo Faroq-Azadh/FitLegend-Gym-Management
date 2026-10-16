@@ -184,7 +184,7 @@ export function CoachAddMemberModal({
         <div className="flex-1 overflow-y-auto px-6 py-5">
           {isSuccess ? (
             <div className="flex flex-col items-center justify-center py-16 text-center animate-in fade-in duration-200">
-              <span className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-tint text-primary-dark shadow-[0_8px_24px_rgba(22,224,160,0.3)]">
+              <span className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-tint text-primary-dark shadow-[0_8px_24px_rgba(242,92,31,0.3)]">
                 <Check className="h-8 w-8 stroke-[3]" />
               </span>
               <h3 className="text-[20px] font-extrabold text-ink">شاگرد با موفقیت افزوده شد</h3>

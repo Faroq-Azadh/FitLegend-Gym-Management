@@ -25,7 +25,7 @@ export function LandingHero() {
           <div className="mb-11 flex flex-col items-stretch gap-4 min-[640px]:flex-row min-[640px]:items-center">
             <Link
               href="/register-gym"
-              className="flex items-center justify-center rounded-[14px] bg-ink px-[30px] py-[15px] text-[16px] font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-emerald"
+              className="flex items-center justify-center rounded-[14px] btn-ink-gradient px-[30px] py-[15px] text-[16px] font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-emerald"
             >
               شروع رایگان ۴۵ روزه
             </Link>
@@ -60,7 +60,7 @@ export function LandingHero() {
             className="pointer-events-none absolute -right-[60px] top-0 h-[420px] w-[420px] rounded-full blur-[40px]"
             style={{
               background:
-                "radial-gradient(circle, rgba(22,224,160,0.35), transparent 70%)",
+                "radial-gradient(circle, rgba(242,92,31,0.35), transparent 70%)",
             }}
           />
 
@@ -82,7 +82,7 @@ export function LandingHero() {
             >
               <path
                 d="M0 60 L30 60 L42 30 L54 70 L66 20 L78 55 L96 45 L114 65 L132 25 L150 50 L168 15 L186 58 L204 35 L222 60 L240 28 L258 50 L276 18 L300 40"
-                stroke="#16E0A0"
+                stroke="#F25C1F"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -94,8 +94,8 @@ export function LandingHero() {
               />
               <defs>
                 <linearGradient id="pulseGradHero" x1="0" y1="0" x2="0" y2="90">
-                  <stop offset="0%" stopColor="#16E0A0" stopOpacity="0.35" />
-                  <stop offset="100%" stopColor="#16E0A0" stopOpacity="0" />
+                  <stop offset="0%" stopColor="#F25C1F" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="#F25C1F" stopOpacity="0" />
                 </linearGradient>
               </defs>
             </svg>
@@ -122,7 +122,7 @@ export function LandingHero() {
               <div className="flex -space-x-2 space-x-reverse">
                 <div className="h-[30px] w-[30px] rounded-full border-2 border-surface bg-gradient-to-br from-cyan to-primary" />
                 <div className="h-[30px] w-[30px] rounded-full border-2 border-surface bg-gradient-to-br from-primary to-primary-dark" />
-                <div className="h-[30px] w-[30px] rounded-full border-2 border-surface bg-gradient-to-br from-cyan to-emerald-400" />
+                <div className="h-[30px] w-[30px] rounded-full border-2 border-surface bg-gradient-to-br from-cyan to-orange-400" />
               </div>
             </div>
             <p className="mt-2.5 text-[12px] font-semibold text-ink-soft">

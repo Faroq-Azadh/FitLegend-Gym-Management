@@ -237,7 +237,7 @@ export default function CoachSettingsPage() {
                 {toastMessage.type === "err" ? (
                   <AlertCircle className="h-[18px] w-[18px] text-[#FB7185] shrink-0" />
                 ) : (
-                  <Check className="h-[18px] w-[18px] text-primary shrink-0 stroke-[2.2]" />
+                  <Check className="h-[18px] w-[18px] text-[#0EA5E9] shrink-0 stroke-[2.2]" />
                 )}
                 <span>{toastMessage.msg}</span>
               </div>

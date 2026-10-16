@@ -167,7 +167,7 @@ export default function AdminProfilePage() {
 
             <div className="flex items-center gap-[10px]">
               {topSavedNotice && (
-                <span className="inline-flex items-center gap-[6px] rounded-full bg-tint px-[12px] py-[6px] text-[12px] font-bold text-primary-dark animate-in fade-in duration-200">
+                <span className="inline-flex items-center gap-[6px] rounded-full bg-[#E0F2FE] px-[12px] py-[6px] text-[12px] font-bold text-[#0284C7] animate-in fade-in duration-200">
                   <Check className="h-[14px] w-[14px]" />
                   تغییرات در سامانه ثبت شد
                 </span>
@@ -192,7 +192,7 @@ export default function AdminProfilePage() {
               <button
                 type="button"
                 onClick={handleTopSave}
-                className="inline-flex items-center gap-[6px] rounded-[10px] bg-ink px-[16px] py-[8px] text-[13px] font-bold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-primary-dark hover:shadow-[0_20px_50px_rgba(22,224,160,0.25)] active:scale-95"
+                className="inline-flex items-center gap-[6px] rounded-[10px] btn-ink-gradient px-[16px] py-[8px] text-[13px] font-bold text-white transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_20px_50px_rgba(242,92,31,0.25)] active:scale-95"
               >
                 <svg
                   viewBox="0 0 24 24"

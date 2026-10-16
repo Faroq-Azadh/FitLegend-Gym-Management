@@ -120,7 +120,7 @@ export function TodayClasses({ classes: propClasses, isLoading: propLoading }: T
           </div>
         </div>
         <div className="flex items-center gap-[8px]">
-          <span className="rounded-full bg-tint px-[11px] py-[5px] text-[11.5px] font-bold text-primary-dark">
+          <span className="rounded-full bg-[#E0F2FE] px-[11px] py-[5px] text-[11.5px] font-bold text-[#0284C7]">
             زنده
           </span>
           <Link
@@ -148,7 +148,7 @@ export function TodayClasses({ classes: propClasses, isLoading: propLoading }: T
             </p>
             <Link
               href="/admin/classes"
-              className="mt-4 inline-flex items-center gap-1.5 rounded-lg bg-ink px-3.5 py-1.5 text-[12.5px] font-bold text-white transition-all hover:bg-primary-dark"
+              className="mt-4 inline-flex items-center gap-1.5 rounded-lg btn-ink-gradient px-3.5 py-1.5 text-[12.5px] font-bold text-white transition-all"
             >
               <Plus className="h-4 w-4" />
               <span>مشاهده و افزودن کلاس</span>
@@ -265,7 +265,7 @@ export function TodayClasses({ classes: propClasses, isLoading: propLoading }: T
                               <span
                                 key={m.id}
                                 title={m.name}
-                                className="flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-full border-2 border-surface bg-[#16E0A0]/20 text-[10px] font-extrabold text-primary-dark shadow-2xs overflow-hidden"
+                                className="flex h-[24px] w-[24px] shrink-0 items-center justify-center rounded-full border-2 border-surface bg-[#F25C1F]/20 text-[10px] font-extrabold text-primary-dark shadow-2xs overflow-hidden"
                               >
                                 {m.avatarUrl ? (
                                   <img src={m.avatarUrl} alt={m.name} className="h-full w-full object-cover" />

@@ -215,7 +215,7 @@ export function ClubInfoTab() {
           <button
             type="submit"
             disabled={updateGymMutation.isPending}
-            className="inline-flex items-center gap-[8px] rounded-[10px] bg-ink px-[18px] py-[8px] text-[13px] font-bold text-white transition-all hover:bg-primary-dark hover:shadow-[0_20px_50px_rgba(22,224,160,0.25)] disabled:opacity-50"
+            className="inline-flex items-center gap-[8px] rounded-[10px] btn-ink-gradient px-[18px] py-[8px] text-[13px] font-bold text-white transition-all hover:shadow-[0_20px_50px_rgba(242,92,31,0.25)] disabled:opacity-50"
           >
             {updateGymMutation.isPending && <Loader2 className="h-[15px] w-[15px] animate-spin" />}
             <span>ذخیره‌ی تغییرات</span>

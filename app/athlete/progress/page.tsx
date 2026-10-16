@@ -656,7 +656,7 @@ export default function AthleteProgressPage() {
             {/* Card 1: Current Weight */}
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-orange">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -703,7 +703,7 @@ export default function AthleteProgressPage() {
             {/* Card 2: Total Weight Change */}
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-sky">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -759,7 +759,7 @@ export default function AthleteProgressPage() {
             {/* Card 3: Body Fat */}
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico" style={{ background: "#FFFBEB", color: "#D97706" }}>
+                <span className="kpi-ico kpi-c-amber" style={{ background: "#FFFBEB", color: "#D97706" }}>
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -793,7 +793,7 @@ export default function AthleteProgressPage() {
             {/* Card 4: Last Record */}
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-violet">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -876,7 +876,7 @@ export default function AthleteProgressPage() {
               <div className="card-body">
                 <div className="chart-legend">
                   <div className="li">
-                    <span className="swatch" style={{ background: "#0FBF87" }} />
+                    <span className="swatch" style={{ background: "#D94A10" }} />
                     <span id="legendLabel">{METRICS_CONFIG[activeMetric].label}</span>
                   </div>
                 </div>
@@ -891,8 +891,8 @@ export default function AthleteProgressPage() {
                       >
                         <defs>
                           <linearGradient id="fillG" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#16E0A0" stopOpacity="0.28" />
-                            <stop offset="100%" stopColor="#16E0A0" stopOpacity="0" />
+                            <stop offset="0%" stopColor="#F25C1F" stopOpacity="0.28" />
+                            <stop offset="100%" stopColor="#F25C1F" stopOpacity="0" />
                           </linearGradient>
                         </defs>
                         {chartMath.gridLines.map((gy, idx) => (
@@ -911,7 +911,7 @@ export default function AthleteProgressPage() {
                         <path
                           d={chartMath.linePath}
                           fill="none"
-                          stroke="#0FBF87"
+                          stroke="#D94A10"
                           strokeWidth="3"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -926,7 +926,7 @@ export default function AthleteProgressPage() {
                               cx={px}
                               cy={py}
                               r={isLast ? 6 : 4}
-                              fill={isLast ? "#0FBF87" : "#16E0A0"}
+                              fill={isLast ? "#D94A10" : "#F25C1F"}
                               stroke="#ffffff"
                               strokeWidth="1.5"
                               style={{ cursor: "pointer" }}
@@ -1000,7 +1000,7 @@ export default function AthleteProgressPage() {
                     style={{
                       background: "var(--tint)",
                       color: "var(--primary-dark)",
-                      border: "1px solid rgba(22, 224, 160, 0.4)",
+                      border: "1px solid rgba(242,92,31,0.4)",
                       padding: "10px 14px",
                       borderRadius: "10px",
                       fontSize: "13px",
@@ -1396,7 +1396,7 @@ export default function AthleteProgressPage() {
                         cy="21"
                         r="15.915"
                         fill="none"
-                        stroke="#16E0A0"
+                        stroke="#F25C1F"
                         strokeWidth="5"
                         strokeDasharray="42 58"
                         strokeDashoffset="0"
@@ -1406,7 +1406,7 @@ export default function AthleteProgressPage() {
                         cy="21"
                         r="15.915"
                         fill="none"
-                        stroke="#22D3EE"
+                        stroke="#0EA5E9"
                         strokeWidth="5"
                         strokeDasharray="40 60"
                         strokeDashoffset="-42"
@@ -1430,12 +1430,12 @@ export default function AthleteProgressPage() {
 
                   <div className="donut-legend">
                     <div className="row">
-                      <span className="dot" style={{ background: "#16E0A0" }} />
+                      <span className="dot" style={{ background: "#F25C1F" }} />
                       <span className="nm">عضله</span>
                       <span className="pc">٪۴۲</span>
                     </div>
                     <div className="row">
-                      <span className="dot" style={{ background: "#22D3EE" }} />
+                      <span className="dot" style={{ background: "#0EA5E9" }} />
                       <span className="nm">آب بدن</span>
                       <span className="pc">٪۴۰</span>
                     </div>
@@ -1708,7 +1708,7 @@ export default function AthleteProgressPage() {
                   background: activeSelectedBmi.info.isGood ? "var(--tint)" : "#FFFBEB",
                   borderRadius: "14px",
                   padding: "16px",
-                  border: `1px solid ${activeSelectedBmi.info.isGood ? "rgba(22, 224, 160, 0.4)" : "#FDE68A"}`,
+                  border: `1px solid ${activeSelectedBmi.info.isGood ? "rgba(242,92,31,0.4)" : "#FDE68A"}`,
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px", flexWrap: "wrap" }}>

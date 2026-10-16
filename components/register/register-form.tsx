@@ -367,7 +367,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
                     matches === null
                       ? undefined
                       : matches
-                        ? "#0FBF87"
+                        ? "#D94A10"
                         : "#F43F5E",
                 }}
               >
@@ -416,7 +416,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             </select>
           </Field>
 
-          <div className="col-span-full flex items-start gap-2.5 rounded-[12px] border border-[#C6F1E1] bg-tint px-3.5 py-3 text-[12.5px] leading-[1.9] text-[#0B7357]">
+          <div className="col-span-full flex items-start gap-2.5 rounded-[12px] border border-[#FDD9C4] bg-tint px-3.5 py-3 text-[12.5px] leading-[1.9] text-[#9A3412]">
             <Info
               className="mt-1 h-4 w-4 shrink-0 text-primary-dark"
               strokeWidth={2}

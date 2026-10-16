@@ -237,12 +237,12 @@ export function UpgradePlanModal({
                     key={sp.code}
                     className={`relative flex flex-col justify-between rounded-[18px] border p-5 transition-all ${
                       isSelected
-                        ? "border-primary bg-tint/60 shadow-[0_12px_32px_rgba(22,224,160,0.18)] ring-2 ring-primary/60"
+                        ? "border-primary bg-tint/60 shadow-[0_12px_32px_rgba(242,92,31,0.18)] ring-2 ring-primary/60"
                         : "border-border bg-surface hover:border-border/80 hover:shadow-xs"
                     }`}
                   >
                     {isCurrent && (
-                      <span className="absolute -top-2.5 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-black text-[#006633] shadow-xs">
+                      <span className="absolute -top-2.5 right-4 rounded-full bg-primary px-2.5 py-0.5 text-[10px] font-black text-white shadow-xs">
                         اشتراک فعلی شما
                       </span>
                     )}
@@ -284,7 +284,7 @@ export function UpgradePlanModal({
                         isCurrent
                           ? "bg-bg text-ink-faint cursor-default"
                           : isSelected
-                            ? "bg-ink text-white hover:bg-primary-dark shadow-xs"
+                            ? "btn-ink-gradient text-white shadow-xs"
                             : "bg-surface border border-border text-ink hover:bg-tint hover:border-primary"
                       }`}
                     >
@@ -447,7 +447,7 @@ export function UpgradePlanModal({
                   <button
                     type="button"
                     onClick={() => setStep("gateway")}
-                    className="w-full rounded-[12px] bg-ink py-3 text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark cursor-pointer shadow-xs flex items-center justify-center gap-2"
+                    className="w-full rounded-[12px] btn-ink-gradient py-3 text-[13.5px] font-bold text-white transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2"
                   >
                     <Lock className="h-4 w-4" />
                     <span>انتقال به درگاه امن پرداخت بانکی</span>
@@ -595,7 +595,7 @@ export function UpgradePlanModal({
                     type="button"
                     disabled={isProcessingPayment}
                     onClick={handleSimulatePayment}
-                    className="flex-1 rounded-[12px] bg-ink py-3 text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark cursor-pointer shadow-xs flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="flex-1 rounded-[12px] btn-ink-gradient py-3 text-[13.5px] font-bold text-white transition-all cursor-pointer shadow-xs flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     {isProcessingPayment ? (
                       <>
@@ -629,7 +629,7 @@ export function UpgradePlanModal({
         {/* ======================================================================== */}
         {step === "success" && (
           <div className="p-8 text-center animate-in fade-in zoom-in-95 duration-200">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20 text-primary-dark shadow-[0_10px_30px_rgba(22,224,160,0.3)]">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/20 text-primary-dark shadow-[0_10px_30px_rgba(242,92,31,0.3)]">
               <CheckCircle2 className="h-10 w-10 stroke-[2.5]" />
             </div>
 
@@ -681,7 +681,7 @@ export function UpgradePlanModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="inline-flex items-center gap-2 rounded-[10px] bg-ink px-6 py-2.5 text-[13px] font-bold text-white hover:bg-primary-dark cursor-pointer shadow-xs"
+                className="inline-flex items-center gap-2 rounded-[10px] btn-ink-gradient px-6 py-2.5 text-[13px] font-bold text-white cursor-pointer shadow-xs"
               >
                 <span>مشاهده داشبورد پلن‌ها</span>
               </button>

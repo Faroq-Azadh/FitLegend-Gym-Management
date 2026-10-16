@@ -22,7 +22,7 @@ export function AthleteKpiGrid({
       {/* 1. Sessions Completed */}
       <div className="card kpi">
         <div className="kpi-top">
-          <span className="kpi-ico">
+          <span className="kpi-ico kpi-c-orange">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -60,7 +60,7 @@ export function AthleteKpiGrid({
       {/* 2. Workout Streak */}
       <div className="card kpi">
         <div className="kpi-top">
-          <span className="kpi-ico warning" style={{ background: "#FFFBEB", color: "#D97706" }}>
+          <span className="kpi-ico warning kpi-c-amber" style={{ background: "#FFFBEB", color: "#D97706" }}>
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -80,7 +80,7 @@ export function AthleteKpiGrid({
       {/* 3. Goal Progress */}
       <div className="card kpi">
         <div className="kpi-top">
-          <span className="kpi-ico">
+          <span className="kpi-ico kpi-c-sky">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -112,7 +112,7 @@ export function AthleteKpiGrid({
       {/* 4. Current Weight */}
       <div className="card kpi">
         <div className="kpi-top">
-          <span className="kpi-ico">
+          <span className="kpi-ico kpi-c-violet">
             <svg
               viewBox="0 0 24 24"
               fill="none"

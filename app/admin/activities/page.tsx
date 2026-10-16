@@ -349,7 +349,7 @@ export default function AdminActivitiesPage() {
                             className={cn(
                               "flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-[12px]",
                               config.variant === "emerald" && "bg-tint text-primary-dark",
-                              config.variant === "cyan" && "bg-[#22D3EE]/15 text-[#0891B2]",
+                              config.variant === "cyan" && "bg-[#0EA5E9]/15 text-[#0369A1]",
                               config.variant === "amber" && "bg-[#FFFBEB] text-[#B45309]",
                               config.variant === "purple" && "bg-[#F3E8FF] text-[#7E22CE]",
                               config.variant === "blue" && "bg-[#EFF6FF] text-[#2563EB]",

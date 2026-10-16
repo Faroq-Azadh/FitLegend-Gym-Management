@@ -10,7 +10,7 @@ import {
 } from "@/lib/api/register-gym";
 
 const btnPrimary =
-  "inline-flex w-auto items-center justify-center gap-2 rounded-[12px] bg-ink px-6 py-[13px] text-[15px] font-bold text-white transition-all duration-200 ease-in-out hover:-translate-y-px hover:bg-primary-dark hover:shadow-emerald max-[520px]:w-full";
+  "inline-flex w-auto items-center justify-center gap-2 rounded-[12px] btn-ink-gradient px-6 py-[13px] text-[15px] font-bold text-white transition-all duration-200 ease-in-out hover:-translate-y-px hover:shadow-emerald max-[520px]:w-full";
 
 const btnOutline =
   "inline-flex w-auto items-center justify-center gap-2 rounded-[12px] border-[1.5px] border-border bg-surface px-6 py-[13px] text-[15px] font-bold text-ink transition-all duration-200 ease-in-out hover:border-primary hover:bg-tint max-[520px]:w-full";

@@ -389,7 +389,7 @@ export function RevenueChart() {
                     ? `درآمد: ${formatFullToman(totalRevenue)}`
                     : `${toPersianDigits(primaryValues[hoveredIdx])} م تومان`}
               </span>
-              <span className="text-[#0891B2]">
+              <span className="text-[#0369A1]">
                 {period === "week" ? `ثبت‌نام: ${toPersianDigits(secondaryValues[hoveredIdx])} عضو` : `${toPersianDigits(secondaryValues[hoveredIdx])} عضو`}
               </span>
             </div>
@@ -412,8 +412,8 @@ export function RevenueChart() {
               <defs>
                 {/* Emerald Attendance Gradient */}
                 <linearGradient id="fillAttendance" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#16E0A0" stopOpacity="0.25" />
-                  <stop offset="100%" stopColor="#16E0A0" stopOpacity="0.0" />
+                  <stop offset="0%" stopColor="#F25C1F" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="#F25C1F" stopOpacity="0.0" />
                 </linearGradient>
 
                 {/* Cyan New Members Gradient */}
@@ -451,7 +451,7 @@ export function RevenueChart() {
                 <path
                   d={primaryPathD}
                   fill="none"
-                  stroke="#0FBF87"
+                  stroke="#D94A10"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -473,7 +473,7 @@ export function RevenueChart() {
                         y1="20"
                         x2={pt.x}
                         y2={height}
-                        stroke="#0FBF87"
+                        stroke="#D94A10"
                         strokeWidth="1.5"
                         strokeDasharray="3 3"
                         opacity="0.6"
@@ -487,7 +487,7 @@ export function RevenueChart() {
                         cy={pt.y}
                         r={9}
                         fill="none"
-                        stroke="#16E0A0"
+                        stroke="#F25C1F"
                         strokeWidth="1.5"
                         strokeDasharray="2 2"
                         className="animate-pulse"
@@ -511,7 +511,7 @@ export function RevenueChart() {
                       cy={pt.y}
                       r={isHovered ? 6.5 : isToday ? 5.5 : 4.5}
                       fill="#fff"
-                      stroke="#0FBF87"
+                      stroke="#D94A10"
                       strokeWidth="2.5"
                       className="transition-all duration-150"
                     />

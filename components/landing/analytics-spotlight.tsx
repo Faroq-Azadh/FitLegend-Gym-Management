@@ -16,7 +16,7 @@ export function LandingAnalyticsSpotlight() {
             className="pointer-events-none absolute -left-[150px] -top-[150px] h-[500px] w-[500px] rounded-full blur-[40px]"
             style={{
               background:
-                "radial-gradient(circle, rgba(22,224,160,0.18), transparent 70%)",
+                "radial-gradient(circle, rgba(242,92,31,0.18), transparent 70%)",
             }}
           />
 
@@ -60,7 +60,7 @@ export function LandingAnalyticsSpotlight() {
               >
                 <path
                   d="M0 100 L40 95 L60 60 L80 110 L100 50 L130 80 L150 40 L180 90 L210 30 L240 70 L270 25 L300 65 L330 20 L360 55 L400 15"
-                  stroke="#16E0A0"
+                  stroke="#F25C1F"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -71,8 +71,8 @@ export function LandingAnalyticsSpotlight() {
                 />
                 <defs>
                   <linearGradient id="bigPulseGrad" x1="0" y1="0" x2="0" y2="140">
-                    <stop offset="0%" stopColor="#16E0A0" stopOpacity="0.4" />
-                    <stop offset="100%" stopColor="#16E0A0" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#F25C1F" stopOpacity="0.4" />
+                    <stop offset="100%" stopColor="#F25C1F" stopOpacity="0" />
                   </linearGradient>
                 </defs>
               </svg>

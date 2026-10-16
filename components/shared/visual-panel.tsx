@@ -45,14 +45,14 @@ export function VisualPanel({ variant }: VisualPanelProps) {
         className="pointer-events-none absolute -left-40 -top-40 z-0 h-[520px] w-[520px]"
         style={{
           background:
-            "radial-gradient(circle, rgba(22,224,160,0.22), transparent 70%)",
+            "radial-gradient(circle, rgba(242,92,31,0.22), transparent 70%)",
         }}
       />
       <div
         className="pointer-events-none absolute -bottom-[140px] -right-[100px] z-0 h-[420px] w-[420px]"
         style={{
           background:
-            "radial-gradient(circle, rgba(34,211,238,0.14), transparent 70%)",
+            "radial-gradient(circle, rgba(14,165,233,0.14), transparent 70%)",
         }}
       />
 

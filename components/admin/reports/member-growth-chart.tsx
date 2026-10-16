@@ -144,7 +144,7 @@ export function MemberGrowthChart({ range = "30days" }: MemberGrowthChartProps) 
                 className={cn(
                   "w-full max-w-[32px] rounded-t-[8px] transition-all duration-300",
                   col.count > 0
-                    ? "bg-gradient-to-b from-primary to-[#22D3EE]"
+                    ? "bg-gradient-to-b from-primary to-[#0EA5E9]"
                     : "bg-border/60",
                   hoveredIdx === index ? "brightness-110 shadow-sm" : "group-hover:opacity-85",
                 )}

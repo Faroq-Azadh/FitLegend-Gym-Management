@@ -375,10 +375,14 @@ export function PlanModal({
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as "active" | "inactive")}
-                  className="rounded-[8px] border border-border bg-surface px-[10px] py-[4px] text-[12px] font-bold text-ink focus:outline-none"
+                  className={`rounded-[8px] border px-[10px] py-[4px] text-[12px] font-bold focus:outline-none transition-colors ${
+                    status === "active"
+                      ? "border-[#0EA5E9]/40 bg-[#E0F2FE] text-[#0284C7]"
+                      : "border-border bg-surface text-ink"
+                  }`}
                 >
-                  <option value="active">فعال</option>
-                  <option value="inactive">غیرفعال (آرشیو)</option>
+                  <option value="active" className="bg-surface text-ink">فعال</option>
+                  <option value="inactive" className="bg-surface text-ink">غیرفعال (آرشیو)</option>
                 </select>
               </div>
             </div>
@@ -407,7 +411,7 @@ export function PlanModal({
                 <button
                   type="button"
                   onClick={handleAddFeature}
-                  className="inline-flex items-center gap-[4px] rounded-[10px] bg-ink px-[14px] py-[8px] text-[12.5px] font-bold text-white transition-colors hover:bg-primary-dark cursor-pointer"
+                  className="inline-flex items-center gap-[4px] rounded-[10px] btn-ink-gradient px-[14px] py-[8px] text-[12.5px] font-bold text-white transition-colors cursor-pointer"
                 >
                   <Plus className="h-[14px] w-[14px]" />
                   افزودن
@@ -465,7 +469,7 @@ export function PlanModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-[6px] rounded-[10px] bg-ink px-[22px] py-[9px] text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-[6px] rounded-[10px] btn-ink-gradient px-[22px] py-[9px] text-[13.5px] font-bold text-white transition-all cursor-pointer disabled:opacity-50"
             >
               {isSubmitting && <Loader2 className="h-4 w-4 animate-spin text-white" />}
               <span>{editPlan ? "ذخیره تغییرات در سرور" : "ثبت و ایجاد پلن"}</span>

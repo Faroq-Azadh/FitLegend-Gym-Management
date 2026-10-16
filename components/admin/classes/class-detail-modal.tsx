@@ -291,7 +291,7 @@ export function ClassDetailModal({
                 cls.theme === "amber"
                   ? "bg-[#FFFBEB] text-[#B45309]"
                   : cls.theme === "cyan"
-                    ? "bg-[rgba(34,211,238,0.15)] text-[#0891B2]"
+                    ? "bg-[rgba(14,165,233,0.15)] text-[#0369A1]"
                     : "bg-tint text-primary-dark",
               )}
             >
@@ -450,7 +450,7 @@ export function ClassDetailModal({
                     className={cn(
                       "inline-flex items-center gap-[6px] rounded-[8px] px-[12px] py-[6px] text-[12.5px] font-bold transition-all",
                       addMode === "existing"
-                        ? "bg-ink text-white shadow-xs"
+                        ? "btn-ink-gradient text-white shadow-xs"
                         : "bg-surface text-ink-soft hover:bg-bg hover:text-ink",
                     )}
                   >
@@ -464,7 +464,7 @@ export function ClassDetailModal({
                     className={cn(
                       "inline-flex items-center gap-[6px] rounded-[8px] px-[12px] py-[6px] text-[12.5px] font-bold transition-all",
                       addMode === "new"
-                        ? "bg-ink text-white shadow-xs"
+                        ? "btn-ink-gradient text-white shadow-xs"
                         : "bg-surface text-ink-soft hover:bg-bg hover:text-ink",
                     )}
                   >
@@ -698,7 +698,7 @@ export function ClassDetailModal({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-[10px] bg-ink px-[16px] py-[8px] text-[13px] font-bold text-white transition-colors hover:bg-primary-dark"
+              className="rounded-[10px] btn-ink-gradient px-[16px] py-[8px] text-[13px] font-bold text-white transition-colors"
             >
               بستن
             </button>

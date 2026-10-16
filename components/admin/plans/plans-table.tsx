@@ -126,7 +126,7 @@ export function PlansTable({
                         <button
                           type="button"
                           onClick={onOpenCreateModal}
-                          className="mt-2 inline-flex items-center gap-2 rounded-[10px] bg-ink px-4 py-2 text-[12.5px] font-bold text-white transition-all hover:bg-primary-dark"
+                          className="mt-2 inline-flex items-center gap-2 rounded-[10px] btn-ink-gradient px-4 py-2 text-[12.5px] font-bold text-white transition-all"
                         >
                           <Plus className="h-4 w-4" />
                           <span>تعریف اولین پلن عضویت</span>
@@ -179,7 +179,7 @@ export function PlansTable({
                           className={cn(
                             "inline-flex items-center gap-[6px] rounded-full px-[10px] py-[4px] text-[12px] font-bold transition-all",
                             isActive
-                              ? "bg-tint text-primary-dark hover:opacity-80"
+                              ? "bg-[#E0F2FE] text-[#0284C7] hover:opacity-80"
                               : "bg-[#FEF2F2] text-[#DC2626] hover:opacity-80",
                           )}
                           title="برای تغییر وضعیت کلیک کنید"
@@ -187,7 +187,7 @@ export function PlansTable({
                           <span
                             className={cn(
                               "h-[6px] w-[6px] rounded-full",
-                              isActive ? "bg-primary-dark" : "bg-[#DC2626]",
+                              isActive ? "bg-[#0EA5E9]" : "bg-[#DC2626]",
                             )}
                           />
                           <span>{isActive ? "فعال" : "غیرفعال"}</span>
@@ -304,7 +304,7 @@ export function PlansTable({
                     </td>
                     <td className="p-[16px_20px] text-center">
                       {isCurrent ? (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-tint px-2.5 py-1 text-[11px] font-black text-primary-dark">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-[#E0F2FE] px-2.5 py-1 text-[11px] font-black text-[#0284C7]">
                           <Check className="h-3 w-3 stroke-[3]" />
                           <span>فعال</span>
                         </span>
@@ -327,7 +327,7 @@ export function PlansTable({
                           "rounded-[8px] px-3.5 py-1.5 text-[12px] font-bold transition-all",
                           isCurrent
                             ? "bg-bg text-ink-faint cursor-default"
-                            : "bg-ink text-white hover:bg-primary-dark cursor-pointer"
+                            : "btn-ink-gradient text-white cursor-pointer"
                         )}
                       >
                         {isCurrent ? "پلن فعلی" : "ارتقا"}

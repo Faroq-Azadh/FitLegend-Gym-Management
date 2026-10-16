@@ -75,13 +75,13 @@ export function CoachTodaySessions() {
                 title="برای تغییر وضعیت کلیک کنید"
                 className={cn(
                   "status-badge inline-flex items-center gap-[6px] text-[12px] font-bold px-[11px] py-[5px] rounded-full transition-transform active:scale-95 cursor-pointer",
-                  isAttended ? "active bg-tint text-primary-dark" : "expiring bg-[#FFFBEB] text-[#B45309]"
+                  isAttended ? "active bg-[#E0F2FE] text-[#0284C7]" : "expiring bg-[#FFFBEB] text-[#B45309]"
                 )}
               >
                 <span
                   className={cn(
                     "d h-[6px] w-[6px] rounded-full",
-                    isAttended ? "bg-primary" : "bg-[#F59E0B]"
+                    isAttended ? "bg-[#0EA5E9]" : "bg-[#F59E0B]"
                   )}
                 />
                 <span>{isAttended ? "حاضر" : "در انتظار"}</span>

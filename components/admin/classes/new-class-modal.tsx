@@ -551,7 +551,7 @@ export function NewClassModal({
                   )}
                 >
                   <span className="h-[12px] w-[12px] rounded-full bg-primary-dark" />
-                  زمردی (بدنسازی)
+                  نارنجی (بدنسازی)
                 </button>
 
                 <button
@@ -560,12 +560,12 @@ export function NewClassModal({
                   className={cn(
                     "flex items-center gap-[8px] rounded-[10px] border p-[8px_14px] text-[12.5px] font-bold transition-all",
                     theme === "cyan"
-                      ? "border-[#22D3EE] bg-[rgba(34,211,238,0.15)] text-[#0891B2] ring-2 ring-[#22D3EE]/40"
+                      ? "border-[#0EA5E9] bg-[rgba(14,165,233,0.15)] text-[#0369A1] ring-2 ring-[#0EA5E9]/40"
                       : "border-border bg-surface text-ink-soft hover:bg-bg",
                   )}
                 >
-                  <span className="h-[12px] w-[12px] rounded-full bg-[#0891B2]" />
-                  فیروزه‌ای (یوگا / فیتنس)
+                  <span className="h-[12px] w-[12px] rounded-full bg-[#0369A1]" />
+                  آبی (یوگا / فیتنس)
                 </button>
 
                 <button
@@ -612,7 +612,7 @@ export function NewClassModal({
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center gap-[8px] rounded-[10px] bg-ink px-[20px] py-[9px] text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark disabled:opacity-50"
+              className="inline-flex items-center gap-[8px] rounded-[10px] btn-ink-gradient px-[20px] py-[9px] text-[13.5px] font-bold text-white transition-all disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>

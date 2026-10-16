@@ -71,7 +71,7 @@ export function ProfileSummaryCard({ user, onUpdateUser, onLogoutClick }: Profil
           <button
             type="button"
             onClick={handleCameraClick}
-            className="absolute -bottom-[4px] -left-[4px] flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[10px] border-[3px] border-surface bg-ink text-white transition-all hover:bg-primary-dark hover:scale-105"
+            className="absolute -bottom-[4px] -left-[4px] flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[10px] border-[3px] border-surface btn-ink-gradient text-white transition-all hover:scale-105"
             title="انتخاب تصویر جدید برای پروفایل"
             aria-label="تغییر تصویر پروفایل"
           >

@@ -37,7 +37,7 @@ export function AboutStory() {
               className="pointer-events-none absolute -left-[100px] -top-[120px] h-[340px] w-[340px] rounded-full blur-[40px]"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(22,224,160,0.22), transparent 70%)",
+                  "radial-gradient(circle, rgba(242,92,31,0.22), transparent 70%)",
               }}
             />
             <div className="relative z-10 text-[52px] font-black leading-none text-primary">

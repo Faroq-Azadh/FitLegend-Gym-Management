@@ -131,7 +131,7 @@ export function ClassesListView({
                             cls.theme === "amber"
                               ? "bg-[#F59E0B]"
                               : cls.theme === "cyan"
-                                ? "bg-[#22D3EE]"
+                                ? "bg-[#0EA5E9]"
                                 : "bg-primary-dark",
                           )}
                         />

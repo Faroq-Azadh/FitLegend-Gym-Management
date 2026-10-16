@@ -247,7 +247,7 @@ export default function AthleteClassesPage() {
           <div className="kpi-grid kpi-3">
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-orange">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -266,7 +266,7 @@ export default function AthleteClassesPage() {
 
             <div className="card kpi">
               <div className="kpi-top">
-                <span className="kpi-ico">
+                <span className="kpi-ico kpi-c-sky">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -286,7 +286,7 @@ export default function AthleteClassesPage() {
             <div className="card kpi">
               <div className="kpi-top">
                 <span
-                  className="kpi-ico"
+                  className="kpi-ico kpi-c-amber"
                   style={{ background: "#FFFBEB", color: "#D97706" }}
                 >
                   <svg
@@ -510,7 +510,7 @@ export default function AthleteClassesPage() {
                 </div>
                 <span className="pill">{toPersianDigits(myReservedClasses.length)} رزرو</span>
               </div>
-              <div id="mineList">
+              <div id="mineList" className="card-body" style={{ padding: "14px 22px 22px" }}>
                 {myReservedClasses.length === 0 ? (
                   <div className="empty-state">
                     <div className="es-ico neutral">
@@ -543,7 +543,7 @@ export default function AthleteClassesPage() {
                       key={c.id}
                       className="class-row"
                       style={{
-                        padding: "16px 22px",
+                        padding: "16px 4px",
                         borderBottom: "1px solid var(--border)",
                         display: "flex",
                         alignItems: "center",

@@ -4,10 +4,10 @@
 :root {
     --bg: #FAFAF9;
     --surface: #FFFFFF;
-    --tint: #ECFDF6;
-    --primary: #16E0A0;
-    --primary-dark: #0FBF87;
-    --cyan: #22D3EE;
+    --tint: #FFF4ED;
+    --primary: #F25C1F;
+    --primary-dark: #D94A10;
+    --cyan: #0EA5E9;
     --ink: #0F172A;
     --ink-soft: #475569;
     --ink-faint: #94A3B8;
@@ -16,7 +16,7 @@
     --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
     --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.06);
     --shadow-lg: 0 20px 60px rgba(15, 23, 42, 0.10);
-    --shadow-emerald: 0 20px 50px rgba(22, 224, 160, 0.25);
+    --shadow-emerald: 0 20px 50px rgba(242, 92, 31, 0.25);
     --sidebar-w: 264px;
 }
 
@@ -91,12 +91,15 @@
 }
 
 .app .btn-primary {
-    background: var(--ink) !important;
+    background-color: #0F172A !important;
+    background-image: var(--grad-ink) !important;
+    background-size: 200% 100% !important;
+    background-position: 0% 0 !important;
     color: #fff !important;
 }
 
 .app .btn-primary:hover {
-    background: var(--primary-dark) !important;
+    background-position: 100% 0 !important;
     transform: translateY(-1px) !important;
     box-shadow: var(--shadow-emerald) !important;
 }
@@ -212,8 +215,9 @@
 }
 
 .app .nav-item.active {
-    background: var(--tint) !important;
-    color: var(--primary-dark) !important;
+    background: linear-gradient(135deg, #F25C1F 0%, #FB923C 100%) !important;
+    box-shadow: 0 6px 16px rgba(242, 92, 31, 0.28) !important;
+    color: #fff !important;
 }
 
 .app .nav-item.active::before {
@@ -233,14 +237,14 @@
     font-size: 11px !important;
     font-weight: 700 !important;
     background: var(--primary) !important;
-    color: #063 !important;
+    color: #fff !important;
     padding: 2px 8px !important;
     border-radius: 100px !important;
 }
 
 .app .nav-item.active .badge {
-    background: var(--primary-dark) !important;
-    color: #fff !important;
+    background: #fff !important;
+    color: var(--primary-dark) !important;
 }
 
 .app .sidebar-foot {
@@ -730,6 +734,19 @@
     padding-bottom: 0 !important;
 }
 
+.app #mineList {
+    padding: 14px 22px 22px !important;
+}
+
+.app #mineList .class-row {
+    padding: 16px 4px !important;
+}
+
+.app #mineList .class-row:last-child {
+    border-bottom: none !important;
+    padding-bottom: 4px !important;
+}
+
 .app .class-time {
     flex-shrink: 0 !important;
     width: 58px !important;
@@ -992,8 +1009,8 @@
 }
 
 .app .tag.cyan {
-    color: #0891B2 !important;
-    background: rgba(34, 211, 238, 0.12) !important;
+    color: #0369A1 !important;
+    background: rgba(14, 165, 233, 0.12) !important;
 }
 
 .app .tag.amber {
@@ -1418,12 +1435,12 @@
 }
 
 .app .status.active {
-    color: var(--primary-dark) !important;
-    background: var(--tint) !important;
+    color: #0284C7 !important;
+    background: #E0F2FE !important;
 }
 
 .app .status.active .d {
-    background: var(--primary) !important;
+    background: #0EA5E9 !important;
 }
 
 .app .status.expiring {
@@ -1461,7 +1478,7 @@
 
 .app .filter-search:focus-within {
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(22, 224, 160, 0.15) !important;
+    box-shadow: 0 0 0 3px rgba(242, 92, 31, 0.15) !important;
 }
 
 .app .filter-search.w-full {
@@ -1591,7 +1608,7 @@
 .app .field select:focus {
     outline: none !important;
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(22, 224, 160, 0.15) !important;
+    box-shadow: 0 0 0 3px rgba(242, 92, 31, 0.15) !important;
 }
 
 .app .field input::placeholder {
@@ -1642,7 +1659,7 @@
 .app .input-wrap input:focus {
     outline: none !important;
     border-color: var(--primary) !important;
-    box-shadow: 0 0 0 3px rgba(22, 224, 160, 0.15) !important;
+    box-shadow: 0 0 0 3px rgba(242, 92, 31, 0.15) !important;
 }
 
 /* Hide number input spinners */
@@ -1818,7 +1835,7 @@
 }
 
 .app .bmi-badge.underweight {
-    background: rgba(34, 211, 238, 0.15) !important;
+    background: rgba(14, 165, 233, 0.15) !important;
     color: #0284C7 !important;
 }
 
@@ -1899,7 +1916,7 @@
 .app .tbl-btn.edit {
     background: var(--tint) !important;
     color: var(--primary-dark) !important;
-    border-color: rgba(22, 224, 160, 0.35) !important;
+    border-color: rgba(242, 92, 31, 0.35) !important;
 }
 
 .app .tbl-btn.edit:hover {
@@ -1926,7 +1943,7 @@
     padding: 26px !important;
     position: relative !important;
     overflow: hidden !important;
-    border: 1px solid rgba(22, 224, 160, 0.25) !important;
+    border: 1px solid rgba(242, 92, 31, 0.25) !important;
     box-shadow: 0 16px 40px rgba(15, 23, 42, 0.14) !important;
 }
 
@@ -1938,7 +1955,7 @@
     width: 220px !important;
     height: 220px !important;
     border-radius: 50% !important;
-    background: radial-gradient(circle, rgba(22, 224, 160, 0.35), transparent 70%) !important;
+    background: radial-gradient(circle, rgba(242, 92, 31, 0.35), transparent 70%) !important;
     pointer-events: none !important;
 }
 
@@ -1969,11 +1986,11 @@
 .app .mem-hero .chip {
     font-size: 12px !important;
     font-weight: 700 !important;
-    background: rgba(22, 224, 160, 0.2) !important;
-    color: #16E0A0 !important;
+    background: rgba(242, 92, 31, 0.2) !important;
+    color: #F25C1F !important;
     padding: 6px 14px !important;
     border-radius: 100px !important;
-    border: 1px solid rgba(22, 224, 160, 0.35) !important;
+    border: 1px solid rgba(242, 92, 31, 0.35) !important;
     white-space: nowrap !important;
     display: inline-flex !important;
     align-items: center !important;
@@ -2172,12 +2189,12 @@
 }
 
 .app .status.paid {
-    color: var(--primary-dark) !important;
-    background: var(--tint) !important;
+    color: #0284C7 !important;
+    background: #E0F2FE !important;
 }
 
 .app .status.paid .d {
-    background: var(--primary) !important;
+    background: #0EA5E9 !important;
 }
 
 .app .status.pending {
@@ -2268,7 +2285,9 @@
 }
 
 .app .pager button.active {
-    background: var(--ink) !important;
+    background-color: #0F172A !important;
+    background-image: var(--grad-ink) !important;
+    background-size: 200% 100% !important;
     color: #FFFFFF !important;
     border-color: var(--ink) !important;
 }

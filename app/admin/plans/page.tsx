@@ -201,7 +201,7 @@ export default function AdminPlansPage() {
             }`}
           >
             {toastMessage.type === "success" ? (
-              <CheckCircle2 className="h-5 w-5 text-primary stroke-[2.5]" />
+              <CheckCircle2 className="h-5 w-5 text-[#0EA5E9] stroke-[2.5]" />
             ) : (
               <AlertCircle className="h-5 w-5 text-white stroke-[2.5]" />
             )}
@@ -251,7 +251,7 @@ export default function AdminPlansPage() {
                   setEditingPlan(null);
                   setIsModalOpen(true);
                 }}
-                className="inline-flex items-center justify-center gap-[8px] rounded-[10px] bg-ink px-[16px] py-[9px] text-[13px] font-bold text-white transition-all duration-200 hover:-translate-y-[1px] hover:bg-primary-dark hover:shadow-[0_20px_50px_rgba(22,224,160,0.25)] active:translate-y-0 cursor-pointer shadow-xs"
+                className="inline-flex items-center justify-center gap-[8px] rounded-[10px] btn-ink-gradient px-[16px] py-[9px] text-[13px] font-bold text-white transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_20px_50px_rgba(242,92,31,0.25)] active:translate-y-0 cursor-pointer shadow-xs"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -281,7 +281,7 @@ export default function AdminPlansPage() {
                     <span className="text-[17px] font-black text-ink">
                       اشتراک فعال پلتفرم: {currentPlanName}
                     </span>
-                    <span className="rounded-full bg-tint px-[10px] py-[2.5px] text-[11.5px] font-bold text-primary-dark border border-primary/30">
+                    <span className="rounded-full bg-[#E0F2FE] px-[10px] py-[2.5px] text-[11.5px] font-bold text-[#0284C7] border border-[#0EA5E9]/30">
                       {currentPlanCode !== "FREE" || currentSub?.is_active ? "فعال و بدون محدودیت زمانی" : "دوره آزمایشی (۹۰ روز)"}
                     </span>
                   </div>
@@ -295,7 +295,7 @@ export default function AdminPlansPage() {
                 <button
                   type="button"
                   onClick={() => setIsUpgradeModalOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-[12px] bg-ink px-[18px] py-[10px] text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark cursor-pointer shadow-xs"
+                  className="inline-flex items-center gap-2 rounded-[12px] btn-ink-gradient px-[18px] py-[10px] text-[13.5px] font-bold text-white transition-all cursor-pointer shadow-xs"
                 >
                   <Sparkles className="h-4 w-4 text-primary" />
                   <span>ارتقای اشتراک و پرداخت آنلاین</span>

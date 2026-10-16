@@ -20,7 +20,7 @@ export function ClassesKpi({
       {/* 1. Active Weekly Classes */}
       <div className="rounded-[16px] border border-border bg-surface p-[20px_22px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
         <div className="mb-[12px] flex items-center justify-between">
-          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-orange">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -46,7 +46,7 @@ export function ClassesKpi({
       {/* 2. Active Coaches */}
       <div className="rounded-[16px] border border-border bg-surface p-[20px_22px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
         <div className="mb-[12px] flex items-center justify-between">
-          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-sky">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -72,7 +72,7 @@ export function ClassesKpi({
       {/* 3. Average Capacity Rate */}
       <div className="rounded-[16px] border border-border bg-surface p-[20px_22px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
         <div className="mb-[12px] flex items-center justify-between">
-          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-violet">
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -101,7 +101,7 @@ export function ClassesKpi({
       {/* 4. Full Classes Count */}
       <div className="rounded-[16px] border border-border bg-surface p-[20px_22px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[1px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
         <div className="mb-[12px] flex items-center justify-between">
-          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-[#FFFBEB] text-[#D97706]">
+          <span className="flex h-[40px] w-[40px] items-center justify-center rounded-[12px] bg-[#FFFBEB] text-[#D97706] kpi-c-amber">
             <svg
               viewBox="0 0 24 24"
               fill="none"

@@ -25,8 +25,8 @@ interface StudentItem {
 }
 
 const AVATAR_COLORS = [
-  "#16E0A0",
-  "#22D3EE",
+  "#F25C1F",
+  "#0EA5E9",
   "#6366F1",
   "#F59E0B",
   "#EC4899",
@@ -678,7 +678,7 @@ export default function CoachStudentsPage() {
             {/* Card 1: کل شاگردان */}
             <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
               <div className="kpi-top flex items-center justify-between">
-                <span className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+                <span className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-orange">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -705,7 +705,7 @@ export default function CoachStudentsPage() {
             {/* Card 2: فعال */}
             <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
               <div className="kpi-top flex items-center justify-between">
-                <span className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark">
+                <span className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-sky">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -732,7 +732,7 @@ export default function CoachStudentsPage() {
             <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
               <div className="kpi-top flex items-center justify-between">
                 <span
-                  className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] text-[#D97706]"
+                  className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] text-[#D97706] kpi-c-amber"
                   style={{ background: "#FFFBEB" }}
                 >
                   <svg
@@ -761,7 +761,7 @@ export default function CoachStudentsPage() {
             <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
               <div className="kpi-top flex items-center justify-between">
                 <span
-                  className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] text-[#E11D48]"
+                  className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] text-[#E11D48] kpi-c-rose"
                   style={{ background: "#FFF1F2" }}
                 >
                   <svg

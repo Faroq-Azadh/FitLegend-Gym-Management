@@ -21,7 +21,7 @@ export function LandingPricing() {
       btnText: "شروع رایگان",
       btnClass:
         "border-[1.5px] border-border bg-surface text-ink hover:border-primary hover:bg-tint",
-      cardClass: "bg-tint border-[#C6F1E1]",
+      cardClass: "bg-tint border-[#FDD9C4]",
       featured: false,
       isFree: true,
       features: [
@@ -80,7 +80,7 @@ export function LandingPricing() {
       period: "میلیون تومان / ماه",
       desc: "برای باشگاه‌های چندشعبه‌ای تا ۱۰۰۰ عضو",
       btnText: "انتخاب پلن حرفه‌ای",
-      btnClass: "bg-ink text-white hover:bg-primary-dark hover:shadow-emerald",
+      btnClass: "btn-ink-gradient text-white hover:shadow-emerald",
       cardClass: "bg-surface border-primary shadow-emerald relative min-[981px]:-translate-y-3",
       featured: true,
       isFree: false,
@@ -460,7 +460,7 @@ export function LandingPricing() {
                           href="/register-gym"
                           className={`inline-flex items-center justify-center rounded-[10px] px-4 py-2 text-[12.5px] font-bold transition-all ${
                             p.featured
-                              ? "bg-ink text-white hover:bg-primary-dark"
+                              ? "btn-ink-gradient text-white"
                               : "border border-border bg-surface text-ink hover:border-primary hover:bg-tint"
                           }`}
                         >

@@ -35,7 +35,7 @@ export function AthleteWeightChart() {
       <div className="card-body">
         <div className="chart-legend">
           <div className="li">
-            <span className="swatch" style={{ background: "#0FBF87" }} />
+            <span className="swatch" style={{ background: "#D94A10" }} />
             وزن (کیلوگرم)
           </div>
         </div>
@@ -47,8 +47,8 @@ export function AthleteWeightChart() {
           >
             <defs>
               <linearGradient id="fillG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#16E0A0" stopOpacity="0.28" />
-                <stop offset="100%" stopColor="#16E0A0" stopOpacity="0" />
+                <stop offset="0%" stopColor="#F25C1F" stopOpacity="0.28" />
+                <stop offset="100%" stopColor="#F25C1F" stopOpacity="0" />
               </linearGradient>
             </defs>
             <line
@@ -89,13 +89,13 @@ export function AthleteWeightChart() {
                 <path
                   d="M0 40 L144 65 L288 90 L432 110 L576 130 L720 150"
                   fill="none"
-                  stroke="#0FBF87"
+                  stroke="#D94A10"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   className="transition-all duration-300"
                 />
-                <circle cx="720" cy="150" r="5" fill="#0FBF87" />
+                <circle cx="720" cy="150" r="5" fill="#D94A10" />
               </>
             ) : (
               <>
@@ -107,13 +107,13 @@ export function AthleteWeightChart() {
                 <path
                   d="M0 25 L144 50 L288 75 L432 105 L576 125 L720 150"
                   fill="none"
-                  stroke="#0FBF87"
+                  stroke="#D94A10"
                   strokeWidth="3"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   className="transition-all duration-300"
                 />
-                <circle cx="720" cy="150" r="5" fill="#0FBF87" />
+                <circle cx="720" cy="150" r="5" fill="#D94A10" />
               </>
             )}
           </svg>

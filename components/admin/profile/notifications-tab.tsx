@@ -216,14 +216,14 @@ export function NotificationsTab({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex items-center gap-[6px] rounded-[10px] bg-ink px-[20px] py-[9px] text-[13px] font-bold text-white transition-all hover:bg-primary-dark hover:shadow-[0_20px_50px_rgba(22,224,160,0.25)] active:scale-95 disabled:opacity-50"
+            className="inline-flex items-center gap-[6px] rounded-[10px] btn-ink-gradient px-[20px] py-[9px] text-[13px] font-bold text-white transition-all hover:shadow-[0_20px_50px_rgba(242,92,31,0.25)] active:scale-95 disabled:opacity-50"
           >
             {isSubmitting ? <Loader2 className="h-[14px] w-[14px] animate-spin" /> : null}
             <span>ذخیره ترجیحات </span>
           </button>
 
           {saved && (
-            <span className="mr-auto inline-flex items-center gap-[6px] rounded-full bg-tint px-[12px] py-[5px] text-[12.5px] font-bold text-primary-dark animate-in fade-in duration-200">
+            <span className="mr-auto inline-flex items-center gap-[6px] rounded-full bg-[#E0F2FE] px-[12px] py-[5px] text-[12.5px] font-bold text-[#0284C7] animate-in fade-in duration-200">
               <Check className="h-[15px] w-[15px]" />
               ترجیحات اعلان‌ها با موفقیت خیره شد
             </span>

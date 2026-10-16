@@ -76,8 +76,8 @@ const WORKING_DAYS_OPTIONS = [
 ];
 
 const AVATAR_COLORS = [
-  "#16E0A0",
-  "#22D3EE",
+  "#F25C1F",
+  "#0EA5E9",
   "#6366F1",
   "#F59E0B",
   "#EC4899",
@@ -1087,15 +1087,14 @@ export function CoachesTable({
                         <span
                           className={cn(
                             "inline-flex items-center gap-[6px] rounded-[100px] px-[11px] py-[5px] text-[12px] font-bold",
-                            isActive
-                              ? "bg-tint text-primary-dark"
+                            isActive ? "bg-[#E0F2FE] text-[#0284C7]"
                               : "bg-[#FFF1F2] text-[#9F1239]"
                           )}
                         >
                           <span
                             className={cn(
                               "h-[6px] w-[6px] rounded-full",
-                              isActive ? "bg-primary" : "bg-[#F43F5E]"
+                              isActive ? "bg-[#0EA5E9]" : "bg-[#F43F5E]"
                             )}
                           />
                           {isActive ? "فعال" : "غیرفعال"}
@@ -1321,8 +1320,7 @@ export function CoachesTable({
                     onClick={() => setFormData({ ...formData, status: "active" })}
                     className={cn(
                       "flex-1 rounded-[10px] border py-[8px] text-[12.5px] font-bold transition-all",
-                      formData.status === "active"
-                        ? "border-primary bg-tint text-primary-dark"
+                      formData.status === "active" ? "border-[#0EA5E9] bg-[#E0F2FE] text-[#0284C7]"
                         : "border-border bg-surface text-ink-soft"
                     )}
                   >
@@ -1354,7 +1352,7 @@ export function CoachesTable({
                 <button
                   type="submit"
                   disabled={isSubmittingEdit}
-                  className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-ink px-[20px] py-[9px] text-[13.5px] font-semibold text-white transition-all hover:bg-primary-dark cursor-pointer disabled:opacity-70"
+                  className="inline-flex items-center justify-center gap-2 rounded-[10px] btn-ink-gradient px-[20px] py-[9px] text-[13.5px] font-semibold text-white transition-all cursor-pointer disabled:opacity-70"
                 >
                   {isSubmittingEdit ? (
                     <>
@@ -1855,7 +1853,7 @@ export function CoachesTable({
                 <button
                   type="submit"
                   disabled={isSubmittingNew}
-                  className="inline-flex items-center justify-center gap-2 rounded-[10px] bg-ink px-[22px] py-[9px] text-[13.5px] font-bold text-white transition-all hover:bg-primary-dark hover:shadow-emerald cursor-pointer disabled:opacity-70"
+                  className="inline-flex items-center justify-center gap-2 rounded-[10px] btn-ink-gradient px-[22px] py-[9px] text-[13.5px] font-bold text-white transition-all hover:shadow-emerald cursor-pointer disabled:opacity-70"
                 >
                   {isSubmittingNew ? (
                     <>

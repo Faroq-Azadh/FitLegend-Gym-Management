@@ -96,7 +96,7 @@ export function CoachRecentActivity() {
                 className={cn(
                   "feed-ico flex h-[36px] w-[36px] shrink-0 items-center justify-center rounded-[11px]",
                   isCyan
-                    ? "cyan bg-[rgba(34,211,238,0.12)] text-[#0891B2]"
+                    ? "cyan bg-[rgba(14,165,233,0.12)] text-[#0369A1]"
                     : "bg-tint text-primary-dark"
                 )}
               >

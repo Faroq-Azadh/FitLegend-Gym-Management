@@ -24,13 +24,13 @@ export function PlansGrid({ plans, onEditPlan }: PlansGridProps) {
             className={cn(
               "relative flex flex-col gap-[16px] rounded-[16px] border bg-surface p-[24px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px]",
               isFeatured
-                ? "border-primary shadow-[0_20px_50px_rgba(22,224,160,0.25)]"
+                ? "border-primary shadow-[0_20px_50px_rgba(242,92,31,0.25)]"
                 : "border-border hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]",
             )}
           >
             {/* Ribbon if featured */}
             {isFeatured && (
-              <span className="absolute left-[16px] top-[16px] rounded-full bg-primary px-[10px] py-[4px] text-[11px] font-extrabold text-[#006633]">
+              <span className="absolute left-[16px] top-[16px] rounded-full bg-primary px-[10px] py-[4px] text-[11px] font-extrabold text-white">
                 {plan.ribbonText || "محبوب"}
               </span>
             )}
@@ -83,7 +83,7 @@ export function PlansGrid({ plans, onEditPlan }: PlansGridProps) {
                 className={cn(
                   "flex-1 rounded-[10px] px-[14px] py-[8px] text-[13px] font-semibold transition-all duration-180",
                   isFeatured
-                    ? "bg-ink text-white hover:bg-primary-dark hover:shadow-[0_20px_50px_rgba(22,224,160,0.25)]"
+                    ? "btn-ink-gradient text-white hover:shadow-[0_20px_50px_rgba(242,92,31,0.25)]"
                     : "border-[1.5px] border-border bg-surface text-ink hover:border-primary hover:bg-tint",
                 )}
               >

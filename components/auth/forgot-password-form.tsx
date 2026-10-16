@@ -394,7 +394,7 @@ export function ForgotPasswordForm() {
             <button
               type="submit"
               disabled={isPending}
-              className="flex w-full items-center justify-center gap-2 rounded-[12px] bg-ink py-[14px] text-[15px] font-bold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-emerald disabled:opacity-60 cursor-pointer"
+              className="flex w-full items-center justify-center gap-2 rounded-[12px] btn-ink-gradient py-[14px] text-[15px] font-bold text-white transition-all duration-200 hover:shadow-emerald disabled:opacity-60 cursor-pointer"
             >
               {isPending ? (
                 <>
@@ -505,7 +505,7 @@ export function ForgotPasswordForm() {
             <button
               type="submit"
               disabled={isPending}
-              className="flex w-full items-center justify-center gap-2 rounded-[12px] bg-ink py-[14px] text-[15px] font-bold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-emerald disabled:opacity-60 cursor-pointer"
+              className="flex w-full items-center justify-center gap-2 rounded-[12px] btn-ink-gradient py-[14px] text-[15px] font-bold text-white transition-all duration-200 hover:shadow-emerald disabled:opacity-60 cursor-pointer"
             >
               {isPending ? (
                 <>
@@ -655,7 +655,7 @@ export function ForgotPasswordForm() {
                 </p>
               ) : passwordConfirm ? (
                 passwordConfirm === password ? (
-                  <p className="mt-1.5 text-xs font-semibold text-[#0FBF87]">
+                  <p className="mt-1.5 text-xs font-semibold text-[#D94A10]">
                     ✓ رمزها یکسان است
                   </p>
                 ) : (
@@ -671,7 +671,7 @@ export function ForgotPasswordForm() {
             <button
               type="submit"
               disabled={isPending}
-              className="flex w-full items-center justify-center gap-2 rounded-[12px] bg-ink py-[14px] text-[15px] font-bold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-emerald disabled:opacity-60 cursor-pointer"
+              className="flex w-full items-center justify-center gap-2 rounded-[12px] btn-ink-gradient py-[14px] text-[15px] font-bold text-white transition-all duration-200 hover:shadow-emerald disabled:opacity-60 cursor-pointer"
             >
               {isPending ? (
                 <>
@@ -700,7 +700,7 @@ export function ForgotPasswordForm() {
           </p>
           <Link
             href="/login"
-            className="flex w-full items-center justify-center gap-2 rounded-[12px] bg-ink py-[14px] text-[15px] font-bold text-white transition-all duration-200 hover:bg-primary-dark hover:shadow-emerald"
+            className="flex w-full items-center justify-center gap-2 rounded-[12px] btn-ink-gradient py-[14px] text-[15px] font-bold text-white transition-all duration-200 hover:shadow-emerald"
           >
             ورود به حساب کاربری
           </Link>

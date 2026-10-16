@@ -427,7 +427,7 @@ export default function AthleteMembershipPage() {
                   <div className="sub">{activePlan.desc}</div>
                 </div>
                 <span className="chip">
-                  <span className={`w-2 h-2 rounded-full inline-block ${!isExpired ? "bg-[#16E0A0] animate-pulse" : "bg-[#EF4444]"}`}></span>
+                  <span className={`w-2 h-2 rounded-full inline-block ${!isExpired ? "bg-[#F25C1F] animate-pulse" : "bg-[#EF4444]"}`}></span>
                   {!isExpired ? "اشتراک فعال" : "اشتراک منقضی شده"}
                 </span>
               </div>
@@ -663,7 +663,7 @@ export default function AthleteMembershipPage() {
                 </button>
               </div>
             </div>
-            <div className="table-wrap">
+            <div className="table-wrap" style={{ minHeight: "240px", paddingBottom: "48px" }}>
               <table>
                 <thead>
                   <tr>
@@ -686,85 +686,97 @@ export default function AthleteMembershipPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {displayedInvoices.map((inv) => (
-                    <tr key={inv.id}>
-                      <td>
-                        <span className="txid">{inv.id}</span>
-                      </td>
-                      <td>{inv.planName}</td>
-                      <td>{inv.date}</td>
-                      <td>
-                        <span className="amount">
-                          {inv.amount} <span className="cur">تومان</span>
-                        </span>
-                      </td>
+                  {displayedInvoices.map((inv, index) => {
+                    const isLastRecord = index >= Math.max(1, displayedInvoices.length - 2);
+                    const isMenuOpen = openStatusMenuId === inv.id;
 
-                      {/* Status Column with Dropdown to Change Status */}
-                      <td className="relative">
-                        <div className="relative inline-block">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setOpenStatusMenuId(openStatusMenuId === inv.id ? null : inv.id)
-                            }
-                            className={`status ${inv.status} cursor-pointer hover:ring-2 hover:ring-offset-1 hover:ring-primary/40 transition-all flex items-center gap-1.5`}
-                            title="برای تغییر وضعیت کلیک کنید"
-                          >
-                            <span className="d"></span>
-                            <span>{inv.statusText}</span>
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="w-3 h-3 opacity-60 ml-0.5"
+                    return (
+                      <tr key={inv.id}>
+                        <td>
+                          <span className="txid">{inv.id}</span>
+                        </td>
+                        <td>{inv.planName}</td>
+                        <td>{inv.date}</td>
+                        <td>
+                          <span className="amount">
+                            {inv.amount} <span className="cur">تومان</span>
+                          </span>
+                        </td>
+
+                        {/* Status Column with Dropdown to Change Status */}
+                        <td className={`relative ${isMenuOpen ? "z-30" : ""}`}>
+                          <div className="relative inline-block">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setOpenStatusMenuId(isMenuOpen ? null : inv.id)
+                              }
+                              className={`status ${inv.status} cursor-pointer hover:ring-2 hover:ring-offset-1 hover:ring-primary/40 transition-all flex items-center gap-1.5`}
+                              title="برای تغییر وضعیت کلیک کنید"
                             >
-                              <path d="m6 9 6 6 6-6" />
-                            </svg>
-                          </button>
+                              <span className="d"></span>
+                              <span>{inv.statusText}</span>
+                              <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className={`w-3 h-3 opacity-60 ml-0.5 transition-transform duration-150 ${
+                                  isMenuOpen ? "rotate-180" : ""
+                                }`}
+                              >
+                                <path d="m6 9 6 6 6-6" />
+                              </svg>
+                            </button>
 
-                          {/* Status Popover Menu */}
-                          {openStatusMenuId === inv.id && (
-                            <>
-                              <div
-                                className="fixed inset-0 z-40"
-                                onClick={() => setOpenStatusMenuId(null)}
-                              />
-                              <div className="absolute right-0 top-full mt-1.5 z-50 w-38 bg-surface rounded-xl border border-border shadow-xl p-1.5 text-[12px] font-bold animate-in fade-in zoom-in-95 duration-150">
-                                <div className="text-[10px] text-ink-faint px-2 py-1 border-b border-border mb-1">
-                                  تغییر وضعیت فاکتور:
+                            {/* Status Popover Menu */}
+                            {isMenuOpen && (
+                              <>
+                                <div
+                                  className="fixed inset-0 z-40"
+                                  onClick={() => setOpenStatusMenuId(null)}
+                                />
+                                <div
+                                  className={`absolute right-0 z-50 w-38 bg-surface rounded-xl border border-border shadow-xl p-1.5 text-[12px] font-bold animate-in fade-in zoom-in-95 duration-150 ${
+                                    isLastRecord
+                                      ? "bottom-full mb-1.5 origin-bottom-right"
+                                      : "top-full mt-1.5 origin-top-right"
+                                  }`}
+                                >
+                                  <div className="text-[10px] text-ink-faint px-2 py-1 border-b border-border mb-1">
+                                    تغییر وضعیت فاکتور:
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleUpdateStatus(inv.id, "paid", "موفق")}
+                                    className="w-full text-right px-2.5 py-1.5 rounded-lg hover:bg-[#E0F2FE] hover:text-[#0284C7] flex items-center gap-2 transition-colors mb-0.5"
+                                  >
+                                    <span className="w-2 h-2 rounded-full bg-[#0EA5E9]" />
+                                    <span>موفق</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleUpdateStatus(inv.id, "pending", "در انتظار")}
+                                    className="w-full text-right px-2.5 py-1.5 rounded-lg hover:bg-[#FFFBEB] hover:text-[#B45309] flex items-center gap-2 transition-colors mb-0.5"
+                                  >
+                                    <span className="w-2 h-2 rounded-full bg-[#F59E0B]" />
+                                    <span>در انتظار</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleUpdateStatus(inv.id, "failed", "ناموفق")}
+                                    className="w-full text-right px-2.5 py-1.5 rounded-lg hover:bg-[#FFF1F2] hover:text-[#9F1239] flex items-center gap-2 transition-colors"
+                                  >
+                                    <span className="w-2 h-2 rounded-full bg-[#F43F5E]" />
+                                    <span>ناموفق</span>
+                                  </button>
                                 </div>
-                                <button
-                                  type="button"
-                                  onClick={() => handleUpdateStatus(inv.id, "paid", "موفق")}
-                                  className="w-full text-right px-2.5 py-1.5 rounded-lg hover:bg-tint hover:text-primary-dark flex items-center gap-2 transition-colors mb-0.5"
-                                >
-                                  <span className="w-2 h-2 rounded-full bg-primary" />
-                                  <span>موفق</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleUpdateStatus(inv.id, "pending", "در انتظار")}
-                                  className="w-full text-right px-2.5 py-1.5 rounded-lg hover:bg-[#FFFBEB] hover:text-[#B45309] flex items-center gap-2 transition-colors mb-0.5"
-                                >
-                                  <span className="w-2 h-2 rounded-full bg-[#F59E0B]" />
-                                  <span>در انتظار</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => handleUpdateStatus(inv.id, "failed", "ناموفق")}
-                                  className="w-full text-right px-2.5 py-1.5 rounded-lg hover:bg-[#FFF1F2] hover:text-[#9F1239] flex items-center gap-2 transition-colors"
-                                >
-                                  <span className="w-2 h-2 rounded-full bg-[#F43F5E]" />
-                                  <span>ناموفق</span>
-                                </button>
-                              </div>
-                            </>
-                          )}
-                        </div>
-                      </td>
+                              </>
+                            )}
+                          </div>
+                        </td>
 
                       <td>
                         <button
@@ -788,7 +800,8 @@ export default function AthleteMembershipPage() {
                         </button>
                       </td>
                     </tr>
-                  ))}
+                  );
+                })}
                   {displayedInvoices.length === 0 && (
                     <tr>
                       <td colSpan={6} style={{ textAlign: "center", padding: "32px", color: "var(--ink-faint)" }}>
@@ -997,7 +1010,7 @@ export default function AthleteMembershipPage() {
             {/* Gateway Header */}
             <div className="bg-[#1E293B] text-white p-5 flex items-center justify-between border-b border-white/10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-dark to-[#22D3EE] flex items-center justify-center font-black text-ink text-[16px]">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-dark to-[#0EA5E9] flex items-center justify-center font-black text-ink text-[16px]">
                   FITLEGEND
                 </div>
                 <div>
