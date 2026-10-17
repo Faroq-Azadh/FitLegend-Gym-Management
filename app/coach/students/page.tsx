@@ -4,6 +4,8 @@ import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
 import { CoachTopbar } from "@/components/coach/coach-topbar";
+import { useAuth } from "@/lib/auth-context";
+import { useCoachMe, useCoachStudents } from "@/lib/hooks/queries/use-coaches";
 import {
   CoachAddMemberModal,
   type NewStudentPayload,
@@ -470,6 +472,32 @@ export default function CoachStudentsPage() {
   const [filter, setFilter] = useState<"all" | "active" | "expiring" | "expired">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const { user } = useAuth();
+  const { data: coachMe } = useCoachMe();
+  const coachName = user?.full_name?.trim() || coachMe?.full_name?.trim() || "مربی باشگاه";
+
+  const { data: backendStudents } = useCoachStudents({
+    status: filter === "all" ? undefined : filter,
+    search: searchQuery || undefined,
+  });
+
+  useEffect(() => {
+    if (Array.isArray(backendStudents) && backendStudents.length > 0) {
+      const mapped: StudentItem[] = backendStudents.map((b, idx) => ({
+        id: b.id,
+        name: b.full_name,
+        program: b.current_plan?.name || "برنامه اختصاصی",
+        status: (b.status === "expiring" || b.status === "expired" ? b.status : "active") as "active" | "expiring" | "expired",
+        attendanceRate: b.attendance_rate ?? 90,
+        lastSession: b.last_session || "اخیراً",
+        dueDate: b.membership_end_date || "—",
+        phone: "",
+        avatarColor: AVATAR_COLORS[idx % AVATAR_COLORS.length],
+      }));
+      setStudents(mapped);
+    }
+  }, [backendStudents]);
 
   // Modals / Details
   const [selectedStudent, setSelectedStudent] = useState<StudentItem | null>(null);
@@ -1070,7 +1098,7 @@ export default function CoachStudentsPage() {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
         onStudentAdded={handleStudentAdded}
-        coachName="آرش رستمی"
+        coachName={coachName}
       />
     </div>
   );

@@ -4,6 +4,8 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
 import { CoachTopbar } from "@/components/coach/coach-topbar";
+import { useAuth } from "@/lib/auth-context";
+import { useCoachMe } from "@/lib/hooks/queries/use-coaches";
 import { toPersianDigits } from "@/lib/persian-digits";
 import { cn } from "@/lib/utils";
 import {
@@ -319,6 +321,11 @@ export default function CoachClassesPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [classes, setClasses] = useState<CoachClassItem[]>(INITIAL_CLASSES);
   const [programs, setPrograms] = useState<CoachProgramItem[]>(INITIAL_PROGRAMS);
+
+  const { user } = useAuth();
+  const { data: coachMe } = useCoachMe();
+  const coachFullName = user?.full_name?.trim() || coachMe?.full_name?.trim();
+  const firstName = coachFullName ? coachFullName.split(" ")[0] : "مربی";
 
   // Tab: 'classes' | 'week' | 'programs'
   const [currentView, setCurrentView] = useState<"classes" | "week" | "programs">("classes");
@@ -782,7 +789,7 @@ export default function CoachClassesPage() {
                 برنامه و کلاس‌ها
               </h1>
               <div className="sub text-[14px] text-ink-faint mt-[5px]">
-                سلام آرش، {currentDatePersian} · کلاس‌های گروهی و برنامه‌های تمرینی تو
+                سلام {firstName}، {currentDatePersian} · کلاس‌های گروهی و برنامه‌های تمرینی تو
               </div>
             </div>
 

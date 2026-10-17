@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
 import { CoachTopbar } from "@/components/coach/coach-topbar";
 import { LogoMark } from "@/components/ui/logo";
+import { useAuth } from "@/lib/auth-context";
+import { useCoachMe, useCoachPerformance } from "@/lib/hooks/queries/use-coaches";
 
 type TimeRange = "30d" | "90d" | "year";
 
@@ -137,6 +139,13 @@ export default function CoachPerformancePage() {
   const [modalSelectedRange, setModalSelectedRange] = useState<TimeRange>("30d");
   const [persianDate, setPersianDate] = useState("");
 
+  const { user } = useAuth();
+  const { data: coachMe } = useCoachMe();
+  const days = range === "year" ? 365 : range === "90d" ? 90 : 30;
+  const { data: performanceData } = useCoachPerformance(days);
+
+  const coachName = user?.full_name?.trim() || coachMe?.full_name?.trim() || "مربی باشگاه";
+
   useEffect(() => {
     try {
       const today = new Intl.DateTimeFormat("fa-IR", {
@@ -229,7 +238,7 @@ export default function CoachPerformancePage() {
                   باشگاه ورزشی فیتلجند — گزارش عملکرد مربی
                 </div>
                 <div className="text-[12px] text-ink-faint">
-                  مربی: آرش رستمی | بازه گزارش: {currentMetrics.pdfLabel} | تاریخ تولید: {persianDate}
+                  مربی: {coachName} | بازه گزارش: {currentMetrics.pdfLabel} | تاریخ تولید: {persianDate}
                 </div>
               </div>
             </div>
@@ -679,20 +688,18 @@ export default function CoachPerformancePage() {
             <div className="my-5 flex flex-col gap-3">
               {/* Option 1: 30 days */}
               <label
-                className={`relative flex cursor-pointer items-center justify-between rounded-[14px] border p-4 transition-all duration-180 ${
-                  modalSelectedRange === "30d"
+                className={`relative flex cursor-pointer items-center justify-between rounded-[14px] border p-4 transition-all duration-180 ${modalSelectedRange === "30d"
                     ? "border-primary bg-tint/40 shadow-xs"
                     : "border-border bg-surface hover:border-slate-300"
-                }`}
+                  }`}
                 onClick={() => setModalSelectedRange("30d")}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${
-                      modalSelectedRange === "30d"
+                    className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${modalSelectedRange === "30d"
                         ? "border-primary bg-primary text-white"
                         : "border-slate-300 bg-white"
-                    }`}
+                      }`}
                   >
                     {modalSelectedRange === "30d" && (
                       <span className="h-2 w-2 rounded-full bg-white" />
@@ -714,20 +721,18 @@ export default function CoachPerformancePage() {
 
               {/* Option 2: 90 days */}
               <label
-                className={`relative flex cursor-pointer items-center justify-between rounded-[14px] border p-4 transition-all duration-180 ${
-                  modalSelectedRange === "90d"
+                className={`relative flex cursor-pointer items-center justify-between rounded-[14px] border p-4 transition-all duration-180 ${modalSelectedRange === "90d"
                     ? "border-primary bg-tint/40 shadow-xs"
                     : "border-border bg-surface hover:border-slate-300"
-                }`}
+                  }`}
                 onClick={() => setModalSelectedRange("90d")}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${
-                      modalSelectedRange === "90d"
+                    className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${modalSelectedRange === "90d"
                         ? "border-primary bg-primary text-white"
                         : "border-slate-300 bg-white"
-                    }`}
+                      }`}
                   >
                     {modalSelectedRange === "90d" && (
                       <span className="h-2 w-2 rounded-full bg-white" />
@@ -746,20 +751,18 @@ export default function CoachPerformancePage() {
 
               {/* Option 3: 1 Year */}
               <label
-                className={`relative flex cursor-pointer items-center justify-between rounded-[14px] border p-4 transition-all duration-180 ${
-                  modalSelectedRange === "year"
+                className={`relative flex cursor-pointer items-center justify-between rounded-[14px] border p-4 transition-all duration-180 ${modalSelectedRange === "year"
                     ? "border-primary bg-tint/40 shadow-xs"
                     : "border-border bg-surface hover:border-slate-300"
-                }`}
+                  }`}
                 onClick={() => setModalSelectedRange("year")}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${
-                      modalSelectedRange === "year"
+                    className={`flex h-5 w-5 items-center justify-center rounded-full border transition-all ${modalSelectedRange === "year"
                         ? "border-primary bg-primary text-white"
                         : "border-slate-300 bg-white"
-                    }`}
+                      }`}
                   >
                     {modalSelectedRange === "year" && (
                       <span className="h-2 w-2 rounded-full bg-white" />

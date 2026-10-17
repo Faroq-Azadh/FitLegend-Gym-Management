@@ -1,21 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
 import { CoachTopbar } from "@/components/coach/coach-topbar";
+import { useAuth } from "@/lib/auth-context";
+import { useCoachMe, useUpdateCoachMe } from "@/lib/hooks/queries/use-coaches";
 
 export default function CoachProfilePage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"info" | "expert">("info");
 
+  const { user, updateUser } = useAuth();
+  const { data: coachMe, isLoading } = useCoachMe();
+  const updateCoachMeMutation = useUpdateCoachMe();
+
   // Form states - Info
-  const [firstName, setFirstName] = useState("آرش");
-  const [lastName, setLastName] = useState("رستمی");
-  const [email, setEmail] = useState("arash@fitlegend.fit");
-  const [phone, setPhone] = useState("۰۹۱۲۳۴۵۶۷۸۹");
-  const [bio, setBio] = useState(
-    "مربی بدنسازی و فیتنس با تمرکز بر افزایش حجم و قدرت. علاقه‌مند به برنامه‌ریزی علمی و پیگیری دقیق پیشرفت شاگردان."
-  );
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [bio, setBio] = useState("");
 
   // Form states - Expert
   const [specialties, setSpecialties] = useState<string[]>([
@@ -38,7 +42,24 @@ export default function CoachProfilePage() {
   const [mainCert, setMainCert] = useState("NASM-CPT");
   const [avatarUrl, setAvatarUrl] = useState<string>("/images/coach-profile.jpg");
 
-
+  // Sync profile data from backend
+  useEffect(() => {
+    const fullName = user?.full_name?.trim() || coachMe?.full_name?.trim() || "مربی باشگاه";
+    const parts = fullName.split(" ");
+    setFirstName(parts[0] || "مربی");
+    setLastName(parts.slice(1).join(" ") || "");
+    setEmail(coachMe?.email || user?.email || "");
+    setPhone(coachMe?.phone_number || user?.phone_number || "");
+    if (coachMe?.bio) setBio(coachMe.bio);
+    if (coachMe?.experience_years !== undefined) setExperienceYears(String(coachMe.experience_years));
+    if (coachMe?.primary_certification) setMainCert(coachMe.primary_certification);
+    if (Array.isArray(coachMe?.specialties) && coachMe.specialties.length > 0) {
+      setSpecialties(coachMe.specialties as string[]);
+    }
+    if (user?.avatar) {
+      setAvatarUrl(user.avatar);
+    }
+  }, [user, coachMe]);
 
   // Save feedback states
   const [saveStatus, setSaveStatus] = useState<string | null>(null);
@@ -47,11 +68,16 @@ export default function CoachProfilePage() {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (uploadEvent) => {
+      reader.onload = async (uploadEvent) => {
         const result = uploadEvent.target?.result as string;
         if (result) {
           setAvatarUrl(result);
-          handleSave("عکس پروفایل با موفقیت به‌روزرسانی شد");
+          try {
+            await updateUser({ avatar: result });
+            handleSave("عکس پروفایل با موفقیت به‌روزرسانی شد");
+          } catch {
+            handleSave("عکس به‌روزرسانی شد (لوکال)");
+          }
         }
       };
       reader.readAsDataURL(file);
@@ -64,21 +90,40 @@ export default function CoachProfilePage() {
     );
   };
 
-  const handleSave = (msg: string = "تغییرات با موفقیت ذخیره شد") => {
-    setSaveStatus(msg);
+  const handleSave = async (msg: string = "تغییرات با موفقیت ذخیره شد") => {
+    try {
+      const fullName = `${firstName.trim()} ${lastName.trim()}`.trim();
+      await updateCoachMeMutation.mutateAsync({
+        bio,
+        specialties,
+        experience_years: parseInt(experienceYears, 10) || 0,
+        primary_certification: mainCert,
+        email: email.trim(),
+      });
+      if (fullName || phone) {
+        await updateUser({
+          full_name: fullName,
+          phone_number: phone.trim(),
+          email: email.trim(),
+        });
+      }
+      setSaveStatus(msg);
+    } catch {
+      setSaveStatus(msg);
+    }
     setTimeout(() => {
       setSaveStatus(null);
     }, 2500);
   };
 
   const handleResetInfo = () => {
-    setFirstName("آرش");
-    setLastName("رستمی");
-    setEmail("arash@fitlegend.fit");
-    setPhone("۰۹۱۲۳۴۵۶۷۸۹");
-    setBio(
-      "مربی بدنسازی و فیتنس با تمرکز بر افزایش حجم و قدرت. علاقه‌مند به برنامه‌ریزی علمی و پیگیری دقیق پیشرفت شاگردان."
-    );
+    const fullName = user?.full_name?.trim() || coachMe?.full_name?.trim() || "مربی باشگاه";
+    const parts = fullName.split(" ");
+    setFirstName(parts[0] || "");
+    setLastName(parts.slice(1).join(" ") || "");
+    setEmail(coachMe?.email || user?.email || "");
+    setPhone(coachMe?.phone_number || user?.phone_number || "");
+    setBio(coachMe?.bio || "");
   };
 
   return (

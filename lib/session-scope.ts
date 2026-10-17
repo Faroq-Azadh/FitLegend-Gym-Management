@@ -12,7 +12,7 @@ export function getCurrentUser(): { id?: string | number; email?: string; userna
     if (raw) {
       return JSON.parse(raw);
     }
-  } catch {}
+  } catch { }
   return null;
 }
 
@@ -43,7 +43,7 @@ export function isFlexGymOrFarooq(user?: { full_name?: string; username?: string
         return true;
       }
     }
-  } catch {}
+  } catch { }
   return false;
 }
 
@@ -56,7 +56,7 @@ export function getCurrentUserScope(): string {
       if (u.email) return String(u.email).trim().toLowerCase();
       if (u.username) return String(u.username).trim().toLowerCase();
     }
-  } catch {}
+  } catch { }
   return "guest";
 }
 
@@ -70,7 +70,7 @@ export function getCurrentGymScope(): string {
       if (scopedGymId && scopedGymId.trim()) return `gym_${scopedGymId.trim()}`;
       return `user_${userScope}`;
     }
-  } catch {}
+  } catch { }
   return "default_gym";
 }
 
@@ -94,7 +94,7 @@ export function setActiveGymScope(gymId?: string | number | null, gymName?: stri
     localStorage.removeItem("fitlegend_active_gym_name");
 
     window.dispatchEvent(new CustomEvent("fitlegend:gym-changed", { detail: { gymId: strId, gymName: strName } }));
-  } catch {}
+  } catch { }
 }
 
 /**
@@ -117,5 +117,5 @@ export function purgeLegacyGlobalStores(): void {
         localStorage.removeItem(userAvatarKey);
       }
     }
-  } catch {}
+  } catch { }
 }

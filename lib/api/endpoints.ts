@@ -74,6 +74,7 @@ export const ENDPOINTS = {
     DASHBOARD: "/coaches/dashboard/",
     ME: "/coaches/me/",
     MY_STUDENTS: "/coaches/my-students/",
+    PERFORMANCE: "/coaches/performance/",
   },
 
   // Classes & Schedules

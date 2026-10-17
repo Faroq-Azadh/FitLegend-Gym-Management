@@ -16,7 +16,7 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 1,
     type: "training",
-    text: "مربی <b>آرش رستمی</b> برنامه‌ی تمرین این هفته را به‌روزرسانی کرد",
+    text: "شاگرد شما برنامه‌ی تمرین این هفته را با موفقیت تکمیل کرد",
     time: "۱۰ دقیقه پیش",
     read: false,
     category: "training",
@@ -24,7 +24,7 @@ export const INITIAL_NOTIFICATIONS: NotificationItem[] = [
   {
     id: 2,
     type: "message",
-    text: "پیام جدید از <b>آرش رستمی</b>: «عالی پیش می‌ری، ادامه بده!»",
+    text: "پیام جدید از شاگرد: «تمرین امروز خیلی عالی بود، ممنون مربی!»",
     time: "۱ ساعت پیش",
     read: false,
     category: "training",

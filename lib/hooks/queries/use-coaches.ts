@@ -6,6 +6,10 @@ import {
   type CoachesResponse,
   type CoachItem,
   type AddCoachPayload,
+  type CoachDetail,
+  type PatchedCoachSelfUpdate,
+  type CoachStudentRow,
+  type CoachPerformance,
 } from "@/lib/api/services/coaches.service";
 import { tokenStorage } from "@/lib/api/token";
 
@@ -58,5 +62,48 @@ export function useDeleteCoach() {
       await queryClient.invalidateQueries({ queryKey: ["members"] });
       await queryClient.invalidateQueries({ queryKey: ["owner-dashboard"] });
     },
+  });
+}
+
+export function useCoachMe() {
+  const userScope = getCurrentUserScope();
+  return useQuery<CoachDetail, Error>({
+    queryKey: ["coach-me", userScope],
+    queryFn: () => coachesService.getCoachMe(),
+    enabled: typeof window !== "undefined" && tokenStorage.hasValidSession(),
+    staleTime: 30 * 1000,
+  });
+}
+
+export function useUpdateCoachMe() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: PatchedCoachSelfUpdate) => coachesService.updateCoachMe(payload),
+    onSuccess: async (updated) => {
+      queryClient.setQueryData(["coach-me"], updated);
+      await queryClient.invalidateQueries({ queryKey: ["coach-me"] });
+      await queryClient.invalidateQueries({ queryKey: ["auth-user"] });
+      await queryClient.invalidateQueries({ queryKey: ["coach-dashboard"] });
+    },
+  });
+}
+
+export function useCoachStudents(params?: { status?: string; search?: string }) {
+  const userScope = getCurrentUserScope();
+  return useQuery<CoachStudentRow[], Error>({
+    queryKey: ["coach-students", userScope, params?.status, params?.search],
+    queryFn: () => coachesService.getMyStudents(params),
+    enabled: typeof window !== "undefined" && tokenStorage.hasValidSession(),
+    staleTime: 15 * 1000,
+  });
+}
+
+export function useCoachPerformance(days: number = 30) {
+  const userScope = getCurrentUserScope();
+  return useQuery<CoachPerformance, Error>({
+    queryKey: ["coach-performance", userScope, days],
+    queryFn: () => coachesService.getCoachPerformance(days),
+    enabled: typeof window !== "undefined" && tokenStorage.hasValidSession(),
+    staleTime: 30 * 1000,
   });
 }

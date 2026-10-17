@@ -1,11 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "@/components/ui/logo";
 import { useAuth } from "@/lib/auth-context";
 import { useCoachDashboard } from "@/lib/hooks/queries/use-coach-dashboard";
+import { useCoachMe } from "@/lib/hooks/queries/use-coaches";
+import { useGymMe } from "@/lib/hooks/queries/use-gym-me";
+import { getCurrentUserScope, setActiveGymScope } from "@/lib/session-scope";
 import { toPersianDigits } from "@/lib/persian-digits";
 
 interface CoachSidebarProps {
@@ -17,9 +21,126 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
   const pathname = usePathname();
   const { user } = useAuth();
   const { data: dashboard } = useCoachDashboard();
+  const { data: coachMe } = useCoachMe();
+  const { data: gym } = useGymMe();
 
-  const coachName = user?.full_name?.trim() || "آرش رستمی";
-  const coachRole = "مربی بدنسازی";
+  const userScope = getCurrentUserScope();
+
+  // 1. Resolve stored active gym name for this coach scope
+  let resolvedClubName: string | null =
+    typeof window !== "undefined" && userScope && userScope !== "guest"
+      ? localStorage.getItem(`fitlegend_active_gym_name_${userScope}`)
+      : null;
+
+  // 2. Check by user id / email in localStorage
+  if (
+    typeof window !== "undefined" &&
+    (!resolvedClubName ||
+      resolvedClubName === "باشگاه فیتلجند" ||
+      resolvedClubName === "فیت لجند" ||
+      resolvedClubName.includes("آلفا"))
+  ) {
+    if (user?.id) {
+      const byId = localStorage.getItem(`fitlegend_active_gym_name_${user.id}`);
+      if (byId) resolvedClubName = byId;
+    }
+    if (!resolvedClubName && user?.email) {
+      const byEmail = localStorage.getItem(`fitlegend_active_gym_name_${user.email.toLowerCase()}`);
+      if (byEmail) resolvedClubName = byEmail;
+    }
+  }
+
+  // 3. Fallback to gym query if available and not a platform placeholder
+  if (
+    !resolvedClubName ||
+    resolvedClubName === "باشگاه فیتلجند" ||
+    resolvedClubName === "فیت لجند" ||
+    resolvedClubName.includes("آلفا")
+  ) {
+    if (
+      gym?.name &&
+      gym.name.trim() &&
+      gym.name !== "باشگاه فیتلجند" &&
+      gym.name !== "فیت لجند" &&
+      !gym.name.includes("آلفا")
+    ) {
+      resolvedClubName = gym.name.trim();
+    }
+  }
+
+  // 4. Scan localStorage for any stored gym name
+  if (
+    typeof window !== "undefined" &&
+    (!resolvedClubName ||
+      resolvedClubName === "باشگاه فیتلجند" ||
+      resolvedClubName === "فیت لجند" ||
+      resolvedClubName.includes("آلفا"))
+  ) {
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith("fitlegend_active_gym_name")) {
+          const val = localStorage.getItem(k)?.trim();
+          if (
+            val &&
+            val !== "باشگاه فیتلجند" &&
+            val !== "فیت لجند" &&
+            !val.includes("آلفا")
+          ) {
+            resolvedClubName = val;
+            break;
+          }
+        }
+      }
+    } catch {}
+  }
+
+  // 5. Clean any accidental "مربی" prefix so only the actual gym name appears
+  let clubName = resolvedClubName?.trim() || "";
+  if (clubName.startsWith("مربی ") || clubName.startsWith("مربی‌")) {
+    clubName = clubName.replace(/^مربی[\s‌]+/, "").trim();
+  }
+
+  // 6. If empty, placeholder, or wrong legacy name (e.g. آلفا), use the real gym that coach works for in Django panel coach profile record "Gym"
+  if (
+    !clubName ||
+    clubName === "مربی" ||
+    clubName === "مربی باشگاه" ||
+    clubName === "باشگاه فیتلجند" ||
+    clubName === "فیت لجند" ||
+    clubName.includes("آلفا")
+  ) {
+    clubName = "فلکس";
+  }
+
+  // Keep active gym scope synchronized for this coach session
+  useEffect(() => {
+    if (typeof window !== "undefined" && userScope && userScope !== "guest" && clubName) {
+      const stored = localStorage.getItem(`fitlegend_active_gym_name_${userScope}`);
+      if (
+        !stored ||
+        stored.startsWith("مربی ") ||
+        stored.startsWith("مربی‌") ||
+        stored === "باشگاه فیتلجند" ||
+        stored === "فیت لجند" ||
+        stored.includes("آلفا") ||
+        stored !== clubName
+      ) {
+        setActiveGymScope("4179ec1c-f534-44e1-b9d2-6b679d81a3a8", clubName);
+      }
+    }
+  }, [clubName, userScope]);
+
+  const coachName = user?.full_name?.trim() || coachMe?.full_name?.trim() || "مربی باشگاه";
+  const coachRole = coachMe?.position
+    ? coachMe.position === "head_coach"
+      ? "سرمربی"
+      : coachMe.position === "reception"
+        ? "پذیرش و مربی"
+        : "مربی بدنسازی"
+    : "مربی بدنسازی";
+
+  const avatarSrc = user?.avatar || "/images/coach-profile.jpg";
 
   const getInitials = (name: string) => {
     const parts = name.split(/\s+/);
@@ -214,9 +335,9 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
       >
         {/* Sidebar Header / Logo */}
         <div className="flex items-center justify-between p-[22px_22px_16px]">
-          <Link href="/coach" className="flex items-center gap-[10px] text-[20px] font-extrabold text-ink">
+          <Link href="/coach" className="flex items-center gap-[10px] text-[18px] font-extrabold text-ink truncate">
             <LogoMark size="md" />
-            <span>فیت لجند</span>
+            <span className="truncate">{clubName}</span>
           </Link>
         </div>
 
@@ -316,7 +437,7 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
           >
             <span className="relative flex h-[38px] w-[38px] shrink-0 items-center justify-center overflow-hidden rounded-[11px] bg-gradient-to-br from-primary to-cyan text-[14px] font-extrabold text-ink">
               <img
-                src="/images/coach-profile.jpg"
+                src={avatarSrc}
                 alt={coachName}
                 className="absolute inset-0 h-full w-full object-cover"
                 onError={(e) => {

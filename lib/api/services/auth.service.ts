@@ -2,6 +2,7 @@ import apiClient, { ApiClient } from "../client";
 import { ENDPOINTS } from "../endpoints";
 import { ApiError } from "../errors";
 import { tokenStorage, decodeJwtExp, getCookie } from "../token";
+import { setActiveGymScope } from "../../session-scope";
 
 function cleanTokenString(val: unknown): string | null {
   if (typeof val !== "string") return null;
@@ -114,13 +115,49 @@ export const authService = {
       credentials: "include",
     });
 
-    if (data?.access) {
+    const anyData = data as any;
+    const access =
+      cleanTokenString(anyData?.access) ||
+      cleanTokenString(anyData?.access_token) ||
+      cleanTokenString(anyData?.token) ||
+      cleanTokenString(anyData?.key);
+
+    const refresh =
+      cleanTokenString(anyData?.refresh) ||
+      cleanTokenString(anyData?.refresh_token) ||
+      "";
+
+    if (access) {
       tokenStorage.setTokens({
-        access: data.access,
-        refresh: data.refresh,
+        access,
+        refresh,
       });
-      if (typeof window !== "undefined" && data.user) {
-        localStorage.setItem("fitlegend_user", JSON.stringify(data.user));
+    }
+
+    if (anyData?.user) {
+      if (typeof window !== "undefined") {
+        localStorage.setItem("fitlegend_user", JSON.stringify(anyData.user));
+        const role = anyData.user.role ? String(anyData.user.role).trim().toUpperCase() : "";
+        if (role === "COACH") {
+          setActiveGymScope("4179ec1c-f534-44e1-b9d2-6b679d81a3a8", "فلکس");
+        }
+      }
+      return { access: access || "", refresh: refresh || "", user: anyData.user };
+    }
+
+    if (access || tokenStorage.hasValidSession()) {
+      try {
+        const user = await this.getMe();
+        if (user && typeof window !== "undefined") {
+          localStorage.setItem("fitlegend_user", JSON.stringify(user));
+          const role = user.role ? String(user.role).trim().toUpperCase() : "";
+          if (role === "COACH") {
+            setActiveGymScope("4179ec1c-f534-44e1-b9d2-6b679d81a3a8", "فلکس");
+          }
+        }
+        return { access: access || "", refresh: refresh || "", user };
+      } catch (err) {
+        console.warn("Could not fetch user profile after login:", err);
       }
     }
 
@@ -352,7 +389,7 @@ export const authService = {
       if (cached) {
         try {
           merged = { ...JSON.parse(cached), ...updated };
-        } catch {}
+        } catch { }
       }
       localStorage.setItem("fitlegend_user", JSON.stringify(merged));
     }

@@ -108,7 +108,7 @@ export function LoginForm({ onSubmit, onSuccess }: LoginFormProps) {
         onSuccess();
       } else {
         // Direct users based on their role
-        const role = res?.user?.role;
+        const role = res?.user?.role ? String(res.user.role).trim().toUpperCase() : "";
         if (role === "COACH") {
           router.push("/coach");
         } else if (role === "MEMBER") {

@@ -300,7 +300,132 @@ export const coachesService = {
       return INITIAL_COACH_DASHBOARD_DATA;
     }
   },
+
+  /**
+   * Get authenticated coach's own profile via GET /coaches/me/
+   */
+  async getCoachMe(): Promise<CoachDetail> {
+    return apiClient.get<CoachDetail>(ENDPOINTS.COACHES.ME, {
+      requiresAuth: true,
+    });
+  },
+
+  /**
+   * Update authenticated coach's own profile via PATCH /coaches/me/
+   */
+  async updateCoachMe(payload: PatchedCoachSelfUpdate): Promise<CoachDetail> {
+    return apiClient.patch<CoachDetail>(ENDPOINTS.COACHES.ME, payload, {
+      requiresAuth: true,
+    });
+  },
+
+  /**
+   * Get coach's students table via GET /coaches/my-students/
+   */
+  async getMyStudents(params?: { status?: string; search?: string }): Promise<CoachStudentRow[]> {
+    return apiClient.get<CoachStudentRow[]>(ENDPOINTS.COACHES.MY_STUDENTS, {
+      requiresAuth: true,
+      params,
+    });
+  },
+
+  /**
+   * Get coach performance report via GET /coaches/performance/?days={days}
+   */
+  async getCoachPerformance(days: number = 30): Promise<CoachPerformance> {
+    return apiClient.get<CoachPerformance>(ENDPOINTS.COACHES.PERFORMANCE, {
+      requiresAuth: true,
+      params: { days },
+    });
+  },
 };
+
+export interface CoachDetail {
+  id: string;
+  full_name: string;
+  phone_number: string;
+  email: string;
+  gender?: "male" | "female" | "";
+  birth_date?: string | null;
+  address?: string;
+  position: "coach" | "head_coach" | "reception" | string;
+  bio?: string;
+  specialties?: string[] | Record<string, unknown>;
+  experience_years?: number;
+  primary_certification?: string;
+  student_capacity?: number | null;
+  work_shift?: "morning" | "evening" | "morning_evening" | "full_time" | string;
+  start_date?: string | null;
+  working_days?: string[] | Record<string, unknown>;
+  is_active: boolean;
+}
+
+export interface PatchedCoachSelfUpdate {
+  bio?: string;
+  specialties?: string[] | Record<string, unknown>;
+  experience_years?: number;
+  primary_certification?: string;
+  student_capacity?: number | null;
+  work_shift?: "morning" | "evening" | "morning_evening" | "full_time" | string;
+  working_days?: string[] | Record<string, unknown>;
+  email?: string;
+}
+
+export interface CoachStudentPlan {
+  id: string;
+  name: string;
+}
+
+export interface CoachStudentRow {
+  id: string;
+  full_name: string;
+  current_plan: CoachStudentPlan | null;
+  status: "active" | "expiring" | "expired" | string;
+  attendance_rate: number;
+  last_session: string | null;
+  membership_end_date: string | null;
+}
+
+export interface MonthlySessionsPoint {
+  month: string;
+  sessions: number;
+}
+
+export interface GoalMix {
+  goal: string;
+  percentage: number;
+  count: number;
+}
+
+export interface PerformanceTopStudent {
+  rank: number;
+  name: string;
+  score: number;
+}
+
+export interface ClassAttendance {
+  class_name: string;
+  rate: number;
+}
+
+export interface GoalProgress {
+  goal: string;
+  progress_pct: number;
+}
+
+export interface CoachPerformance {
+  days: number;
+  sessions_held: number;
+  sessions_trend_pct: number | null;
+  avg_attendance_rate: number | null;
+  active_students: number;
+  satisfaction_score: number | null;
+  monthly_sessions: MonthlySessionsPoint[];
+  goal_mix: GoalMix[];
+  top_students: PerformanceTopStudent[];
+  class_attendance: ClassAttendance[];
+  goal_progress: GoalProgress[];
+}
 
 export interface CoachTodaySession {
   id: string;

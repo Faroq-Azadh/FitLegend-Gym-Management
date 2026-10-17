@@ -45,7 +45,7 @@ export function CoachAddMemberModal({
   isOpen,
   onClose,
   onStudentAdded,
-  coachName = "آرش رستمی",
+  coachName = "مربی باشگاه",
 }: CoachAddMemberModalProps) {
   // Form fields
   const [firstName, setFirstName] = useState("");

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/lib/auth-context";
 import { useCoachDashboard } from "@/lib/hooks/queries/use-coach-dashboard";
+import { useCoachMe } from "@/lib/hooks/queries/use-coaches";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
 import { CoachTopbar } from "@/components/coach/coach-topbar";
 import { CoachKpiGrid } from "@/components/coach/coach-kpi-grid";
@@ -18,12 +19,14 @@ import { toPersianDigits } from "@/lib/persian-digits";
 export default function CoachDashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [persianGreeting, setPersianGreeting] = useState("سلام آرش، امروز ۴ جلسه‌ی تمرین داری");
+  const [persianGreeting, setPersianGreeting] = useState("سلام مربی، در حال دریافت برنامه‌ها...");
 
   const { user } = useAuth();
   const { data: dashboard } = useCoachDashboard();
+  const { data: coachMe } = useCoachMe();
 
-  const firstName = user?.full_name ? user.full_name.trim().split(" ")[0] : "آرش";
+  const coachFullName = user?.full_name?.trim() || coachMe?.full_name?.trim();
+  const firstName = coachFullName ? coachFullName.split(" ")[0] : "مربی";
   const sessionsCount = dashboard?.sessions_today_total ?? 4;
 
   useEffect(() => {
