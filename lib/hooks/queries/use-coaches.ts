@@ -94,7 +94,9 @@ export function useCoachStudents(params?: { status?: string; search?: string }) 
     queryKey: ["coach-students", userScope, params?.status, params?.search],
     queryFn: () => coachesService.getMyStudents(params),
     enabled: typeof window !== "undefined" && tokenStorage.hasValidSession(),
-    staleTime: 15 * 1000,
+    staleTime: 5 * 1000,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
   });
 }
 

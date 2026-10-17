@@ -89,8 +89,13 @@ export function CoachAddMemberModal({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setAvatarPreview(url);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setAvatarPreview(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 

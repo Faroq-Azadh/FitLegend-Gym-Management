@@ -1,18 +1,42 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
 import { CoachTopbar } from "@/components/coach/coach-topbar";
 import { useAuth } from "@/lib/auth-context";
 import { useCoachMe, useCoachStudents } from "@/lib/hooks/queries/use-coaches";
+import { coachesService } from "@/lib/api/services/coaches.service";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   CoachAddMemberModal,
   type NewStudentPayload,
 } from "@/components/coach/coach-add-member-modal";
+import {
+  getCoachStudentsStore,
+  removeStudentFromCoach,
+  updateCoachStudentOverride,
+  addCustomCoachStudent,
+  sanitizeCustomStudents,
+  useCoachStudentsSync,
+  type StudentOverride,
+} from "@/lib/coach-students-store";
 import { toPersianDigits } from "@/lib/persian-digits";
 import { cn } from "@/lib/utils";
-import { X, Check, Eye } from "lucide-react";
+import {
+  X,
+  Check,
+  Eye,
+  Pencil,
+  Trash2,
+  AlertTriangle,
+  Phone,
+  Calendar,
+  Activity,
+  FileText,
+  User as UserIcon,
+  Upload,
+} from "lucide-react";
 
 interface StudentItem {
   id: string;
@@ -23,7 +47,9 @@ interface StudentItem {
   lastSession: string;
   dueDate: string;
   phone?: string;
+  notes?: string;
   avatarColor: string;
+  avatarUrl?: string;
 }
 
 const AVATAR_COLORS = [
@@ -37,427 +63,6 @@ const AVATAR_COLORS = [
   "#8B5CF6",
 ];
 
-const INITIAL_STUDENTS: StudentItem[] = [
-  {
-    id: "1024",
-    name: "سارا محمدی",
-    program: "حجم — هفته ۳",
-    status: "active",
-    attendanceRate: 98,
-    lastSession: "امروز",
-    dueDate: "۱۵ مرداد",
-    phone: "۰۹۱۲۳۴۵۶۷۸۱",
-    avatarColor: AVATAR_COLORS[0],
-  },
-  {
-    id: "1025",
-    name: "امیر صادقی",
-    program: "قدرت — هفته ۵",
-    status: "active",
-    attendanceRate: 94,
-    lastSession: "دیروز",
-    dueDate: "۲ شهریور",
-    phone: "۰۹۱۸۲۳۴۵۶۷۲",
-    avatarColor: AVATAR_COLORS[1],
-  },
-  {
-    id: "1026",
-    name: "رضا کاظمی",
-    program: "چربی‌سوزی — هفته ۱",
-    status: "expiring",
-    attendanceRate: 89,
-    lastSession: "امروز",
-    dueDate: "۲ تیر",
-    phone: "۰۹۳۵۱۲۳۴۵۶۳",
-    avatarColor: AVATAR_COLORS[2],
-  },
-  {
-    id: "1027",
-    name: "مینا تهرانی",
-    program: "شروع — هفته ۲",
-    status: "active",
-    attendanceRate: 82,
-    lastSession: "۲ روز پیش",
-    dueDate: "۲۰ مرداد",
-    phone: "۰۹۱۹۸۷۶۵۴۳۴",
-    avatarColor: AVATAR_COLORS[3],
-  },
-  {
-    id: "1028",
-    name: "نیما اکبری",
-    program: "حجم — هفته ۴",
-    status: "expired",
-    attendanceRate: 54,
-    lastSession: "۵ روز پیش",
-    dueDate: "۲۵ خرداد",
-    phone: "۰۹۳۶۷۸۹۰۱۲۵",
-    avatarColor: AVATAR_COLORS[4],
-  },
-  {
-    id: "1029",
-    name: "کیان مرادی",
-    program: "شروع — هفته ۱",
-    status: "active",
-    attendanceRate: 76,
-    lastSession: "دیروز",
-    dueDate: "۱۰ شهریور",
-    phone: "۰۹۱۲۵۶۷۸۹۰۶",
-    avatarColor: AVATAR_COLORS[5],
-  },
-  {
-    id: "1030",
-    name: "هانیه رضایی",
-    program: "چربی‌سوزی — هفته ۶",
-    status: "expiring",
-    attendanceRate: 91,
-    lastSession: "امروز",
-    dueDate: "۵ تیر",
-    phone: "۰۹۳۰۴۵۶۷۸۹۷",
-    avatarColor: AVATAR_COLORS[6],
-  },
-  {
-    id: "1031",
-    name: "بهراد یوسفی",
-    program: "قدرت — هفته ۲",
-    status: "active",
-    attendanceRate: 88,
-    lastSession: "۳ روز پیش",
-    dueDate: "۱۸ مرداد",
-    phone: "۰۹۱۱۱۱۲۳۴۵۸",
-    avatarColor: AVATAR_COLORS[7],
-  },
-  {
-    id: "1032",
-    name: "علی پوراحمد",
-    program: "حجم — هفته ۵",
-    status: "active",
-    attendanceRate: 95,
-    lastSession: "امروز",
-    dueDate: "۲۵ مرداد",
-    phone: "۰۹۱۲۳۳۳۴۴۵۵",
-    avatarColor: AVATAR_COLORS[0],
-  },
-  {
-    id: "1033",
-    name: "فاطمه حسینی",
-    program: "تناسب اندام — هفته ۳",
-    status: "active",
-    attendanceRate: 90,
-    lastSession: "دیروز",
-    dueDate: "۱ شهریور",
-    phone: "۰۹۱۹۱۱۱۲۲۳۳",
-    avatarColor: AVATAR_COLORS[1],
-  },
-  {
-    id: "1034",
-    name: "مهدی احمدی",
-    program: "قدرت — هفته ۴",
-    status: "active",
-    attendanceRate: 93,
-    lastSession: "۲ روز پیش",
-    dueDate: "۱۰ مرداد",
-    phone: "۰۹۱۲۵۵۵۶۶۷۷",
-    avatarColor: AVATAR_COLORS[2],
-  },
-  {
-    id: "1035",
-    name: "زهرا موسوی",
-    program: "چربی‌سوزی — هفته ۲",
-    status: "active",
-    attendanceRate: 87,
-    lastSession: "امروز",
-    dueDate: "۲۰ شهریور",
-    phone: "۰۹۳۵۷۷۷۸۸۹۹",
-    avatarColor: AVATAR_COLORS[3],
-  },
-  {
-    id: "1036",
-    name: "حسین باقری",
-    program: "شروع — هفته ۳",
-    status: "active",
-    attendanceRate: 85,
-    lastSession: "۳ روز پیش",
-    dueDate: "۵ مرداد",
-    phone: "۰۹۱۲۹۹۹۰۰۱۱",
-    avatarColor: AVATAR_COLORS[4],
-  },
-  {
-    id: "1037",
-    name: "مریم کریمی",
-    program: "تناسب اندام — هفته ۶",
-    status: "active",
-    attendanceRate: 92,
-    lastSession: "دیروز",
-    dueDate: "۲۸ مرداد",
-    phone: "۰۹۱۸۴۴۴۵۵۶۶",
-    avatarColor: AVATAR_COLORS[5],
-  },
-  {
-    id: "1038",
-    name: "سینا جعفری",
-    program: "حجم — هفته ۲",
-    status: "active",
-    attendanceRate: 89,
-    lastSession: "امروز",
-    dueDate: "۱۲ شهریور",
-    phone: "۰۹۳۶۱۱۱۲۲۳۳",
-    avatarColor: AVATAR_COLORS[6],
-  },
-  {
-    id: "1039",
-    name: "نگار ابراهیمی",
-    program: "چربی‌سوزی — هفته ۴",
-    status: "active",
-    attendanceRate: 94,
-    lastSession: "دیروز",
-    dueDate: "۸ مرداد",
-    phone: "۰۹۳۰۲۲۲۳۳۴۴",
-    avatarColor: AVATAR_COLORS[7],
-  },
-  {
-    id: "1040",
-    name: "محمد رحیمی",
-    program: "قدرت — هفته ۳",
-    status: "active",
-    attendanceRate: 91,
-    lastSession: "امروز",
-    dueDate: "۱۷ شهریور",
-    phone: "۰۹۱۱۸۸۸۹۹۰۰",
-    avatarColor: AVATAR_COLORS[0],
-  },
-  {
-    id: "1041",
-    name: "آتنا شریفی",
-    program: "تناسب اندام — هفته ۱",
-    status: "active",
-    attendanceRate: 80,
-    lastSession: "۴ روز پیش",
-    dueDate: "۲۲ مرداد",
-    phone: "۰۹۱۹۳۳۳۴۴۵۵",
-    avatarColor: AVATAR_COLORS[1],
-  },
-  {
-    id: "1042",
-    name: "پویا طاهری",
-    program: "حجم — هفته ۶",
-    status: "active",
-    attendanceRate: 96,
-    lastSession: "امروز",
-    dueDate: "۳۰ مرداد",
-    phone: "۰۹۱۲۴۴۴۵۵۶۶",
-    avatarColor: AVATAR_COLORS[2],
-  },
-  {
-    id: "1043",
-    name: "شیما قاسمی",
-    program: "چربی‌سوزی — هفته ۳",
-    status: "active",
-    attendanceRate: 86,
-    lastSession: "دیروز",
-    dueDate: "۱۴ شهریور",
-    phone: "۰۹۳۵۳۳۳۴۴۵۵",
-    avatarColor: AVATAR_COLORS[3],
-  },
-  {
-    id: "1044",
-    name: "نوید فلاحی",
-    program: "قدرت — هفته ۱",
-    status: "active",
-    attendanceRate: 78,
-    lastSession: "۲ روز پیش",
-    dueDate: "۶ مرداد",
-    phone: "۰۹۱۸۵۵۵۶۶۷۷",
-    avatarColor: AVATAR_COLORS[4],
-  },
-  {
-    id: "1045",
-    name: "الهام زارعی",
-    program: "تناسب اندام — هفته ۵",
-    status: "active",
-    attendanceRate: 92,
-    lastSession: "امروز",
-    dueDate: "۱۹ مرداد",
-    phone: "۰۹۳۶۴۴۴۵۵۶۶",
-    avatarColor: AVATAR_COLORS[5],
-  },
-  {
-    id: "1046",
-    name: "دانیال عباسی",
-    program: "حجم — هفته ۳",
-    status: "active",
-    attendanceRate: 88,
-    lastSession: "۳ روز پیش",
-    dueDate: "۲۴ شهریور",
-    phone: "۰۹۳۰۵۵۵۶۶۷۷",
-    avatarColor: AVATAR_COLORS[6],
-  },
-  {
-    id: "1047",
-    name: "پریناز صالحی",
-    program: "شروع — هفته ۲",
-    status: "active",
-    attendanceRate: 83,
-    lastSession: "دیروز",
-    dueDate: "۹ مرداد",
-    phone: "۰۹۱۱۹۹۹۰۰۱۱",
-    avatarColor: AVATAR_COLORS[7],
-  },
-  {
-    id: "1048",
-    name: "سامان خسروی",
-    program: "قدرت — هفته ۶",
-    status: "active",
-    attendanceRate: 97,
-    lastSession: "امروز",
-    dueDate: "۲۷ مرداد",
-    phone: "۰۹۱۹۴۴۴۵۵۶۶",
-    avatarColor: AVATAR_COLORS[0],
-  },
-  {
-    id: "1049",
-    name: "فرنوش نوری",
-    program: "چربی‌سوزی — هفته ۵",
-    status: "active",
-    attendanceRate: 90,
-    lastSession: "دیروز",
-    dueDate: "۱۱ شهریور",
-    phone: "۰۹۱۲۶۶۶۷۷۸۸",
-    avatarColor: AVATAR_COLORS[1],
-  },
-  {
-    id: "1050",
-    name: "آرمان حیدری",
-    program: "حجم — هفته ۱",
-    status: "active",
-    attendanceRate: 75,
-    lastSession: "۴ روز پیش",
-    dueDate: "۱۳ مرداد",
-    phone: "۰۹۳۵۴۴۴۵۵۶۶",
-    avatarColor: AVATAR_COLORS[2],
-  },
-  {
-    id: "1051",
-    name: "رویا معتمدی",
-    program: "تناسب اندام — هفته ۴",
-    status: "active",
-    attendanceRate: 91,
-    lastSession: "امروز",
-    dueDate: "۱۶ شهریور",
-    phone: "۰۹۱۸۶۶۶۷۷۸۸",
-    avatarColor: AVATAR_COLORS[3],
-  },
-  {
-    id: "1052",
-    name: "احسان کاشانی",
-    program: "قدرت — هفته ۴",
-    status: "active",
-    attendanceRate: 94,
-    lastSession: "دیروز",
-    dueDate: "۳ شهریور",
-    phone: "۰۹۳۶۵۵۵۶۶۷۷",
-    avatarColor: AVATAR_COLORS[4],
-  },
-  {
-    id: "1053",
-    name: "ساناز کمالی",
-    program: "شروع — هفته ۱",
-    status: "active",
-    attendanceRate: 79,
-    lastSession: "۳ روز پیش",
-    dueDate: "۷ مرداد",
-    phone: "۰۹۳۰۶۶۶۷۷۸۸",
-    avatarColor: AVATAR_COLORS[5],
-  },
-  {
-    id: "1054",
-    name: "فرهاد امینی",
-    program: "حجم — هفته ۵",
-    status: "active",
-    attendanceRate: 93,
-    lastSession: "امروز",
-    dueDate: "۲۱ مرداد",
-    phone: "۰۹۱۱۷۷۷۸۸۹۹",
-    avatarColor: AVATAR_COLORS[6],
-  },
-  {
-    id: "1055",
-    name: "کامران یوسفی",
-    program: "چربی‌سوزی — هفته ۴",
-    status: "expiring",
-    attendanceRate: 84,
-    lastSession: "دیروز",
-    dueDate: "۶ تیر",
-    phone: "۰۹۱۹۵۵۵۶۶۷۷",
-    avatarColor: AVATAR_COLORS[7],
-  },
-  {
-    id: "1056",
-    name: "لادن افتخاری",
-    program: "حجم — هفته ۳",
-    status: "expiring",
-    attendanceRate: 88,
-    lastSession: "امروز",
-    dueDate: "۸ تیر",
-    phone: "۰۹۱۲۷۷۷۸۸۹۹",
-    avatarColor: AVATAR_COLORS[0],
-  },
-  {
-    id: "1057",
-    name: "سپهر نامدار",
-    program: "تناسب اندام — هفته ۶",
-    status: "expiring",
-    attendanceRate: 82,
-    lastSession: "۲ روز پیش",
-    dueDate: "۱۰ تیر",
-    phone: "۰۹۳۵۸۸۸۹۹۰۰",
-    avatarColor: AVATAR_COLORS[1],
-  },
-  {
-    id: "1058",
-    name: "شیدا بهرامی",
-    program: "شروع — هفته ۲",
-    status: "expired",
-    attendanceRate: 48,
-    lastSession: "۶ روز پیش",
-    dueDate: "۲۰ خرداد",
-    phone: "۰۹۱۸۷۷۷۸۸۹۹",
-    avatarColor: AVATAR_COLORS[2],
-  },
-  {
-    id: "1059",
-    name: "بردیا سلیمی",
-    program: "حجم — هفته ۳",
-    status: "active",
-    attendanceRate: 89,
-    lastSession: "دیروز",
-    dueDate: "۱۵ شهریور",
-    phone: "۰۹۱۲۸۸۸۹۹۰۰",
-    avatarColor: AVATAR_COLORS[3],
-  },
-  {
-    id: "1060",
-    name: "یاسمن فرهمند",
-    program: "تناسب اندام — هفته ۲",
-    status: "active",
-    attendanceRate: 91,
-    lastSession: "امروز",
-    dueDate: "۱۸ مرداد",
-    phone: "۰۹۱۹۲۲۲۳۳۴۴",
-    avatarColor: AVATAR_COLORS[4],
-  },
-  {
-    id: "1061",
-    name: "میلاد صادق‌پور",
-    program: "قدرت — هفته ۵",
-    status: "active",
-    attendanceRate: 94,
-    lastSession: "۳ روز پیش",
-    dueDate: "۲۶ مرداد",
-    phone: "۰۹۳۵۶۶۶۷۷۸۸",
-    avatarColor: AVATAR_COLORS[5],
-  },
-];
-
 const STATUS_MAP = {
   active: { cls: "active", label: "فعال" },
   expiring: { cls: "expiring", label: "رو به اتمام" },
@@ -466,44 +71,161 @@ const STATUS_MAP = {
 
 const ITEMS_PER_PAGE = 8;
 
+function formatPersianDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return "—";
+  try {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return dateStr;
+    const fmt = new Intl.DateTimeFormat("fa-IR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    return fmt.format(date);
+  } catch {
+    return dateStr;
+  }
+}
+
 export default function CoachStudentsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [students, setStudents] = useState<StudentItem[]>(INITIAL_STUDENTS);
   const [filter, setFilter] = useState<"all" | "active" | "expiring" | "expired">("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { user } = useAuth();
-  const { data: coachMe } = useCoachMe();
-  const coachName = user?.full_name?.trim() || coachMe?.full_name?.trim() || "مربی باشگاه";
+  // Modals
+  const [selectedStudent, setSelectedStudent] = useState<StudentItem | null>(null);
+  const [editingStudent, setEditingStudent] = useState<StudentItem | null>(null);
+  const [removingStudent, setRemovingStudent] = useState<StudentItem | null>(null);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+  const [pendingRemovedIds, setPendingRemovedIds] = useState<string[]>([]);
+  const avatarInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { data: backendStudents } = useCoachStudents({
-    status: filter === "all" ? undefined : filter,
-    search: searchQuery || undefined,
+  // Edit form state
+  const [editForm, setEditForm] = useState<{
+    name: string;
+    phone: string;
+    program: string;
+    status: "active" | "expiring" | "expired";
+    attendanceRate: number;
+    lastSession: string;
+    dueDate: string;
+    notes: string;
+    avatarUrl?: string;
+  }>({
+    name: "",
+    phone: "",
+    program: "",
+    status: "active",
+    attendanceRate: 0,
+    lastSession: "",
+    dueDate: "",
+    notes: "",
+    avatarUrl: "",
   });
 
+  const { user } = useAuth();
+  const { data: coachMe } = useCoachMe();
+  const queryClient = useQueryClient();
+  const coachName = user?.full_name?.trim() || coachMe?.full_name?.trim() || "مربی باشگاه";
+
+  // Real students from Django backend: GET /coaches/my-students/
+  const { data: backendStudents, isLoading: isStudentsLoading } = useCoachStudents();
+  const storeVersion = useCoachStudentsSync();
+
+  // Automatically sanitize store if backend students exist
   useEffect(() => {
     if (Array.isArray(backendStudents) && backendStudents.length > 0) {
-      const mapped: StudentItem[] = backendStudents.map((b, idx) => ({
-        id: b.id,
-        name: b.full_name,
-        program: b.current_plan?.name || "برنامه اختصاصی",
-        status: (b.status === "expiring" || b.status === "expired" ? b.status : "active") as "active" | "expiring" | "expired",
-        attendanceRate: b.attendance_rate ?? 90,
-        lastSession: b.last_session || "اخیراً",
-        dueDate: b.membership_end_date || "—",
-        phone: "",
-        avatarColor: AVATAR_COLORS[idx % AVATAR_COLORS.length],
-      }));
-      setStudents(mapped);
+      sanitizeCustomStudents(backendStudents);
     }
   }, [backendStudents]);
 
-  // Modals / Details
-  const [selectedStudent, setSelectedStudent] = useState<StudentItem | null>(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  // Combine Django students with local overrides and custom additions, strictly deduplicating
+  const students = useMemo<StudentItem[]>(() => {
+    const store = getCoachStudentsStore();
+    const result: StudentItem[] = [];
+    const seenIds = new Set<string>();
+    const seenNames = new Set<string>();
 
-  // Stats dynamically computed from students state
+    // 1. Process real Django backend students first (primary source of truth)
+    // Any student returned by Django IS assigned to this coach and must be displayed!
+    if (Array.isArray(backendStudents)) {
+      for (let i = 0; i < backendStudents.length; i++) {
+        const b = backendStudents[i];
+        if (pendingRemovedIds.includes(b.id)) continue;
+        if (seenIds.has(b.id)) continue;
+
+        const ovr = store.overrides[b.id] || {};
+        const rawStatus = b.status?.toLowerCase();
+        const baseStatus: "active" | "expiring" | "expired" =
+          rawStatus === "expiring" || rawStatus === "expired" ? rawStatus : "active";
+
+        const studentName = (ovr.name ?? b.full_name ?? (b as any).name ?? "شاگرد باشگاه").trim();
+        const normName = studentName.toLowerCase();
+
+        const student: StudentItem = {
+          id: b.id,
+          name: studentName,
+          program: ovr.program ?? (b.current_plan?.name || "برنامه اختصاصی"),
+          status: (ovr.status ?? baseStatus) as "active" | "expiring" | "expired",
+          attendanceRate: ovr.attendanceRate ?? (b.attendance_rate ?? 0),
+          lastSession:
+            ovr.lastSession ??
+            (b.last_session ? formatPersianDate(b.last_session) : "بدون جلسه اخیر"),
+          dueDate:
+            ovr.dueDate ??
+            (b.membership_end_date ? formatPersianDate(b.membership_end_date) : "—"),
+          phone: ovr.phone ?? ((b as any).phone_number || (b as any).phone || ""),
+          notes: ovr.notes ?? "",
+          avatarColor: AVATAR_COLORS[result.length % AVATAR_COLORS.length],
+          avatarUrl: ovr.avatarUrl ?? (b as any).profile_picture_url ?? (b as any).avatar,
+        };
+
+        seenIds.add(b.id);
+        if (normName) seenNames.add(normName);
+        result.push(student);
+      }
+    }
+
+    // 2. Process custom students added locally, skipping duplicates
+    if (Array.isArray(store.customStudents)) {
+      for (let i = 0; i < store.customStudents.length; i++) {
+        const cs = store.customStudents[i];
+        if (store.removedIds.includes(cs.id)) continue;
+        if (seenIds.has(cs.id)) continue;
+
+        const ovr = store.overrides[cs.id] || {};
+        const studentName = (ovr.name ?? cs.name ?? "").trim();
+        const normName = studentName.toLowerCase();
+
+        // If a student with this ID or normalized name was already added from backend, skip it!
+        if (normName && seenNames.has(normName)) continue;
+
+        const student: StudentItem = {
+          id: cs.id,
+          name: studentName,
+          program: ovr.program ?? cs.program,
+          status: (ovr.status ?? cs.status) as "active" | "expiring" | "expired",
+          attendanceRate: ovr.attendanceRate ?? cs.attendanceRate,
+          lastSession: ovr.lastSession ?? cs.lastSession,
+          dueDate: ovr.dueDate ?? cs.dueDate,
+          phone: ovr.phone ?? cs.phone,
+          notes: ovr.notes ?? cs.notes,
+          avatarColor: cs.avatarColor || AVATAR_COLORS[result.length % AVATAR_COLORS.length],
+          avatarUrl: ovr.avatarUrl ?? cs.avatarUrl,
+        };
+
+        seenIds.add(cs.id);
+        if (normName) seenNames.add(normName);
+        result.push(student);
+      }
+    }
+
+    return result;
+  }, [backendStudents, storeVersion]);
+
+  // Dynamic KPI counts computed from real students
   const totalStudentsCount = students.length;
   const activeCount = useMemo(
     () => students.filter((s) => s.status === "active").length,
@@ -522,21 +244,23 @@ export default function CoachStudentsPage() {
   const filteredStudents = useMemo(() => {
     return students.filter((item) => {
       const matchFilter = filter === "all" || item.status === filter;
+      const q = searchQuery.trim().toLowerCase();
       const matchSearch =
-        searchQuery === "" ||
-        item.name.includes(searchQuery) ||
-        item.program.includes(searchQuery) ||
-        item.id.includes(searchQuery);
+        q === "" ||
+        item.name.toLowerCase().includes(q) ||
+        item.program.toLowerCase().includes(q) ||
+        item.id.toLowerCase().includes(q) ||
+        (item.phone && item.phone.includes(q));
       return matchFilter && matchSearch;
     });
   }, [students, filter, searchQuery]);
 
-  // Reset to first page when filter or search changes
+  // Reset page when filter or search changes
   useEffect(() => {
     setCurrentPage(1);
   }, [filter, searchQuery]);
 
-  // Paginated rows for the active page
+  // Paginated rows
   const totalPages = Math.max(1, Math.ceil(filteredStudents.length / ITEMS_PER_PAGE));
   const paginatedStudents = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -551,28 +275,146 @@ export default function CoachStudentsPage() {
     return name.slice(0, 2);
   };
 
-  const handleStudentAdded = (payload: NewStudentPayload) => {
-    const newId = String(1062 + students.length);
-    const fullName = `${payload.firstName} ${payload.lastName}`.trim();
-    const newStudent: StudentItem = {
-      id: newId,
-      name: fullName,
-      program: `${payload.goal} — ${payload.programType}`,
-      status: "active",
-      attendanceRate: 100,
-      lastSession: "امروز",
-      dueDate: payload.duration ? `${payload.duration} آینده` : "۳۰ روز آینده",
-      phone: payload.phone,
-      avatarColor: AVATAR_COLORS[students.length % AVATAR_COLORS.length],
+  // Open Edit Modal
+  const handleOpenEdit = (stu: StudentItem) => {
+    setEditingStudent(stu);
+    setEditForm({
+      name: stu.name,
+      phone: stu.phone || "",
+      program: stu.program,
+      status: stu.status,
+      attendanceRate: stu.attendanceRate,
+      lastSession: stu.lastSession,
+      dueDate: stu.dueDate,
+      notes: stu.notes || "",
+      avatarUrl: stu.avatarUrl || "",
+    });
+    setSelectedStudent(null);
+  };
+
+  // Avatar file input handler for Edit modal
+  const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string") {
+        setEditForm((prev) => ({ ...prev, avatarUrl: reader.result as string }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Save Edit Form
+  const handleSaveEdit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingStudent) return;
+
+    const override: StudentOverride = {
+      name: editForm.name.trim() || editingStudent.name,
+      phone: editForm.phone.trim(),
+      program: editForm.program.trim() || editingStudent.program,
+      status: editForm.status,
+      attendanceRate: Number(editForm.attendanceRate) || 0,
+      lastSession: editForm.lastSession.trim() || editingStudent.lastSession,
+      dueDate: editForm.dueDate.trim() || editingStudent.dueDate,
+      notes: editForm.notes.trim(),
+      avatarUrl: editForm.avatarUrl !== undefined ? editForm.avatarUrl : editingStudent.avatarUrl,
     };
 
-    setStudents([newStudent, ...students]);
+    updateCoachStudentOverride(editingStudent.id, override);
+    setEditingStudent(null);
+  };
+
+  // Open Remove Modal
+  const handleOpenRemove = (stu: StudentItem) => {
+    setRemovingStudent(stu);
+    setSelectedStudent(null);
+    setEditingStudent(null);
+  };
+
+  // Confirm Removal from Coach Roster: sets assigned_coach = null in Django backend and updates local store
+  const handleConfirmRemove = async () => {
+    if (!removingStudent) return;
+    const studentIdToRemove = removingStudent.id;
+    setIsRemoving(true);
+    setPendingRemovedIds((prev) => [...prev, studentIdToRemove]);
+    try {
+      if (!studentIdToRemove.startsWith("cs-")) {
+        await coachesService.unassignStudent(studentIdToRemove);
+      }
+    } catch (err) {
+      console.error("Backend unassignStudent call failed:", err);
+    } finally {
+      removeStudentFromCoach(studentIdToRemove);
+      await queryClient.invalidateQueries({ queryKey: ["coach-students"] });
+      await queryClient.refetchQueries({ queryKey: ["coach-students"] });
+      await queryClient.invalidateQueries({ queryKey: ["coach-dashboard"] });
+      await queryClient.refetchQueries({ queryKey: ["coach-dashboard"] });
+      setPendingRemovedIds((prev) => prev.filter((id) => id !== studentIdToRemove));
+      setIsRemoving(false);
+      setRemovingStudent(null);
+    }
+  };
+
+  // Handle student added from modal: synchronizes with Django POST /api/coach/add-student
+  const handleStudentAdded = async (payload: NewStudentPayload) => {
+    const fullName = `${payload.firstName} ${payload.lastName}`.trim();
+    const genderMapped = payload.gender === "زن" ? "FEMALE" : "MALE";
+    const levelMapped =
+      payload.level === "مبتدی"
+        ? "BEGINNER"
+        : payload.level === "پیشرفته"
+        ? "ADVANCED"
+        : "INTERMEDIATE";
+    const todayIso = new Date().toISOString().slice(0, 10);
+
+    let backendSuccess = false;
+    // 1. Send to Next.js API route which adds member in Django and assigns coach
+    try {
+      await coachesService.addMyStudent({
+        first_name: payload.firstName,
+        last_name: payload.lastName,
+        phone_number: payload.phone,
+        email: payload.email || undefined,
+        gender: genderMapped,
+        goal: payload.goal,
+        level: levelMapped,
+        start_date: todayIso,
+        coach_notes: payload.notes,
+        is_active: payload.instantActive,
+        coachId: coachMe?.id,
+      });
+      backendSuccess = true;
+      await queryClient.invalidateQueries({ queryKey: ["coach-students"] });
+      await queryClient.refetchQueries({ queryKey: ["coach-students"] });
+      await queryClient.invalidateQueries({ queryKey: ["coach-dashboard"] });
+      await queryClient.refetchQueries({ queryKey: ["coach-dashboard"] });
+    } catch (err) {
+      console.warn("Backend addMyStudent call failed or timed out:", err);
+    }
+
+    // 2. Only add custom student if backend call was NOT successful (fallback)
+    if (!backendSuccess) {
+      const newId = `cs-${Date.now().toString().slice(-6)}`;
+      addCustomCoachStudent({
+        id: newId,
+        name: fullName,
+        program: `${payload.goal} — ${payload.programType}`,
+        status: "active",
+        attendanceRate: 100,
+        lastSession: "امروز",
+        dueDate: payload.duration ? `${payload.duration} آینده` : "۳۰ روز آینده",
+        phone: payload.phone,
+        notes: payload.notes,
+        avatarColor: AVATAR_COLORS[students.length % AVATAR_COLORS.length],
+        avatarUrl: payload.avatarUrl,
+      });
+    }
   };
 
   const handleExport = () => {
-    // Prepend UTF-8 BOM (\uFEFF) so Microsoft Excel opens Persian characters without Mojibake
     const BOM = "\uFEFF";
-
     const headers = [
       "ردیف",
       "شناسه شاگرد",
@@ -591,7 +433,6 @@ export default function CoachStudentsPage() {
       return `"${str}"`;
     };
 
-    // Export all students in the coach roster (or filtered if user filtered)
     const exportData =
       filter === "all" && !searchQuery.trim()
         ? students
@@ -640,7 +481,7 @@ export default function CoachStudentsPage() {
 
       {/* Main Content Area */}
       <div className="main flex flex-1 flex-col min-w-0">
-        {/* Topbar: Exactly like dashboard part */}
+        {/* Topbar */}
         <CoachTopbar
           onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
           searchPlaceholder="جستجو…"
@@ -655,7 +496,7 @@ export default function CoachStudentsPage() {
                 شاگردان من
               </h1>
               <div className="sub text-[14px] text-ink-faint mt-[5px]">
-                مدیریت، جستجو و پیگیری شاگردان
+                مدیریت، پیگیری و همگام‌سازی شاگردان مربی
               </div>
             </div>
 
@@ -752,17 +593,14 @@ export default function CoachStudentsPage() {
                 {toPersianDigits(activeCount)}
               </div>
               <div className="l text-[13.5px] font-medium text-ink-soft">
-                فعال
+                عضویت فعال
               </div>
             </div>
 
             {/* Card 3: رو به اتمام */}
             <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
               <div className="kpi-top flex items-center justify-between">
-                <span
-                  className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] text-[#D97706] kpi-c-amber"
-                  style={{ background: "#FFFBEB" }}
-                >
+                <span className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-violet">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -788,10 +626,7 @@ export default function CoachStudentsPage() {
             {/* Card 4: منقضی */}
             <div className="card kpi p-[20px] flex flex-col gap-[14px] bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)] transition-all duration-200 hover:-translate-y-[2px] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]">
               <div className="kpi-top flex items-center justify-between">
-                <span
-                  className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] text-[#E11D48] kpi-c-rose"
-                  style={{ background: "#FFF1F2" }}
-                >
+                <span className="kpi-ico flex h-[44px] w-[44px] items-center justify-center rounded-[12px] bg-tint text-primary-dark kpi-c-emerald">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -801,8 +636,7 @@ export default function CoachStudentsPage() {
                     strokeLinejoin="round"
                     className="h-[22px] w-[22px]"
                   >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="m15 9-6 6M9 9l6 6" />
+                    <path d="M18 6 6 18M6 6l12 12" />
                   </svg>
                 </span>
               </div>
@@ -810,7 +644,7 @@ export default function CoachStudentsPage() {
                 {toPersianDigits(expiredCount)}
               </div>
               <div className="l text-[13.5px] font-medium text-ink-soft">
-                منقضی
+                منقضی‌شده
               </div>
             </div>
           </div>
@@ -865,7 +699,7 @@ export default function CoachStudentsPage() {
                 id="stuSearch"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="جستجوی نام شاگرد…"
+                placeholder="جستجوی نام، شناسه یا شماره…"
                 className="w-full border-none bg-transparent text-[14px] text-ink outline-none"
               />
               {searchQuery && (
@@ -885,7 +719,7 @@ export default function CoachStudentsPage() {
           <div className="card bg-surface border border-border rounded-[16px] shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
             <div className="card-head flex items-center justify-between p-[20px_22px] border-b border-border">
               <div>
-                <h3 className="text-[16px] font-extrabold text-ink">فهرست شاگردان</h3>
+                <h3 className="text-[16px] font-extrabold text-ink">فهرست شاگردان مربی</h3>
                 <div className="hint text-[12.5px] text-ink-faint mt-[3px]" id="rowInfo">
                   نمایش {toPersianDigits(filteredStudents.length)} شاگرد از {toPersianDigits(totalStudentsCount)}
                 </div>
@@ -914,13 +748,21 @@ export default function CoachStudentsPage() {
                     <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap">
                       سررسید عضویت
                     </th>
-                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap"></th>
+                    <th className="text-right text-[13.5px] font-extrabold text-ink-faint p-[14px_22px_14px] border-b border-border whitespace-nowrap">
+                      عملیات
+                    </th>
                   </tr>
                 </thead>
                 <tbody id="stuBody">
-                  {paginatedStudents.length > 0 ? (
+                  {isStudentsLoading && students.length === 0 ? (
+                    <tr>
+                      <td colSpan={7} className="text-center text-ink-faint p-[40px] text-[14px]">
+                        در حال بارگذاری شاگردان از سرور...
+                      </td>
+                    </tr>
+                  ) : paginatedStudents.length > 0 ? (
                     paginatedStudents.map((stu) => {
-                      const stat = STATUS_MAP[stu.status];
+                      const stat = STATUS_MAP[stu.status] || STATUS_MAP.active;
                       return (
                         <tr
                           key={stu.id}
@@ -928,16 +770,24 @@ export default function CoachStudentsPage() {
                         >
                           <td className="p-[15px_22px] text-[13.5px] text-ink-soft whitespace-nowrap">
                             <div className="member-cell flex items-center gap-[11px]">
-                              <span
-                                className="av w-[36px] h-[36px] rounded-[10px] shrink-0 flex items-center justify-center font-bold text-[13px] text-white"
-                                style={{ background: stu.avatarColor }}
-                              >
-                                {getInitials(stu.name)}
-                              </span>
+                              {stu.avatarUrl ? (
+                                <img
+                                  src={stu.avatarUrl}
+                                  alt={stu.name}
+                                  className="av w-[36px] h-[36px] rounded-[10px] shrink-0 object-cover border border-border"
+                                />
+                              ) : (
+                                <span
+                                  className="av w-[36px] h-[36px] rounded-[10px] shrink-0 flex items-center justify-center font-bold text-[13px] text-white"
+                                  style={{ background: stu.avatarColor }}
+                                >
+                                  {getInitials(stu.name)}
+                                </span>
+                              )}
                               <div>
                                 <div className="nm text-[13.5px] font-bold text-ink">{stu.name}</div>
                                 <div className="em text-[12px] text-ink-faint">
-                                  شناسه #{toPersianDigits(stu.id)}
+                                  {stu.phone ? toPersianDigits(stu.phone) : `شناسه #${toPersianDigits(stu.id.slice(0, 8))}`}
                                 </div>
                               </div>
                             </div>
@@ -961,14 +811,40 @@ export default function CoachStudentsPage() {
                             {stu.dueDate}
                           </td>
                           <td className="p-[15px_22px] text-[13.5px] text-ink-soft whitespace-nowrap">
-                            <button
-                              type="button"
-                              onClick={() => setSelectedStudent(stu)}
-                              className="row-action text-ink-faint w-[32px] h-[32px] rounded-[8px] inline-flex items-center justify-center transition-all duration-150 hover:bg-tint hover:text-primary-dark cursor-pointer"
-                              aria-label="مشاهده"
-                            >
-                              <Eye className="h-4 w-4" />
-                            </button>
+                            <div className="flex items-center gap-1.5">
+                              {/* View detail button */}
+                              <button
+                                type="button"
+                                onClick={() => setSelectedStudent(stu)}
+                                className="row-action text-ink-faint w-[32px] h-[32px] rounded-[8px] inline-flex items-center justify-center transition-all duration-150 hover:bg-tint hover:text-primary-dark cursor-pointer"
+                                title="مشاهده جزئیات"
+                                aria-label="مشاهده"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </button>
+
+                              {/* Edit student button */}
+                              <button
+                                type="button"
+                                onClick={() => handleOpenEdit(stu)}
+                                className="row-action text-ink-faint w-[32px] h-[32px] rounded-[8px] inline-flex items-center justify-center transition-all duration-150 hover:bg-tint hover:text-primary-dark cursor-pointer"
+                                title="ویرایش اطلاعات شاگرد"
+                                aria-label="ویرایش"
+                              >
+                                <Pencil className="h-4 w-4" />
+                              </button>
+
+                              {/* Remove student button */}
+                              <button
+                                type="button"
+                                onClick={() => handleOpenRemove(stu)}
+                                className="row-action text-ink-faint w-[32px] h-[32px] rounded-[8px] inline-flex items-center justify-center transition-all duration-150 hover:bg-rose-500/10 hover:text-rose-600 cursor-pointer"
+                                title="حذف از شاگردان من"
+                                aria-label="حذف"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
@@ -979,7 +855,7 @@ export default function CoachStudentsPage() {
                         colSpan={7}
                         className="text-center text-ink-faint p-[40px] text-[14px]"
                       >
-                        شاگردی با این فیلتر پیدا نشد
+                        شاگردی با این مشخصات پیدا نشد
                       </td>
                     </tr>
                   )}
@@ -1018,25 +894,35 @@ export default function CoachStudentsPage() {
         </main>
       </div>
 
-      {/* Student Detail Modal */}
+      {/* 1. Student Detail Modal */}
       {selectedStudent && (
         <div className="fixed inset-0 z-70 flex items-center justify-center p-4">
           <div
             className="fixed inset-0 bg-ink/40 backdrop-blur-[4px] transition-opacity"
             onClick={() => setSelectedStudent(null)}
           />
-          <div className="relative z-10 w-full max-w-[440px] rounded-[20px] border border-border bg-surface p-6 shadow-xl animate-in zoom-in-95 duration-200">
+          <div className="relative z-10 w-full max-w-[460px] rounded-[20px] border border-border bg-surface p-6 shadow-xl animate-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between border-b border-border pb-4 mb-4">
               <div className="flex items-center gap-3">
-                <span
-                  className="flex h-11 w-11 items-center justify-center rounded-[12px] font-bold text-white text-[15px]"
-                  style={{ background: selectedStudent.avatarColor }}
-                >
-                  {getInitials(selectedStudent.name)}
-                </span>
+                {selectedStudent.avatarUrl ? (
+                  <img
+                    src={selectedStudent.avatarUrl}
+                    alt={selectedStudent.name}
+                    className="h-11 w-11 rounded-[12px] object-cover border border-border shrink-0"
+                  />
+                ) : (
+                  <span
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] font-bold text-white text-[15px]"
+                    style={{ background: selectedStudent.avatarColor }}
+                  >
+                    {getInitials(selectedStudent.name)}
+                  </span>
+                )}
                 <div>
                   <h3 className="text-[16px] font-extrabold text-ink">{selectedStudent.name}</h3>
-                  <p className="text-[12px] text-ink-faint">شناسه #{toPersianDigits(selectedStudent.id)}</p>
+                  <p className="text-[12px] text-ink-faint">
+                    {selectedStudent.phone ? toPersianDigits(selectedStudent.phone) : `شناسه #${toPersianDigits(selectedStudent.id.slice(0, 8))}`}
+                  </p>
                 </div>
               </div>
               <button
@@ -1054,6 +940,13 @@ export default function CoachStudentsPage() {
                 <span className="font-bold text-ink">{selectedStudent.program}</span>
               </div>
               <div className="flex items-center justify-between border-b border-border pb-2.5">
+                <span className="text-ink-faint">وضعیت عضویت:</span>
+                <span className={cn("status", STATUS_MAP[selectedStudent.status]?.cls)}>
+                  <span className="d"></span>
+                  {STATUS_MAP[selectedStudent.status]?.label || selectedStudent.status}
+                </span>
+              </div>
+              <div className="flex items-center justify-between border-b border-border pb-2.5">
                 <span className="text-ink-faint">نرخ حضور:</span>
                 <span className="font-bold text-primary-dark">٪{toPersianDigits(selectedStudent.attendanceRate)}</span>
               </div>
@@ -1066,34 +959,327 @@ export default function CoachStudentsPage() {
                 <span className="font-semibold text-ink">{selectedStudent.dueDate}</span>
               </div>
               {selectedStudent.phone && (
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between border-b border-border pb-2.5">
                   <span className="text-ink-faint">شماره تماس:</span>
                   <span className="font-semibold text-ink">{toPersianDigits(selectedStudent.phone)}</span>
                 </div>
               )}
+              {selectedStudent.notes && (
+                <div className="flex flex-col gap-1 border-b border-border pb-2.5">
+                  <span className="text-ink-faint">یادداشت مربی:</span>
+                  <span className="text-[13px] text-ink bg-bg p-2.5 rounded-[10px] leading-relaxed">
+                    {selectedStudent.notes}
+                  </span>
+                </div>
+              )}
             </div>
 
-            <div className="mt-5 pt-3 border-t border-border flex items-center justify-end gap-2">
-              <Link
-                href="/coach/programs"
-                className="btn btn-outline btn-sm"
-                onClick={() => setSelectedStudent(null)}
-              >
-                تغییر برنامه
-              </Link>
+            <div className="mt-5 pt-3 border-t border-border flex items-center justify-between gap-2">
               <button
                 type="button"
-                onClick={() => setSelectedStudent(null)}
-                className="btn btn-primary btn-sm"
+                onClick={() => handleOpenRemove(selectedStudent)}
+                className="btn btn-outline text-rose-600 hover:bg-rose-500/10 btn-sm"
               >
-                بستن
+                <Trash2 className="h-4 w-4" />
+                <span>حذف از شاگردان</span>
+              </button>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleOpenEdit(selectedStudent)}
+                  className="btn btn-outline btn-sm"
+                >
+                  <Pencil className="h-4 w-4" />
+                  <span>ویرایش</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedStudent(null)}
+                  className="btn btn-primary btn-sm"
+                >
+                  بستن
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 2. Edit Student Modal */}
+      {editingStudent && (
+        <div className="fixed inset-0 z-70 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-ink/50 backdrop-blur-[4px] transition-opacity"
+            onClick={() => setEditingStudent(null)}
+          />
+          <div className="relative z-10 w-full max-w-[500px] rounded-[20px] border border-border bg-surface p-6 shadow-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between border-b border-border pb-4 mb-4">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-primary/10 text-primary-dark">
+                  <Pencil className="h-5 w-5" />
+                </span>
+                <div>
+                  <h3 className="text-[16px] font-extrabold text-ink">ویرایش اطلاعات شاگرد</h3>
+                  <p className="text-[12px] text-ink-faint">به‌روزرسانی جزئیات، برنامه و وضعیت</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditingStudent(null)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-ink-faint hover:bg-bg hover:text-ink"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="flex flex-col gap-4 text-[13.5px]">
+              {/* Profile Picture Change Section */}
+              <div className="flex items-center gap-4 p-3 bg-bg rounded-[14px] border border-border">
+                <div className="relative shrink-0">
+                  {editForm.avatarUrl ? (
+                    <img
+                      src={editForm.avatarUrl}
+                      alt={editForm.name}
+                      className="w-16 h-16 rounded-[14px] object-cover border border-border shadow-sm"
+                    />
+                  ) : (
+                    <span
+                      className="flex w-16 h-16 items-center justify-center rounded-[14px] font-bold text-white text-[20px] shadow-sm"
+                      style={{ background: editingStudent.avatarColor }}
+                    >
+                      {getInitials(editForm.name || editingStudent.name)}
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                  <div className="text-[13px] font-bold text-ink">تصویر پروفایل شاگرد</div>
+                  <div className="text-[11.5px] text-ink-faint">
+                    تصویر جدید را انتخاب کرده یا در صورت تمایل تصویر فعلی را حذف کنید
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <input
+                      type="file"
+                      ref={avatarInputRef}
+                      onChange={handleAvatarFileChange}
+                      accept="image/*"
+                      className="hidden"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => avatarInputRef.current?.click()}
+                      className="btn btn-outline btn-sm text-[12px] h-[30px] px-3 flex items-center gap-1.5"
+                    >
+                      <Upload className="h-3.5 w-3.5" />
+                      <span>تغییر تصویر</span>
+                    </button>
+                    {editForm.avatarUrl && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditForm((prev) => ({ ...prev, avatarUrl: "" }));
+                          if (avatarInputRef.current) avatarInputRef.current.value = "";
+                        }}
+                        className="btn btn-sm text-[12px] h-[30px] px-2.5 text-rose-600 hover:bg-rose-500/10 border border-rose-200 dark:border-rose-900"
+                      >
+                        حذف تصویر
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[13px] font-bold text-ink-soft mb-1.5 block">
+                  نام و نام خانوادگی
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editForm.name}
+                  onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                  className="w-full rounded-[12px] border border-border bg-bg px-3.5 py-2.5 text-[14px] text-ink outline-none focus:border-primary"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[13px] font-bold text-ink-soft mb-1.5 block">
+                    شماره تماس
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm.phone}
+                    onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                    placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+                    className="w-full rounded-[12px] border border-border bg-bg px-3.5 py-2.5 text-[14px] text-ink outline-none focus:border-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[13px] font-bold text-ink-soft mb-1.5 block">
+                    وضعیت عضویت
+                  </label>
+                  <select
+                    value={editForm.status}
+                    onChange={(e) =>
+                      setEditForm({
+                        ...editForm,
+                        status: e.target.value as "active" | "expiring" | "expired",
+                      })
+                    }
+                    className="w-full rounded-[12px] border border-border bg-bg px-3.5 py-2.5 text-[14px] text-ink outline-none focus:border-primary"
+                  >
+                    <option value="active">فعال</option>
+                    <option value="expiring">رو به اتمام</option>
+                    <option value="expired">منقضی</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[13px] font-bold text-ink-soft mb-1.5 block">
+                  برنامه تمرینی
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editForm.program}
+                  onChange={(e) => setEditForm({ ...editForm, program: e.target.value })}
+                  placeholder="مثال: حجم و هایپرتروفی — هفته ۳"
+                  className="w-full rounded-[12px] border border-border bg-bg px-3.5 py-2.5 text-[14px] text-ink outline-none focus:border-primary"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[13px] font-bold text-ink-soft mb-1.5 block">
+                    درصد حضور (٪)
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    value={editForm.attendanceRate}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, attendanceRate: Number(e.target.value) })
+                    }
+                    className="w-full rounded-[12px] border border-border bg-bg px-3.5 py-2.5 text-[14px] text-ink outline-none focus:border-primary"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-[13px] font-bold text-ink-soft mb-1.5 block">
+                    سررسید عضویت
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm.dueDate}
+                    onChange={(e) => setEditForm({ ...editForm, dueDate: e.target.value })}
+                    placeholder="مثال: ۱۴ آبان ۱۴۰۵"
+                    className="w-full rounded-[12px] border border-border bg-bg px-3.5 py-2.5 text-[14px] text-ink outline-none focus:border-primary"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-[13px] font-bold text-ink-soft mb-1.5 block">
+                  آخرین جلسه
+                </label>
+                <input
+                  type="text"
+                  value={editForm.lastSession}
+                  onChange={(e) => setEditForm({ ...editForm, lastSession: e.target.value })}
+                  placeholder="مثال: امروز، دیروز، ۲ روز پیش"
+                  className="w-full rounded-[12px] border border-border bg-bg px-3.5 py-2.5 text-[14px] text-ink outline-none focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="text-[13px] font-bold text-ink-soft mb-1.5 block">
+                  یادداشت‌های اختصاصی مربی
+                </label>
+                <textarea
+                  rows={3}
+                  value={editForm.notes}
+                  onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
+                  placeholder="توضیحات تکمیلی درباره آسیب‌دیدگی، اهداف یا تغییر رژیم..."
+                  className="w-full rounded-[12px] border border-border bg-bg p-3 text-[13.5px] text-ink outline-none focus:border-primary resize-none"
+                />
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-border flex items-center justify-end gap-2.5">
+                <button
+                  type="button"
+                  onClick={() => setEditingStudent(null)}
+                  className="btn btn-outline btn-sm"
+                >
+                  انصراف
+                </button>
+                <button type="submit" className="btn btn-primary btn-sm">
+                  ذخیره تغییرات
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* 3. Remove Confirmation Modal */}
+      {removingStudent && (
+        <div className="fixed inset-0 z-70 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-ink/50 backdrop-blur-[4px] transition-opacity"
+            onClick={() => setRemovingStudent(null)}
+          />
+          <div className="relative z-10 w-full max-w-[420px] rounded-[20px] border border-border bg-surface p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-rose-500/10 text-rose-600">
+                <AlertTriangle className="h-6 w-6" />
+              </span>
+              <div>
+                <h3 className="text-[16px] font-extrabold text-ink">حذف از شاگردان من</h3>
+                <p className="text-[12px] text-ink-faint">خروج شاگرد از لیست مربیگری</p>
+              </div>
+            </div>
+
+            <p className="text-[13.5px] text-ink-soft leading-relaxed mb-6">
+              آیا از حذف شاگرد{" "}
+              <strong className="text-ink font-bold">«{removingStudent.name}»</strong> از لیست
+              شاگردان خود اطمینان دارید؟ این عمل او را از لیست مربیگری شما خارج کرده و کارت‌های
+              آمار داشبورد را به‌روزرسانی می‌کند.
+            </p>
+
+            <div className="flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setRemovingStudent(null)}
+                className="btn btn-outline btn-sm"
+              >
+                انصراف
+              </button>
+              <button
+                type="button"
+                disabled={isRemoving}
+                onClick={handleConfirmRemove}
+                className="btn btn-sm bg-rose-600 hover:bg-rose-700 text-white border-none flex items-center gap-1.5 disabled:opacity-50"
+              >
+                {isRemoving ? (
+                  <span>در حال لغو انتساب...</span>
+                ) : (
+                  <>
+                    <Trash2 className="h-4 w-4" />
+                    <span>بله، حذف کن</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Add Student Modal Window (matching fitlegend-gym-os-add-member.html) */}
+      {/* 4. Add Student Modal Window (calls Django POST /members/my-students/) */}
       <CoachAddMemberModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}

@@ -1,18 +1,53 @@
 "use client";
 
+import { useMemo } from "react";
 import { useCoachDashboard } from "@/lib/hooks/queries/use-coach-dashboard";
+import { useCoachStudents } from "@/lib/hooks/queries/use-coaches";
+import { getCoachStudentsStore, useCoachStudentsSync } from "@/lib/coach-students-store";
 import { toPersianDigits } from "@/lib/persian-digits";
 
 export function CoachKpiGrid() {
-  const { data: dashboard, isLoading } = useCoachDashboard();
+  const { data: dashboard } = useCoachDashboard();
+  const { data: backendStudents } = useCoachStudents();
+  const storeVersion = useCoachStudentsSync();
 
-  const activeStudents = dashboard?.active_students ?? 38;
-  const newStudents = dashboard?.new_students_this_month ?? 4;
-  const sessionsTotal = dashboard?.sessions_today_total ?? 4;
-  const sessionsRemaining = dashboard?.sessions_today_remaining ?? 2;
-  const weeklyRate = dashboard?.weekly_attendance_rate ?? 91;
-  const weeklyTrend = dashboard?.weekly_attendance_rate_trend ?? 3;
-  const messagesCount = dashboard?.unanswered_messages_count ?? 5;
+  const activeStudents = useMemo(() => {
+    const store = getCoachStudentsStore();
+    if (Array.isArray(backendStudents)) {
+      const seenBackendIds = new Set(backendStudents.map((b) => b.id));
+      const seenBackendNames = new Set(
+        backendStudents.map((b) => b.full_name?.trim().toLowerCase()).filter(Boolean)
+      );
+
+      // Active students from Django backend:
+      // Anything not explicitly expired or inactive is considered active.
+      const activeBackend = backendStudents.filter((s) => {
+        const ovr = store.overrides[s.id];
+        const status = (ovr?.status ?? s.status)?.toLowerCase();
+        return status !== "expired" && status !== "inactive";
+      }).length;
+
+      // Active students added locally / optimistically
+      const activeCustom = (store.customStudents || []).filter((s) => {
+        if (store.removedIds.includes(s.id)) return false;
+        if (seenBackendIds.has(s.id)) return false;
+        if (seenBackendNames.has(s.name?.trim().toLowerCase())) return false;
+        const status = (store.overrides[s.id]?.status ?? s.status)?.toLowerCase();
+        return status !== "expired" && status !== "inactive";
+      }).length;
+
+      const calculated = activeBackend + activeCustom;
+      return Math.max(calculated, dashboard?.active_students ?? 0);
+    }
+    return dashboard?.active_students ?? 0;
+  }, [backendStudents, dashboard?.active_students, storeVersion]);
+
+  const newStudents = dashboard?.new_students_this_month ?? 0;
+  const sessionsTotal = dashboard?.sessions_today_total ?? 0;
+  const sessionsRemaining = dashboard?.sessions_today_remaining ?? 0;
+  const weeklyRate = dashboard?.weekly_attendance_rate ?? 0;
+  const weeklyTrend = dashboard?.weekly_attendance_rate_trend ?? 0;
+  const messagesCount = dashboard?.unanswered_messages_count ?? 0;
 
   return (
     <div className="grid grid-cols-1 gap-[18px] min-[641px]:grid-cols-2 min-[1101px]:grid-cols-4 mb-[18px]">

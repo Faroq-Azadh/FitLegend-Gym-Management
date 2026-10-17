@@ -1,18 +1,62 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { CoachSidebar } from "@/components/coach/coach-sidebar";
 import { CoachTopbar } from "@/components/coach/coach-topbar";
 import { useAuth } from "@/lib/auth-context";
-import { useCoachMe, useUpdateCoachMe } from "@/lib/hooks/queries/use-coaches";
+import { useCoachMe, useUpdateCoachMe, useCoachStudents } from "@/lib/hooks/queries/use-coaches";
+import { useCoachDashboard } from "@/lib/hooks/queries/use-coach-dashboard";
+import { getCoachStudentsStore, useCoachStudentsSync } from "@/lib/coach-students-store";
+import { toPersianDigits } from "@/lib/persian-digits";
+import { LogOut, Loader2 } from "lucide-react";
 
 export default function CoachProfilePage() {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"info" | "expert">("info");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  const { user, updateUser } = useAuth();
+  const { user, updateUser, logout } = useAuth();
   const { data: coachMe, isLoading } = useCoachMe();
+  const { data: dashboard } = useCoachDashboard();
+  const { data: backendStudents } = useCoachStudents();
+  const storeVersion = useCoachStudentsSync();
   const updateCoachMeMutation = useUpdateCoachMe();
+
+  const handleConfirmLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+    } catch {
+      // Proceed even if network error
+    } finally {
+      router.push("/");
+    }
+  };
+
+  const activeStudentsCount = useMemo(() => {
+    const store = getCoachStudentsStore();
+    if (Array.isArray(backendStudents)) {
+      const activeBackend = backendStudents.filter((s) => {
+        const ovr = store.overrides[s.id];
+        const status = (ovr?.status ?? s.status)?.toLowerCase();
+        return status !== "expired" && status !== "inactive";
+      }).length;
+
+      const activeCustom = (store.customStudents || []).filter(
+        (s) =>
+          !store.removedIds.includes(s.id) &&
+          (store.overrides[s.id]?.status ?? s.status)?.toLowerCase() !== "expired" &&
+          (store.overrides[s.id]?.status ?? s.status)?.toLowerCase() !== "inactive"
+      ).length;
+
+      const calculated = activeBackend + activeCustom;
+      return Math.max(calculated, dashboard?.active_students ?? 0);
+    }
+    return dashboard?.active_students ?? 0;
+  }, [backendStudents, dashboard?.active_students, storeVersion]);
 
   // Form states - Info
   const [firstName, setFirstName] = useState("");
@@ -144,7 +188,7 @@ export default function CoachProfilePage() {
         {/* Content */}
         <main className="content">
           {/* Page Head */}
-          <div className="page-head">
+          <div className="page-head flex flex-wrap items-end justify-between gap-[16px] mb-[24px]">
             <div>
               <h1>پروفایل مربی</h1>
               <div className="sub">اطلاعات حساب، تخصص‌ها و تنظیمات شما</div>
@@ -221,7 +265,7 @@ export default function CoachProfilePage() {
                 </div>
                 <div className="profile-stats">
                   <div className="pstat">
-                    <div className="v">۳۸</div>
+                    <div className="v">{toPersianDigits(activeStudentsCount)}</div>
                     <div className="l">شاگرد فعال</div>
                   </div>
                   <div className="pstat">
@@ -232,6 +276,17 @@ export default function CoachProfilePage() {
                     <div className="v">۱۲۴</div>
                     <div className="l">برنامه</div>
                   </div>
+                </div>
+
+                <div className="mr-auto flex items-center">
+                  <button
+                    type="button"
+                    onClick={() => setShowLogoutModal(true)}
+                    className="inline-flex items-center gap-[6px] rounded-[10px] border border-[#FCA5A5] bg-[#FEF2F2] px-[14px] py-[8px] text-[13px] font-bold text-[#DC2626] transition-colors hover:bg-[#FEE2E2] cursor-pointer"
+                  >
+                    <LogOut className="h-[15px] w-[15px]" />
+                    <span>خروج از پنل</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -481,6 +536,53 @@ export default function CoachProfilePage() {
           </div>
         </main>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-[16px]">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-ink/50 backdrop-blur-xs transition-opacity"
+            onClick={() => !isLoggingOut && setShowLogoutModal(false)}
+          />
+
+          {/* Modal Container */}
+          <div className="relative z-10 w-full max-w-[420px] overflow-hidden rounded-[20px] border border-border bg-surface p-[24px] shadow-[0_20px_60px_rgba(15,23,42,0.18)] animate-in fade-in zoom-in-95 duration-200">
+            <div className="mx-auto flex h-[54px] w-[54px] items-center justify-center rounded-[16px] bg-[#FEF2F2] text-[#DC2626]">
+              <LogOut className="h-[26px] w-[26px]" />
+            </div>
+
+            <div className="mt-[16px] text-center">
+              <h3 className="text-[18px] font-black text-ink">
+                خروج از پنل مربی
+              </h3>
+              <p className="mt-[8px] text-[13.5px] leading-[1.7] text-ink-faint">
+                آیا از خروج از حساب مربیگری خود اطمینان دارید؟ در صورت خروج، از حساب خارج شده و به صفحه ورود منتقل خواهید شد.
+              </p>
+            </div>
+
+            <div className="mt-[24px] grid grid-cols-2 gap-[10px]">
+              <button
+                type="button"
+                disabled={isLoggingOut}
+                onClick={() => setShowLogoutModal(false)}
+                className="rounded-[12px] border border-border bg-surface py-[10px] text-[13.5px] font-bold text-ink transition-colors hover:bg-bg disabled:opacity-50 cursor-pointer"
+              >
+                خیر، انصراف
+              </button>
+              <button
+                type="button"
+                disabled={isLoggingOut}
+                onClick={handleConfirmLogout}
+                className="inline-flex items-center justify-center gap-[6px] rounded-[12px] bg-[#DC2626] py-[10px] text-[13.5px] font-bold text-white transition-all hover:bg-[#B91C1C] hover:shadow-[0_8px_20px_rgba(220,38,38,0.25)] disabled:opacity-50 cursor-pointer"
+              >
+                {isLoggingOut && <Loader2 className="h-[15px] w-[15px] animate-spin" />}
+                <span>بله، خارج شو</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

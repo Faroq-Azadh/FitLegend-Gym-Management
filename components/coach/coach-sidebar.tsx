@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { LogoMark } from "@/components/ui/logo";
 import { useAuth } from "@/lib/auth-context";
 import { useCoachDashboard } from "@/lib/hooks/queries/use-coach-dashboard";
-import { useCoachMe } from "@/lib/hooks/queries/use-coaches";
+import { useCoachMe, useCoachStudents } from "@/lib/hooks/queries/use-coaches";
 import { useGymMe } from "@/lib/hooks/queries/use-gym-me";
 import { getCurrentUserScope, setActiveGymScope } from "@/lib/session-scope";
+import { getCoachStudentsStore, useCoachStudentsSync } from "@/lib/coach-students-store";
 import { toPersianDigits } from "@/lib/persian-digits";
 
 interface CoachSidebarProps {
@@ -150,8 +151,39 @@ export function CoachSidebar({ isOpen, onClose }: CoachSidebarProps) {
     return name.slice(0, 2);
   };
 
-  const activeStudentsCount = dashboard?.active_students ?? 38;
-  const unansweredMessagesCount = dashboard?.unanswered_messages_count ?? 5;
+  const { data: backendStudents } = useCoachStudents();
+  const storeVersion = useCoachStudentsSync();
+
+  const activeStudentsCount = useMemo(() => {
+    const store = getCoachStudentsStore();
+    if (Array.isArray(backendStudents)) {
+      const seenBackendIds = new Set(backendStudents.map((b) => b.id));
+      const seenBackendNames = new Set(
+        backendStudents.map((b) => b.full_name?.trim().toLowerCase()).filter(Boolean)
+      );
+
+      const activeBackend = backendStudents.filter((s) => {
+        const ovr = store.overrides[s.id];
+        const status = (ovr?.status ?? s.status)?.toLowerCase();
+        return status !== "expired" && status !== "inactive";
+      }).length;
+
+      const activeCustom = (store.customStudents || []).filter(
+        (s) =>
+          !store.removedIds.includes(s.id) &&
+          !seenBackendIds.has(s.id) &&
+          !seenBackendNames.has(s.name?.trim().toLowerCase()) &&
+          (store.overrides[s.id]?.status ?? s.status)?.toLowerCase() !== "expired" &&
+          (store.overrides[s.id]?.status ?? s.status)?.toLowerCase() !== "inactive"
+      ).length;
+
+      const calculated = activeBackend + activeCustom;
+      return Math.max(calculated, dashboard?.active_students ?? 0);
+    }
+    return dashboard?.active_students ?? 0;
+  }, [backendStudents, dashboard?.active_students, storeVersion]);
+
+  const unansweredMessagesCount = dashboard?.unanswered_messages_count ?? 0;
 
   const navSection1 = [
     {
